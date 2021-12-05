@@ -332,8 +332,8 @@ func (ir *informacionRouter_mo) UpdatePaymenthMeth(c echo.Context) error {
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdatePaymenthMeth_Service(data_idbusiness, b_paymenthmeth)
-	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	status, boolerror, dataerror, data1, data2 := UpdatePaymenthMeth_Service(data_idbusiness, b_paymenthmeth)
+	results := ResponsePaymeth_TEST{Error: boolerror, DataError: dataerror, Data1: data1, Data2: data2}
 	return c.JSON(status, results)
 
 }
@@ -557,7 +557,7 @@ func (ir *informacionRouter_mo) FindPaymenthMeth(c echo.Context) error {
 
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := FindPaymenth_Service(data_idcountry, data_idbusiness)
-	results := ResponsePaymethAll{Error: boolerror, DataError: dataerror, Data: data}
+	results := ResponsePaymeth{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
 }

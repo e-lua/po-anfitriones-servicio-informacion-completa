@@ -175,9 +175,9 @@ func FindDeliveryRange_Service(inputObjectIdBusiness int) (int, bool, string, st
 }
 
 //PAYMENTH METHOD
-func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, b_paymenthmeth []models.Mo_PaymenthMeth) (int, bool, string, string) {
+func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, b_paymenthmeth []models.Mo_PaymenthMeth) (int, bool, string, int, []models.Mo_PaymenthMeth) {
 
-	error_updating_paymenth := payment_x_business_repository.Mo_Update(b_paymenthmeth, inputObjectIdBusiness)
+	/*error_updating_paymenth := payment_x_business_repository.Mo_Update(b_paymenthmeth, inputObjectIdBusiness)
 	if error_updating_paymenth != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_updating_paymenth.Error(), ""
 	}
@@ -185,9 +185,9 @@ func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, b_paymenthmeth []mode
 	_, error_update_pg := payment_x_business_repository.Pg_Add(b_paymenthmeth, inputObjectIdBusiness)
 	if error_update_pg != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago en pg, detalle: " + error_update_pg.Error(), ""
-	}
+	}*/
 
-	return 200, false, "", "Se registraron los metodos de pago correctamente"
+	return 200, false, "", inputObjectIdBusiness, b_paymenthmeth
 }
 func FindPaymenthMeth_Service(inputObjectIdBusiness int) (int, bool, string, []models.Mo_PaymenthMeth) {
 

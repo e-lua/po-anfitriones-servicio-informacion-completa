@@ -94,10 +94,17 @@ type ResponsePaymentMeth struct {
 }
 
 //PAYMENTMETH_ALL
-type ResponsePaymethAll struct {
+type ResponsePaymeth struct {
 	Error     bool                        `json:"error"`
 	DataError string                      `json:"dataError"`
 	Data      []models.Pg_R_PaymentMethod `json:"data"`
+}
+
+type ResponsePaymeth_TEST struct {
+	Error     bool                     `json:"error"`
+	DataError string                   `json:"dataError"`
+	Data1     int                      `json:"data1"`
+	Data2     []models.Mo_PaymenthMeth `json:"data2"`
 }
 
 //BANNER
