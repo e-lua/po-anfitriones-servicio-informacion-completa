@@ -19,7 +19,7 @@ func Mo_Find_All_Data(idbusiness int) (models.Mo_Business, error) {
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("business")
 
-	condicion := bson.M{"idBusiness": idbusiness}
+	condicion := bson.M{"idbusiness": idbusiness}
 
 	//Resultado de la query
 	var resultado models.Mo_Business

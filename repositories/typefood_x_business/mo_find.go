@@ -20,7 +20,7 @@ func Mo_Find(idbusiness int) ([]models.Mo_TypeFood, error) {
 	col := db.Collection("business")
 
 	condiciones := make([]bson.M, 0)
-	condiciones = append(condiciones, bson.M{"idBusiness": idbusiness})
+	condiciones = append(condiciones, bson.M{"idbusiness": idbusiness})
 	condiciones = append(condiciones, bson.M{"$unwind": "$typeOfFood"})
 
 	cursor, _ := col.Aggregate(ctx, condiciones)
