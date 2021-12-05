@@ -51,7 +51,7 @@ func (ir *informacionRouter_mo) UpdateBanners_Consumer(idbanner int, urlphoto st
 }
 
 /*----------------------SHOW ALL PUBLIC DATA----------------------*/
-
+/*
 func (ir *informacionRouter_mo) FindAllPaymenth(c echo.Context) error {
 
 	//Obtenemos los datos del auth
@@ -70,7 +70,7 @@ func (ir *informacionRouter_mo) FindAllPaymenth(c echo.Context) error {
 	results := ResponsePaymethAll{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
-}
+}*/
 
 /*
 func (ir *informacionRouter_mo) FindAllService(c echo.Context) error {
@@ -545,25 +545,19 @@ func (ir *informacionRouter_mo) FindDeliveryRange(c echo.Context) error {
 func (ir *informacionRouter_mo) FindPaymenthMeth(c echo.Context) error {
 
 	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 81)
+	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
 		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
-	if data_idbusiness <= 0 {
+	if data_idcountry <= 0 {
 		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
-	//Validamos los valores enviados
-	if data_idbusiness < 1 {
-		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
-		return c.JSON(403, results)
-	}
-
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindPaymenthMeth_Service(data_idbusiness)
-	results := ResponsePaymentMeth{Error: boolerror, DataError: dataerror, Data: data}
+	status, boolerror, dataerror, data := FindPaymenth_Service(data_idcountry, data_idbusiness)
+	results := ResponsePaymethAll{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
 }

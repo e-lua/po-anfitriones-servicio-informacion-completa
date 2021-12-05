@@ -34,7 +34,7 @@ func UpdateBanners_Consumer_Service(idbanner int, urlphoto string, idbusiness in
 
 /*----------------------SERVICES TO SHOW ALL PUBLIC DATA----------------------*/
 
-func FindAllPaymenth_Service(idcountry int, idbusiness int) (int, bool, string, []models.Pg_R_PaymentMethod) {
+func FindPaymenth_Service(idcountry int, idbusiness int) (int, bool, string, []models.Pg_R_PaymentMethod) {
 
 	paymenth, _ := payment_x_business_repository.Pg_Find(idbusiness, idcountry)
 

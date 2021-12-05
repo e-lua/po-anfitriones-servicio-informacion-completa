@@ -25,7 +25,7 @@ func Mo_Update(services []models.Mo_Service, idbusiness int) error {
 		},
 	}
 
-	filtro := bson.M{"idBusiness": idbusiness}
+	filtro := bson.M{"idbusiness": idbusiness}
 
 	_, error_update := col.UpdateOne(ctx, filtro, updtString)
 
