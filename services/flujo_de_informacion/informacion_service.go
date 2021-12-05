@@ -182,10 +182,10 @@ func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, b_paymenthmeth []mode
 		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_updating_paymenth.Error(), ""
 	}
 
-	/*error_updating_paymenth_ar := payment_x_business_repository.Ar_Add_Edge(b_paymenthmeth, inputObjectIdBusiness)
-	if error_updating_paymenth_ar != nil {
-		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago en los nodos, detalle: " + error_updating_paymenth_ar.Error(), ""
-	}*/
+	_, error_update_pg := payment_x_business_repository.Pg_Add(b_paymenthmeth, inputObjectIdBusiness)
+	if error_update_pg != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago en pg, detalle: " + error_update_pg.Error(), ""
+	}
 
 	return 200, false, "", "Se registraron los metodos de pago correctamente"
 }

@@ -79,14 +79,10 @@ func Manejadores() {
 	//V1 FROM BUSINESS TO ...DELIVERYRANGE
 	//8
 	router_business.PUT("/paymentmethod", informacion.InformacionRouter_mo.UpdatePaymenthMeth)
-	//81
 	router_business.GET("/paymentmethod", informacion.InformacionRouter_mo.FindPaymenthMeth)
-	//router_business.GET("/paymentmethod/all", informacion.informacionRouter_mo.FindAllPaymenth)
 
 	//V1 FROM BUSINESS TO ...SCHEDULE
-	//9
 	router_business.PUT("/schedule", informacion.InformacionRouter_mo.UpdateSchedule)
-	//91
 	//router_business.GET("/schedule", informacion.informacionRouter_mo.FindSchedule)
 	//router_business.GET("/schedule/all", informacion.informacionRouter_mo.FindAllSchedule)
 

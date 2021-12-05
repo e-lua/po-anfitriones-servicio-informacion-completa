@@ -21,7 +21,7 @@ func Mo_Update(paymentMethods []models.Mo_PaymenthMeth, idbusiness int) error {
 
 	updtString := bson.M{
 		"$set": bson.M{
-			"paymentMethods": paymentMethods,
+			"paymentmethods": paymentMethods,
 		},
 	}
 
