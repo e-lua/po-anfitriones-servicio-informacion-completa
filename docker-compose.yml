@@ -1,0 +1,44 @@
+version: "3.3"
+
+services: 
+  app:
+    container_name: restoneranfitrion_app_servicio_informacion_completa
+    restart: always 
+    build: .
+    networks:
+      - backend
+    ports:
+      - "5800:5000"
+    links:
+      - mongo
+  mongo:
+    image: mongo
+    restart: always
+    networks:
+      - backend
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodbbusiness_user
+      MONGO_INITDB_ROOT_PASSWORD: mongodb1151
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - "9001:8081"
+    networks:
+      - backend
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongobusiness_user
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongodb4d2s
+      ME_CONFIG_MONGODB_URL: mongodb://mongodbbusiness_user:mongodb1151@mongo:27017/
+networks:
+  backend:
+
+
+
+
+
+
+
+
