@@ -120,12 +120,12 @@ func Consumer_Data() {
 	ch, error_conection := models.MqttCN.Channel()
 	if error_conection != nil {
 		defer ch.Close()
-		log.Fatal("Error connection canal")
+		log.Fatal("Error connection canal " + error_conection.Error())
 	}
 
 	msgs, err_consume := ch.Consume("anfitrion/businessdata", "", true, false, false, false, nil)
 	if err_consume != nil {
-		log.Fatal("Error connection cola")
+		log.Fatal("Error connection cola " + err_consume.Error())
 	}
 
 	go func() {
@@ -148,12 +148,12 @@ func Consumer_Banner() {
 	ch, error_conection := models.MqttCN.Channel()
 	if error_conection != nil {
 		defer ch.Close()
-		log.Fatal("Error connection canal")
+		log.Fatal("Error connection canal " + error_conection.Error())
 	}
 
 	msgs, err_consume := ch.Consume("anfitrion/banner", "", true, false, false, false, nil)
 	if err_consume != nil {
-		log.Fatal("Error connection cola")
+		log.Fatal("Error connection cola " + err_consume.Error())
 	}
 
 	go func() {
