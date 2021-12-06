@@ -7,7 +7,7 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-func Pg_Add(paymentMethods []models.Mo_PaymenthMeth, idbusiness int) (int64, error) {
+func Pg_Add(input_mo_business models.Mo_Business, idbusiness int) (int64, error) {
 
 	db := models.Conectar_Pg_DB()
 
@@ -43,7 +43,7 @@ func Pg_Add(paymentMethods []models.Mo_PaymenthMeth, idbusiness int) (int64, err
 
 	var list_p_x_b [][]interface{}
 
-	for _, payment_x_business := range paymentMethods {
+	for _, payment_x_business := range input_mo_business.PaymentMethods {
 		var p_x_b []interface{}
 		p_x_b[0] = idbusiness
 		p_x_b[1] = payment_x_business.IDPaymenth
