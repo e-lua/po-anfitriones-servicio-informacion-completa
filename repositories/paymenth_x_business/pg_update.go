@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"time"
 
@@ -11,13 +10,9 @@ import (
 	"github.com/streadway/amqp"
 )
 
-func Pg_Add(input_mo_business models.Mo_Business, idbusiness int) error {
+func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 
 	db := models.Conectar_Pg_DB()
-
-	//Eliminamos los datos
-	q := "DELETE FROM Business_R_Paymenth WHERE idbusiness=$1"
-	db.Exec(context.Background(), q, idbusiness)
 
 	idbusiness_pg, idpaymenth_pg, isavailable_pg := []int{}, []int{}, []bool{}
 	for _, v := range input_mo_business.PaymentMethods {
@@ -57,6 +52,7 @@ func Pg_Add(input_mo_business models.Mo_Business, idbusiness int) error {
 		if error_serializar != nil {
 			log.Error(error_serializar)
 		}
+
 		error_publish := ch.Publish("", "anfitrion/paymenth", false, false,
 			amqp.Publishing{
 				DeliveryMode: amqp.Persistent,
