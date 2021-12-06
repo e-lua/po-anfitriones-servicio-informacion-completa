@@ -12,14 +12,14 @@ func Pg_Add(input_mo_business models.Mo_Business, idbusiness int) (int64, error)
 	db := models.Conectar_Pg_DB()
 
 	//Eliminamos los datos
-	q := "DELETE FROM Business_R_Paymenth WHERE idbusiness=$1"
+	/*q := "DELETE FROM Business_R_Paymenth WHERE idbusiness=$1"
 	_, err_add := db.Exec(context.Background(), q, idbusiness)
 
 	if err_add != nil {
 
 		defer db.Close()
 		return 0, err_add
-	}
+	}*/
 
 	/*type RowSrc interface  {
 		Next() bool
