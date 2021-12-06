@@ -316,10 +316,10 @@ func (ir *informacionRouter_mo) UpdatePaymenthMeth(c echo.Context) error {
 	}
 
 	//Instanciamos una variable del modelo B_Name
-	var b_paymenthmeth []models.Mo_PaymenthMeth
+	var mo_business models.Mo_Business
 
 	//Agregamos los valores enviados a la variable creada
-	err := c.Bind(&b_paymenthmeth)
+	err := c.Bind(&mo_business)
 	if err != nil {
 		results := Response{Error: true, DataError: "Se debe enviar el id del tipo de comida, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
@@ -332,7 +332,7 @@ func (ir *informacionRouter_mo) UpdatePaymenthMeth(c echo.Context) error {
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data1, data2 := UpdatePaymenthMeth_Service(data_idbusiness, b_paymenthmeth)
+	status, boolerror, dataerror, data1, data2 := UpdatePaymenthMeth_Service(data_idbusiness, mo_business)
 	results := ResponsePaymeth_TEST{Error: boolerror, DataError: dataerror, Data1: data1, Data2: data2}
 	return c.JSON(status, results)
 

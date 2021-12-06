@@ -101,10 +101,10 @@ type ResponsePaymeth struct {
 }
 
 type ResponsePaymeth_TEST struct {
-	Error     bool                     `json:"error"`
-	DataError string                   `json:"dataError"`
-	Data1     int                      `json:"data1"`
-	Data2     []models.Mo_PaymenthMeth `json:"data2"`
+	Error     bool               `json:"error"`
+	DataError string             `json:"dataError"`
+	Data1     int                `json:"data1"`
+	Data2     models.Mo_Business `json:"data2"`
 }
 
 //BANNER

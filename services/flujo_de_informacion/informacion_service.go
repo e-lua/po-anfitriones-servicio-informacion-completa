@@ -175,19 +175,19 @@ func FindDeliveryRange_Service(inputObjectIdBusiness int) (int, bool, string, st
 }
 
 //PAYMENTH METHOD
-func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, b_paymenthmeth []models.Mo_PaymenthMeth) (int, bool, string, int, []models.Mo_PaymenthMeth) {
+func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, input_mo_business models.Mo_Business) (int, bool, string, int, models.Mo_Business) {
 
-	/*error_updating_paymenth := payment_x_business_repository.Mo_Update(b_paymenthmeth, inputObjectIdBusiness)
+	error_updating_paymenth := payment_x_business_repository.Mo_Update(input_mo_business, inputObjectIdBusiness)
 	if error_updating_paymenth != nil {
-		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_updating_paymenth.Error(), ""
+		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_updating_paymenth.Error(), inputObjectIdBusiness, input_mo_business
 	}
+	/*
+		_, error_update_pg := payment_x_business_repository.Pg_Add(b_paymenthmeth, inputObjectIdBusiness)
+		if error_update_pg != nil {
+			return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago en pg, detalle: " + error_update_pg.Error(), ""
+		}*/
 
-	_, error_update_pg := payment_x_business_repository.Pg_Add(b_paymenthmeth, inputObjectIdBusiness)
-	if error_update_pg != nil {
-		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago en pg, detalle: " + error_update_pg.Error(), ""
-	}*/
-
-	return 200, false, "", inputObjectIdBusiness, b_paymenthmeth
+	return 200, false, "", inputObjectIdBusiness, input_mo_business
 }
 func FindPaymenthMeth_Service(inputObjectIdBusiness int) (int, bool, string, []models.Mo_PaymenthMeth) {
 
