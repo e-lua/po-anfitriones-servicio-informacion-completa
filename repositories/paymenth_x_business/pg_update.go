@@ -4,10 +4,9 @@ import (
 	"context"
 
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
-	"github.com/jackc/pgx/v4"
 )
 
-func Pg_Add(input_mo_business models.Mo_Business, idbusiness int) (int64, error) {
+func Pg_Add(input_mo_business models.Mo_Business, idbusiness int) error {
 
 	db := models.Conectar_Pg_DB()
 
@@ -41,25 +40,19 @@ func Pg_Add(input_mo_business models.Mo_Business, idbusiness int) (int64, error)
 		value,
 	}*/
 
-	var list_p_x_b [][]interface{}
-
-	for _, payment_x_business := range input_mo_business.PaymentMethods {
-		var p_x_b []interface{}
-		p_x_b[0] = idbusiness
-		p_x_b[1] = payment_x_business.IDPaymenth
-		p_x_b[2] = true
-		list_p_x_b = append(list_p_x_b, p_x_b)
+	idbusiness_pg, idpaymenth_pg, isavailable_pg := []int{}, []int{}, []bool{}
+	for _, v := range input_mo_business.PaymentMethods {
+		if v.IsAvaiable {
+			idbusiness_pg = append(idbusiness_pg, idbusiness)
+			idpaymenth_pg = append(idpaymenth_pg, v.IDPaymenth)
+			isavailable_pg = append(isavailable_pg, true)
+		}
+	}
+	query := `INSERT INTO Business_R_Paymenth(idbusiness,idPayment,isavailable) (select * from unnest($1::int[], $2::int[],$3::boolean[]))`
+	if _, err := db.Exec(context.Background(), query, idbusiness_pg, idpaymenth_pg, isavailable_pg); err != nil {
+		return err
 	}
 
-	//Insertamos los datos
-	//q_2 := "INSERT INTO Business_R_Paymenth(idbusiness,idPayment,isavailable) VALUES ($1,$2,$3)"
-	add_paymenth, err_add := db.CopyFrom(context.Background(), pgx.Identifier{"business_r_paymenth"}, []string{"idbusiness", "idpayment", "isavailable"}, pgx.CopyFromRows(list_p_x_b))
-
-	if err_add != nil {
-		defer db.Close()
-		return add_paymenth, err_add
-	}
-
-	defer db.Close()
-	return add_paymenth, nil
+	defer db.Close(context.TODO())
+	return nil
 }
