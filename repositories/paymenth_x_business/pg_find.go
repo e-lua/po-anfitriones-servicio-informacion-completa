@@ -15,17 +15,16 @@ func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_PaymentMethod, error)
 	//.Scan(&typeF_x_Business.IDTypeFood, &typeF_x_Business.NameFood, &typeF_x_Business.URLPhoto, &typeF_x_Business.Weight)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
-	oListPg_Paymenth := []models.Pg_R_PaymentMethod{}
+	var oListPg_Paymenth []models.Pg_R_PaymentMethod
 
 	if error_show != nil {
-
 		defer db.Close(context.Background())
 		return oListPg_Paymenth, error_show
 	}
 
 	//Scaneamos l resultado y lo asignamos a la variable instanciada
 	for rows.Next() {
-		paymenth := models.Pg_R_PaymentMethod{}
+		var paymenth models.Pg_R_PaymentMethod
 		rows.Scan(&paymenth.IDPaymenth, &paymenth.Name, &paymenth.Url, &paymenth.HasNumber, &paymenth.IsAvailable)
 		oListPg_Paymenth = append(oListPg_Paymenth, paymenth)
 	}
