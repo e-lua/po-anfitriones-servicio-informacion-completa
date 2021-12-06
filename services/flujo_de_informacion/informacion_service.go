@@ -181,10 +181,11 @@ func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, input_mo_business mod
 	if error_updating_paymenth != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_updating_paymenth.Error(), inputObjectIdBusiness, input_mo_business
 	}
-	_, error_update_pg := payment_x_business_repository.Pg_Add(input_mo_business, inputObjectIdBusiness)
-	if error_update_pg != nil {
-		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago en pg, detalle: " + error_update_pg.Error(), inputObjectIdBusiness, input_mo_business
-	}
+	/*
+		_, error_update_pg := payment_x_business_repository.Pg_Add(input_mo_business, inputObjectIdBusiness)
+		if error_update_pg != nil {
+			return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago en pg, detalle: " + error_update_pg.Error(), inputObjectIdBusiness, input_mo_business
+		}*/
 
 	return 200, false, "", inputObjectIdBusiness, input_mo_business
 }
