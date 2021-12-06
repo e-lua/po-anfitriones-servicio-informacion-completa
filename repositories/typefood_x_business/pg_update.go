@@ -16,7 +16,7 @@ func Pg_Add(typeOfFood []models.Mo_TypeFood, idbusiness int) error {
 
 	if err_add != nil {
 
-		defer db.Close(context.TODO())
+		defer db.Close()
 		return err_add
 	}
 
@@ -33,6 +33,6 @@ func Pg_Add(typeOfFood []models.Mo_TypeFood, idbusiness int) error {
 			add_service.Exec(idbusiness, typefood, true)
 		}*/
 
-	defer db.Close(context.TODO())
+	defer db.Close()
 	return nil
 }

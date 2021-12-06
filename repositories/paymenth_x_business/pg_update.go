@@ -53,6 +53,6 @@ func Pg_Add(input_mo_business models.Mo_Business, idbusiness int) error {
 		return err
 	}
 
-	defer db.Close(context.TODO())
+	defer db.Close()
 	return nil
 }

@@ -1,9 +1,11 @@
 package models
 
 import (
+	//pgx "github.com/jackc/pgx/v4"
 	"context"
+	"log"
 
-	pgx "github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 /*
@@ -32,14 +34,35 @@ func Conectar_Pg_DB() *sql.DB {
 	return db
 }*/
 
-func Conectar_Pg_DB() *pgx.Conn {
+func Conectar_Pg_DB() *pgxpool.Pool {
 
 	urlString := "postgres://postgresxd:postgresxd@161.35.226.104:7000/postgresxd?pool_max_conns=20"
 
-	conn, _ := pgx.Connect(context.Background(), urlString)
+	config, error_connec_pg := pgxpool.ParseConfig(urlString)
+
+	if error_connec_pg != nil {
+		log.Fatal("Error en el servidor interno en el driver de PostgreSQL, mayor detalle: " + error_connec_pg.Error())
+		return nil
+	}
+
+	conn, _ := pgxpool.ConnectConfig(context.Background(), config)
 
 	return conn
 }
+
+/*
+urlString := "postgres://postgresxd:postgresxd@161.35.226.104:7000/postgresxd?pool_max_conns=20"
+
+	config, error_connec_pg := pgx.ParseConfig(urlString)
+
+	if error_connec_pg != nil {
+		log.Fatal("Error en el servidor interno en el driver de PostgreSQL, mayor detalle: " + error_connec_pg.Error())
+		return nil
+	}
+
+	conn, _ := pgx.Connect(context.Background(), config)
+
+	return conn*/
 
 //ChequeoConnection es el Ping a la BD
 /*func ChequeoConnection_Pg() int {
