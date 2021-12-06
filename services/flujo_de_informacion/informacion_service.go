@@ -37,7 +37,6 @@ func UpdateBanners_Consumer_Service(idbanner int, urlphoto string, idbusiness in
 func FindPaymenth_Service(idcountry int, idbusiness int) (int, bool, string, []models.Pg_R_PaymentMethod) {
 
 	paymenth, _ := payment_x_business_repository.Pg_Find(idbusiness, idcountry)
-
 	return 200, false, "", paymenth
 }
 
