@@ -84,6 +84,7 @@ type Mo_Contact struct {
 	IDContact   int    `bson:"id" json:"id"`
 	Name        string `bson:"name" json:"name"`
 	DataContact string `bson:"data" json:"data"`
+	IsAvaiable  bool   `bson:"available" json:"available"`
 }
 
 type Mo_BusinessWorker_Mqtt struct {

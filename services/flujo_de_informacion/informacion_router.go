@@ -317,7 +317,7 @@ func (ir *informacionRouter_mo) UpdateSchedule(c echo.Context) error {
 	//Agregamos los valores enviados a la variable creada
 	err := c.Bind(&mo_business)
 	if err != nil {
-		results := Response{Error: true, DataError: "Se debe enviar el id del tipo de comida, revise la estructura o los valores", Data: ""}
+		results := Response{Error: true, DataError: "Se debe enviar el id de todos los dias, la hora de inicio, la hora de fin, y si esta disponible o no, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
 	}
 
