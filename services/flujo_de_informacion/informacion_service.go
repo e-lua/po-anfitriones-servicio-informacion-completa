@@ -37,12 +37,31 @@ func UpdateName_Service(inputObjectIdBusiness int, input_b_name B_Name) (int, bo
 		return 500, true, "Error interno en el servidor al intentar actualizar el nombre, detalle: " + error_updatename_mongo.Error(), ""
 	}
 
+	go func() {
+		business_repository.Pg_UpdateName(input_b_name.Name, inputObjectIdBusiness)
+	}()
+
 	return 200, false, "", "Nombre actualizado correctamente"
 }
 func FindName_Service(inputObjectIdBusiness int) (int, bool, string, string) {
 
 	name, _ := business_repository.Mo_Find_Name(inputObjectIdBusiness)
 	return 200, false, "", name
+}
+
+//ISOPEN
+func UpdateOpen_Service(inputObjectIdBusiness int, input_b_open B_Open) (int, bool, string, string) {
+
+	error_updatename_mongo := business_repository.Mo_Update_Open(input_b_open.IsOpen, inputObjectIdBusiness)
+	if error_updatename_mongo != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar el nombre, detalle: " + error_updatename_mongo.Error(), ""
+	}
+
+	go func() {
+		business_repository.Pg_UpdateIsOpen(input_b_open.IsOpen, inputObjectIdBusiness)
+	}()
+
+	return 200, false, "", "Nombre actualizado correctamente"
 }
 
 //DIRECCION
@@ -52,6 +71,10 @@ func UpdateAddress_Service(inputObjectIdBusiness int, intpu_mo_business models.M
 	if error_update != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar la direccion, detalle: " + error_update.Error(), ""
 	}
+
+	go func() {
+		address_x_business_repository.Pg_UpdateAddress(intpu_mo_business, inputObjectIdBusiness)
+	}()
 
 	return 200, false, "", "Direccion actualizada correctamente"
 }
@@ -70,6 +93,10 @@ func UpdateTypeFood_Service(inputObjectIdBusiness int, input_mo_business models.
 		return 500, true, "Error interno en el servidor al intentar actualizar los tipos de comida, detalle: " + error_updating_typefood.Error(), ""
 	}
 
+	go func() {
+		typefood_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	}()
+
 	return 200, false, "", "Se registraron los tipos de comida correctamente"
 }
 func FindTypeFood_Service(idcountry int, idbusiness int) (int, bool, string, []models.Pg_R_TypeFood) {
@@ -86,6 +113,10 @@ func UpdateService_Service(inputObjectIdBusiness int, input_mo_business models.M
 	if error_update_service != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los servicios, detalle: " + error_update_service.Error(), ""
 	}
+
+	go func() {
+		service_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	}()
 
 	return 200, false, "", "Se registraron los servicios correctamente"
 }

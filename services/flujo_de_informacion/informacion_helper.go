@@ -20,6 +20,11 @@ type B_Name struct {
 	Name string `json:"name"`
 }
 
+//ISOPEN
+type B_Open struct {
+	IsOpen bool `bson:"isopen" json:"isopen"`
+}
+
 //PHOTO-BANNER&PROFILE
 type ResponseBannerProfile struct {
 	Error     bool                 `json:"error"`

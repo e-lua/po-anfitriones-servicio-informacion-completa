@@ -9,13 +9,13 @@ import (
 	"github.com/streadway/amqp"
 )
 
-func Pg_UpdateAddress(address models.Mo_Address, idbusiness int) error {
+func Pg_UpdateAddress(intpu_mo_business models.Mo_Business, idbusiness int) error {
 
 	//Serializamos el MQTT
 	var serialize_add models.Mqtt_Address
-	serialize_add.Latitude = address.Latitude
+	serialize_add.Latitude = intpu_mo_business.Address.Latitude
 	serialize_add.IdBusiness = idbusiness
-	serialize_add.Longitude = address.Longitude
+	serialize_add.Longitude = intpu_mo_business.Address.Longitude
 	//Comenzamos el envio al MQTT
 
 	go func() {

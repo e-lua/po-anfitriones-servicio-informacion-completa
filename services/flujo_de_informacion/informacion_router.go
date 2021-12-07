@@ -88,6 +88,36 @@ func (ir *informacionRouter_mo) UpdateName(c echo.Context) error {
 
 }
 
+func (ir *informacionRouter_mo) UpdateOpen(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Instanciamos una variable del modelo B_Name
+	var b_open B_Open
+
+	//Agregamos los valores enviados a la variable creada
+	err := c.Bind(&b_open)
+	if err != nil {
+		results := Response{Error: true, DataError: "Se debe enviar el nombre del negocio, revise la estructura o los valores", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := UpdateOpen_Service(data_idbusiness, b_open)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
 func (ir *informacionRouter_mo) UpdateAddress(c echo.Context) error {
 
 	//Obtenemos los datos del auth
