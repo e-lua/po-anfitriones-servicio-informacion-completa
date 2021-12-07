@@ -8,7 +8,7 @@ type Response struct {
 	Data      string `json:"data"`
 }
 
-//ALLDATA
+//BUSINESSDATA
 type ResponseBusiness struct {
 	Error     bool               `json:"error"`
 	DataError string             `json:"dataError"`
