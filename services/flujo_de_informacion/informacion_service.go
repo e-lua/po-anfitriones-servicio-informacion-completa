@@ -46,9 +46,9 @@ func FindName_Service(inputObjectIdBusiness int) (int, bool, string, string) {
 }
 
 //DIRECCION
-func UpdateAddress_Service(inputObjectIdBusiness int, input_b_address models.Mo_Address) (int, bool, string, string) {
+func UpdateAddress_Service(inputObjectIdBusiness int, intpu_mo_business models.Mo_Business) (int, bool, string, string) {
 
-	error_update := address_x_business_repository.Mo_Update(input_b_address, inputObjectIdBusiness)
+	error_update := address_x_business_repository.Mo_Update(intpu_mo_business, inputObjectIdBusiness)
 	if error_update != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar la direccion, detalle: " + error_update.Error(), ""
 	}
@@ -63,9 +63,9 @@ func FindAddress_Service(inputObjectIdBusiness int) (int, bool, string, models.M
 }
 
 //TIPOS DE COMIDA
-func UpdateTypeFood_Service(inputObjectIdBusiness int, input_b_typefood []models.Mo_TypeFood) (int, bool, string, string) {
+func UpdateTypeFood_Service(inputObjectIdBusiness int, input_mo_business models.Mo_Business) (int, bool, string, string) {
 
-	error_updating_typefood := typefood_x_business_repository.Mo_Update(input_b_typefood, inputObjectIdBusiness)
+	error_updating_typefood := typefood_x_business_repository.Mo_Update(input_mo_business, inputObjectIdBusiness)
 	if error_updating_typefood != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los tipos de comida, detalle: " + error_updating_typefood.Error(), ""
 	}
@@ -80,9 +80,9 @@ func FindTypeFood_Service(idcountry int, idbusiness int) (int, bool, string, []m
 }
 
 //SERVICIOS
-func UpdateService_Service(inputObjectIdBusiness int, input_b_service []models.Mo_Service) (int, bool, string, string) {
+func UpdateService_Service(inputObjectIdBusiness int, input_mo_business models.Mo_Business) (int, bool, string, string) {
 
-	error_update_service := service_x_business_repository.Mo_Update(input_b_service, inputObjectIdBusiness)
+	error_update_service := service_x_business_repository.Mo_Update(input_mo_business, inputObjectIdBusiness)
 	if error_update_service != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los servicios, detalle: " + error_update_service.Error(), ""
 	}
@@ -136,9 +136,9 @@ func FindPaymenth_Service(idcountry int, idbusiness int) (int, bool, string, []m
 }
 
 //HORARIO
-func UpdateSchedule_Service(inputObjectIdBusiness int, b_schedule []models.Mo_Day) (int, bool, string, string) {
+func UpdateSchedule_Service(inputObjectIdBusiness int, input_mo_business models.Mo_Business) (int, bool, string, string) {
 
-	error_update_schedule := schedule_x_business_repository.Mo_Update(b_schedule, inputObjectIdBusiness)
+	error_update_schedule := schedule_x_business_repository.Mo_Update(input_mo_business, inputObjectIdBusiness)
 	if error_update_schedule != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar el horario, detalle: " + error_update_schedule.Error(), ""
 	}
@@ -153,9 +153,9 @@ func FindSchedule_Service(inputObjectIdBusiness int) (int, bool, string, []model
 }
 
 //CONTACTO
-func UpdateContact_Service(inputObjectIdBusiness int, b_contact []models.Mo_Contact) (int, bool, string, string) {
+func UpdateContact_Service(inputObjectIdBusiness int, input_mo_business models.Mo_Business) (int, bool, string, string) {
 
-	error_updating_contact := contact_x_business_repository.Mo_Update(b_contact, inputObjectIdBusiness)
+	error_updating_contact := contact_x_business_repository.Mo_Update(input_mo_business, inputObjectIdBusiness)
 	if error_updating_contact != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los contactos, detalle: " + error_updating_contact.Error(), ""
 	}

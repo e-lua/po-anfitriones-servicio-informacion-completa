@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func Mo_Update(address models.Mo_Address, idbusiness int) error {
+func Mo_Update(intpu_mo_business models.Mo_Business, idbusiness int) error {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -21,7 +21,7 @@ func Mo_Update(address models.Mo_Address, idbusiness int) error {
 
 	updtString := bson.M{
 		"$set": bson.M{
-			"address": address,
+			"address": intpu_mo_business.Address,
 		},
 	}
 

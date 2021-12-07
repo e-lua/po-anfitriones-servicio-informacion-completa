@@ -45,11 +45,9 @@ func Manejadores() {
 
 	//V1 FROM BUSINESS TO ...NAME
 	router_business.PUT("/name", informacion.InformacionRouter_mo.UpdateName)
-	router_business.GET("/name", informacion.InformacionRouter_mo.FindName)
 
 	//V1 FROM BUSINESS TO ...ADDRESS
 	router_business.PUT("/address", informacion.InformacionRouter_mo.UpdateAddress)
-	router_business.GET("/address", informacion.InformacionRouter_mo.FindAddress)
 
 	//V1 FROM BUSINESS TO ...TYPEFOOD
 	router_business.PUT("/typefood", informacion.InformacionRouter_mo.UpdateTypeFood)
@@ -69,11 +67,9 @@ func Manejadores() {
 
 	//V1 FROM BUSINESS TO ...SCHEDULE
 	router_business.PUT("/schedule", informacion.InformacionRouter_mo.UpdateSchedule)
-	router_business.GET("/schedule", informacion.InformacionRouter_mo.FindSchedule)
 
 	//V1 FROM BUSINESS TO ...PHONECONTACT
 	router_business.PUT("/contact", informacion.InformacionRouter_mo.UpdateContact)
-	router_business.GET("/contact", informacion.InformacionRouter_mo.FindContact)
 
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")

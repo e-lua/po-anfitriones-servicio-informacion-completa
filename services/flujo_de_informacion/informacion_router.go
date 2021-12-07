@@ -101,24 +101,24 @@ func (ir *informacionRouter_mo) UpdateAddress(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	//Instanciamos una variable del modelo B_Name
-	var b_address models.Mo_Address
+	//Instanciamos una variable del modelo de negocio
+	var mo_business models.Mo_Business
 
 	//Agregamos los valores enviados a la variable creada
-	err := c.Bind(&b_address)
+	err := c.Bind(&mo_business)
 	if err != nil {
 		results := Response{Error: true, DataError: "Se debe enviar la latitud, longitud, codigo postal y direccion completa del negocio, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
 	}
 
 	//Validamos los valores enviados
-	if data_idbusiness < 1 || len(b_address.FullAddress) < 10 || b_address.PostalCode < 0 {
+	if data_idbusiness < 1 || len(mo_business.Address.FullAddress) < 10 || mo_business.Address.PostalCode < 0 {
 		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
 		return c.JSON(403, results)
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdateAddress_Service(data_idbusiness, b_address)
+	status, boolerror, dataerror, data := UpdateAddress_Service(data_idbusiness, mo_business)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
@@ -137,11 +137,11 @@ func (ir *informacionRouter_mo) UpdateTypeFood(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	//Instanciamos una variable del modelo B_Name
-	var b_TypeFood []models.Mo_TypeFood
+	//Instanciamos una variable del modelo de negocio
+	var mo_business models.Mo_Business
 
 	//Agregamos los valores enviados a la variable creada
-	err := c.Bind(&b_TypeFood)
+	err := c.Bind(&mo_business)
 	if err != nil {
 		results := Response{Error: true, DataError: "Se debe enviar el id del tipo de comida e indicar si esta habilitado, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
@@ -154,7 +154,7 @@ func (ir *informacionRouter_mo) UpdateTypeFood(c echo.Context) error {
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdateTypeFood_Service(data_idbusiness, b_TypeFood)
+	status, boolerror, dataerror, data := UpdateTypeFood_Service(data_idbusiness, mo_business)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
@@ -173,11 +173,11 @@ func (ir *informacionRouter_mo) UpdateService(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	//Instanciamos una variable del modelo B_Name
-	var b_service []models.Mo_Service
+	//Instanciamos una variable del modelo de negocio
+	var mo_business models.Mo_Business
 
 	//Agregamos los valores enviados a la variable creada
-	err := c.Bind(&b_service)
+	err := c.Bind(&mo_business)
 	if err != nil {
 		results := Response{Error: true, DataError: "Se debe enviar el id, precio, tipo de moneda y disponibilidad del servicio, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
@@ -190,7 +190,7 @@ func (ir *informacionRouter_mo) UpdateService(c echo.Context) error {
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdateService_Service(data_idbusiness, b_service)
+	status, boolerror, dataerror, data := UpdateService_Service(data_idbusiness, mo_business)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
@@ -281,11 +281,11 @@ func (ir *informacionRouter_mo) UpdateSchedule(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	//Instanciamos una variable del modelo B_Name
-	var b_schedule []models.Mo_Day
+	//Instanciamos una variable del modelo de negocio
+	var mo_business models.Mo_Business
 
 	//Agregamos los valores enviados a la variable creada
-	err := c.Bind(&b_schedule)
+	err := c.Bind(&mo_business)
 	if err != nil {
 		results := Response{Error: true, DataError: "Se debe enviar el id del tipo de comida, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
@@ -298,7 +298,7 @@ func (ir *informacionRouter_mo) UpdateSchedule(c echo.Context) error {
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdateSchedule_Service(data_idbusiness, b_schedule)
+	status, boolerror, dataerror, data := UpdateSchedule_Service(data_idbusiness, mo_business)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
@@ -317,11 +317,11 @@ func (ir *informacionRouter_mo) UpdateContact(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	//Instanciamos una variable del modelo B_Name
-	var b_contact []models.Mo_Contact
+	//Instanciamos una variable del modelo de negocio
+	var mo_business models.Mo_Business
 
 	//Agregamos los valores enviados a la variable creada
-	err := c.Bind(&b_contact)
+	err := c.Bind(&mo_business)
 	if err != nil {
 		results := Response{Error: true, DataError: "Se debe enviar el id del tipo de comida, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
@@ -334,7 +334,7 @@ func (ir *informacionRouter_mo) UpdateContact(c echo.Context) error {
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdateContact_Service(data_idbusiness, b_contact)
+	status, boolerror, dataerror, data := UpdateContact_Service(data_idbusiness, mo_business)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 

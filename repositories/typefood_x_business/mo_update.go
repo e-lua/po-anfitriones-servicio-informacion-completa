@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func Mo_Update(typeOfFood []models.Mo_TypeFood, idbusiness int) error {
+func Mo_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -21,7 +21,7 @@ func Mo_Update(typeOfFood []models.Mo_TypeFood, idbusiness int) error {
 
 	updtString := bson.M{
 		"$set": bson.M{
-			"typeOfFood": typeOfFood,
+			"typeOfFood": input_mo_business.TypeOfFood,
 		},
 	}
 
