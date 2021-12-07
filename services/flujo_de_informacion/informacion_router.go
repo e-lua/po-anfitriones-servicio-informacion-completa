@@ -337,7 +337,7 @@ func (ir *informacionRouter_mo) UpdateSchedule(c echo.Context) error {
 func (ir *informacionRouter_mo) UpdateContact(c echo.Context) error {
 
 	//Obtenemos los datos del auth
-	/*status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
+	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
 	if dataerror != "" {
 		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
 		return c.JSON(status, results)
@@ -345,7 +345,7 @@ func (ir *informacionRouter_mo) UpdateContact(c echo.Context) error {
 	if data_idbusiness <= 0 {
 		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
-	}*/
+	}
 
 	//Instanciamos una variable del modelo de negocio
 	var mo_business models.Mo_Business
@@ -358,13 +358,13 @@ func (ir *informacionRouter_mo) UpdateContact(c echo.Context) error {
 	}
 
 	//Validamos los valores enviados
-	/*if data_idbusiness < 1 {
+	if data_idbusiness < 1 {
 		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
 		return c.JSON(403, results)
-	}*/
+	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdateContact_Service(5, mo_business)
+	status, boolerror, dataerror, data := UpdateContact_Service(data_idbusiness, mo_business)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
@@ -592,7 +592,7 @@ func (ir *informacionRouter_mo) FindContact(c echo.Context) error {
 func (ir *informacionRouter_mo) GetInformationData(c echo.Context) error {
 
 	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 1)
+	/*status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 1)
 	if dataerror != "" {
 		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
 		return c.JSON(status, results)
@@ -600,16 +600,16 @@ func (ir *informacionRouter_mo) GetInformationData(c echo.Context) error {
 	if data_idbusiness <= 0 {
 		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
-	}
+	}*/
 
 	//Validamos los valores enviados
-	if data_idbusiness < 1 {
+	/*if data_idbusiness < 1 {
 		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
 		return c.JSON(403, results)
-	}
+	}*/
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := GetInformationData_Service(data_idbusiness)
+	status, boolerror, dataerror, data := GetInformationData_Service(5)
 	results := ResponseBusiness{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
