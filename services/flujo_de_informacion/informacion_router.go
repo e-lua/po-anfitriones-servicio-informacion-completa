@@ -245,7 +245,7 @@ func (ir *informacionRouter_mo) UpdateDeliveryRange(c echo.Context) error {
 	//Agregamos los valores enviados a la variable creada
 	err := c.Bind(&b_deliveryrange)
 	if err != nil {
-		results := Response{Error: true, DataError: "Se debe enviar el id del tipo de comida, revise la estructura o los valores", Data: ""}
+		results := Response{Error: true, DataError: "Se debe enviar el rango de reparto, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -281,7 +281,7 @@ func (ir *informacionRouter_mo) UpdatePaymenthMeth(c echo.Context) error {
 	//Agregamos los valores enviados a la variable creada
 	err := c.Bind(&mo_business)
 	if err != nil {
-		results := Response{Error: true, DataError: "Se debe enviar el id del tipo de comida, revise la estructura o los valores", Data: ""}
+		results := Response{Error: true, DataError: "Se debe enviar el id del tiop de comida, el nombre, la url de la imagen y si esta disopnible o no, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -353,7 +353,7 @@ func (ir *informacionRouter_mo) UpdateContact(c echo.Context) error {
 	//Agregamos los valores enviados a la variable creada
 	err := c.Bind(&mo_business)
 	if err != nil {
-		results := Response{Error: true, DataError: "Se debe enviar el id del tipo de comida, revise la estructura o los valores", Data: ""}
+		results := Response{Error: true, DataError: "Se debe enviar el id del contacto,el nombre el dato, y si esta disponible o no, revise la estructura o los valores " + err.Error(), Data: ""}
 		return c.JSON(400, results)
 	}
 
