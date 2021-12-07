@@ -49,23 +49,16 @@ type B_Address struct {
 
 //TYPEFOOD
 type ResponseTypeFood struct {
-	Error     bool                 `json:"error"`
-	DataError string               `json:"dataError"`
-	Data      []models.Mo_TypeFood `json:"data"`
-}
-
-//TYPEFOOD_ALL
-/*type ResponseTypeFoodAll struct {
 	Error     bool                   `json:"error"`
 	DataError string                 `json:"dataError"`
-	Data      []models.Ar_R_TypeFood `json:"data"`
-}*/
+	Data      []models.Pg_R_TypeFood `json:"data"`
+}
 
 //SERVICE
 type ResponseService struct {
-	Error     bool                `json:"error"`
-	DataError string              `json:"dataError"`
-	Data      []models.Mo_Service `json:"data"`
+	Error     bool                  `json:"error"`
+	DataError string                `json:"dataError"`
+	Data      []models.Pg_R_Service `json:"data"`
 }
 
 //SERVICE_ALL
@@ -98,13 +91,6 @@ type ResponsePaymeth struct {
 	Error     bool                        `json:"error"`
 	DataError string                      `json:"dataError"`
 	Data      []models.Pg_R_PaymentMethod `json:"data"`
-}
-
-type ResponsePaymeth_TEST struct {
-	Error     bool               `json:"error"`
-	DataError string             `json:"dataError"`
-	Data1     int                `json:"data1"`
-	Data2     models.Mo_Business `json:"data2"`
 }
 
 //BANNER

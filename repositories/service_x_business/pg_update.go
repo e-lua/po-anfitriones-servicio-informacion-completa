@@ -1,38 +1,73 @@
 package repositories
 
 import (
-	"context"
+	"bytes"
+	"encoding/json"
+	"time"
 
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
+	"github.com/labstack/gommon/log"
+	"github.com/streadway/amqp"
 )
 
-func Pg_Add(services []models.Mo_Service, idbusiness int) error {
+func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 
-	db := models.Conectar_Pg_DB()
-
-	//Eliminamos los datos
-	q := "DELETE FROM BussinessR_Service WHERE idbusiness=$1"
-	_, err_add := db.Exec(context.Background(), q, idbusiness)
-
-	if err_add != nil {
-
-		defer db.Close()
-		return err_add
+	idbusiness_pg, idservice_pg, isavailable_pg := []int{}, []int{}, []bool{}
+	for _, v := range input_mo_business.Services {
+		if v.IsAvaiable {
+			idbusiness_pg = append(idbusiness_pg, idbusiness)
+			idservice_pg = append(idservice_pg, v.IDService)
+			isavailable_pg = append(isavailable_pg, true)
+		}
 	}
 
-	//Insertamos los datos
-	/*	q_2 := "INSERT INTO BussinessR_Service(idbusiness,idService,isavailable) VALUES ($1,$2,$3)"
-		add_service, err_add := db.Prepare(q_2)
+	//Serializamos el MQTT
+	var serialize_service models.Mqtt_Service
+	serialize_service.Idbusiness_pg = idbusiness_pg
+	serialize_service.Idservice_pg = idservice_pg
+	serialize_service.Isavailable_pg = isavailable_pg
+	serialize_service.IdBusiness = idbusiness
 
-		if err_add != nil {
-			defer db.Close()
-			return err_add
+	//Comenzamos el envio al MQTT
+
+	go func() {
+		//Comienza el proceso de MQTT
+		ch, error_conection := models.MqttCN.Channel()
+		if error_conection != nil {
+			defer ch.Close()
+			log.Error(error_conection)
 		}
 
-		for _, service_x_business := range services {
-			add_service.Exec(idbusiness, service_x_business.IDService, true)
-		}*/
+		bytes, error_serializar := serialize(serialize_service)
+		if error_serializar != nil {
+			log.Error(error_serializar)
+		}
 
-	defer db.Close()
+		error_publish := ch.Publish("", "anfitrion/service", false, false,
+			amqp.Publishing{
+				DeliveryMode: amqp.Persistent,
+				ContentType:  "text/plain",
+				Body:         bytes,
+			})
+		if error_publish != nil {
+			log.Error(error_publish)
+		}
+
+		defer ch.Close()
+	}()
+
+	time.Sleep(2 * time.Second)
+
 	return nil
+}
+
+//SERIALIZADORA
+func serialize(serialize_service models.Mqtt_Service) ([]byte, error) {
+	var b bytes.Buffer
+	encoder := json.NewEncoder(&b)
+	err := encoder.Encode(serialize_service)
+	if err != nil {
+		return b.Bytes(), err
+	}
+	return b.Bytes(), nil
 }

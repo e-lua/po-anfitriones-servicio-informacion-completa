@@ -37,61 +37,43 @@ func Manejadores() {
 
 	//V1 FROM V1 TO ...TO ENTITY BUSINESS
 	router_business := version_1.Group("/business")
-	//1
 	router_business.GET("", informacion.InformacionRouter_mo.GetInformationData)
+	router_business.GET("/comensal/bnss/:idbusiness", informacion.InformacionRouter_mo.GetInformationData_a_Comensal)
 
 	//V1 FROM BUSINESS TO ...BANNER
-	//21
 	router_business.GET("/banner", informacion.InformacionRouter_mo.FindBanner)
 
 	//V1 FROM BUSINESS TO ...NAME
-	//3
 	router_business.PUT("/name", informacion.InformacionRouter_mo.UpdateName)
-	//31
-	//router_business.GET("/name", informacion.informacionRouter_mo.FindName)
+	router_business.GET("/name", informacion.InformacionRouter_mo.FindName)
 
 	//V1 FROM BUSINESS TO ...ADDRESS
-	//4
 	router_business.PUT("/address", informacion.InformacionRouter_mo.UpdateAddress)
-	//41
-	//router_business.GET("/address", informacion.informacionRouter_mo.FindAddress)
+	router_business.GET("/address", informacion.InformacionRouter_mo.FindAddress)
 
 	//V1 FROM BUSINESS TO ...TYPEFOOD
-	//5
 	router_business.PUT("/typefood", informacion.InformacionRouter_mo.UpdateTypeFood)
-	//51
-	//router_business.GET("/typefood", informacion.informacionRouter_mo.FindTypeFood)
-	//router_business.GET("/typefood/all", informacion.InformacionRouter_mo.FindAllTypeFood)
+	router_business.GET("/typefood", informacion.InformacionRouter_mo.FindTypeFood)
 
 	//V1 FROM BUSINESS TO ...SERVICE
-	//6
 	router_business.PUT("/service", informacion.InformacionRouter_mo.UpdateService)
-	//61
-	//router_business.GET("/service", informacion.informacionRouter_mo.FindService)
-	//router_business.GET("/service/all", informacion.informacionRouter_mo.FindAllService)
+	router_business.GET("/service", informacion.InformacionRouter_mo.FindService)
 
 	//V1 FROM BUSINESS TO ...DELIVERYRANGE
-	//7
 	router_business.PUT("/deliveryrange", informacion.InformacionRouter_mo.UpdateDeliveryRange)
-	//71
-	//router_business.GET("/deliveryrange", informacion.informacionRouter_mo.FindDeliveryRange)
+	router_business.GET("/deliveryrange", informacion.InformacionRouter_mo.FindDeliveryRange)
 
 	//V1 FROM BUSINESS TO ...DELIVERYRANGE
-	//8
 	router_business.PUT("/paymentmethod", informacion.InformacionRouter_mo.UpdatePaymenthMeth)
 	router_business.GET("/paymentmethod", informacion.InformacionRouter_mo.FindPaymenthMeth)
 
 	//V1 FROM BUSINESS TO ...SCHEDULE
 	router_business.PUT("/schedule", informacion.InformacionRouter_mo.UpdateSchedule)
-	//router_business.GET("/schedule", informacion.informacionRouter_mo.FindSchedule)
-	//router_business.GET("/schedule/all", informacion.informacionRouter_mo.FindAllSchedule)
+	router_business.GET("/schedule", informacion.InformacionRouter_mo.FindSchedule)
 
 	//V1 FROM BUSINESS TO ...PHONECONTACT
-	//101
 	router_business.PUT("/contact", informacion.InformacionRouter_mo.UpdateContact)
-	//101
-	//router_business.GET("/contact", informacion.informacionRouter_mo.FindContact)
-	//router_business.GET("/contact/all", informacion.informacionRouter_mo.FindAllContact)
+	router_business.GET("/contact", informacion.InformacionRouter_mo.FindContact)
 
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")

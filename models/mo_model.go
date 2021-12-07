@@ -38,8 +38,8 @@ type Mo_Banner struct {
 }
 
 type Mo_Address struct {
-	Latitude         float32 `bson:"latitude" json:"latitude"`
-	Longitude        float32 `bson:"longitude" json:"longitude"`
+	Latitude         float64 `bson:"latitude" json:"latitude"`
+	Longitude        float64 `bson:"longitude" json:"longitude"`
 	FullAddress      string  `bson:"fulladdress" json:"fulladdress"`
 	PostalCode       int     `bson:"postalcode" json:"postalcode"`
 	State            string  `bson:"state" json:"state"`
@@ -59,6 +59,7 @@ type Mo_TypeFood struct {
 	IDTypeFood int    `bson:"id" json:"id"`
 	Name       string `bson:"name" json:"name"`
 	UrlImage   string `bson:"url" json:"url"`
+	IsAvaiable bool   `bson:"available" json:"available"`
 }
 
 type Mo_Service struct {

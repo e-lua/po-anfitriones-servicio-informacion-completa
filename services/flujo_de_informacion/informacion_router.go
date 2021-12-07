@@ -50,76 +50,6 @@ func (ir *informacionRouter_mo) UpdateBanners_Consumer(idbanner int, urlphoto st
 	}
 }
 
-/*----------------------SHOW ALL PUBLIC DATA----------------------*/
-/*
-func (ir *informacionRouter_mo) FindAllPaymenth(c echo.Context) error {
-
-	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
-	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
-		return c.JSON(status, results)
-	}
-	if data_idcountry <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
-		return c.JSON(400, results)
-	}
-
-	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindAllPaymenth_Service(data_idcountry, data_idbusiness)
-	results := ResponsePaymethAll{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
-
-}*/
-
-/*
-func (ir *informacionRouter_mo) FindAllService(c echo.Context) error {
-
-	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindAllService_Service()
-	results := ResponseServiceAll{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
-
-}
-
-func (ir *informacionRouter_mo) FindAllTypeFood(c echo.Context) error {
-
-	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idcountry := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
-	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
-		return c.JSON(status, results)
-	}
-	if data_idcountry <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
-		return c.JSON(400, results)
-	}
-
-	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindAllTypeFood_Service(data_idcountry)
-	results := ResponseTypeFoodAll{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
-
-}
-
-func (ir *informacionRouter_mo) FindAllSchedule(c echo.Context) error {
-
-	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindAllSchedule_Service()
-	results := ResponseScheduleAll{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
-
-}
-
-func (ir *informacionRouter_mo) FindAllContact(c echo.Context) error {
-
-	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindAllContact_Service()
-	results := ResponseContactAll{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
-
-}*/
-
 /*----------------------UPDATE DATA OF THE BUSINESS----------------------*/
 
 func (ir *informacionRouter_mo) UpdateName(c echo.Context) error {
@@ -332,8 +262,8 @@ func (ir *informacionRouter_mo) UpdatePaymenthMeth(c echo.Context) error {
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data1, data2 := UpdatePaymenthMeth_Service(data_idbusiness, mo_business)
-	results := ResponsePaymeth_TEST{Error: boolerror, DataError: dataerror, Data1: data1, Data2: data2}
+	status, boolerror, dataerror, data := UpdatePaymenthMeth_Service(data_idbusiness, mo_business)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
 }
@@ -467,24 +397,18 @@ func (ir *informacionRouter_mo) FindAddress(c echo.Context) error {
 func (ir *informacionRouter_mo) FindTypeFood(c echo.Context) error {
 
 	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 51)
+	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
 		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
-	if data_idbusiness <= 0 {
+	if data_idcountry <= 0 {
 		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
-	//Validamos los valores enviados
-	if data_idbusiness < 1 {
-		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
-		return c.JSON(403, results)
-	}
-
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindTypeFood_Service(data_idbusiness)
+	status, boolerror, dataerror, data := FindTypeFood_Service(data_idcountry, data_idbusiness)
 	results := ResponseTypeFood{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
@@ -493,24 +417,18 @@ func (ir *informacionRouter_mo) FindTypeFood(c echo.Context) error {
 func (ir *informacionRouter_mo) FindService(c echo.Context) error {
 
 	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 61)
+	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
 		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
-	if data_idbusiness <= 0 {
+	if data_idcountry <= 0 {
 		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
-	//Validamos los valores enviados
-	if data_idbusiness < 1 {
-		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
-		return c.JSON(403, results)
-	}
-
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindService_Service(data_idbusiness)
+	status, boolerror, dataerror, data := FindService_Service(data_idcountry, data_idbusiness)
 	results := ResponseService{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
@@ -665,4 +583,19 @@ func (ir *informacionRouter_mo) GetInformationData(c echo.Context) error {
 	results := ResponseBusiness{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
+}
+
+/*----------------------SERVIMOS LOS DATOS CON CONSULTA DEL COMENSAL----------------------*/
+
+func (ir *informacionRouter_mo) GetInformationData_a_Comensal(c echo.Context) error {
+
+	//Recibimos el id del Business Owner
+	idbusiness := c.Param("idbusiness")
+
+	idbusiness_int, _ := strconv.Atoi(idbusiness)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetInformationData_a_Comensal_Service(idbusiness_int)
+	results := ResponseBusiness{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
 }

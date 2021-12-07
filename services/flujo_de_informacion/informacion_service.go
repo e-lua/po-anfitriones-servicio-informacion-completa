@@ -4,6 +4,7 @@ import (
 
 	//REPOSITORIES
 	"log"
+	"time"
 
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
 	address_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/address_x_business"
@@ -12,12 +13,6 @@ import (
 	contact_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/contact_x_business"
 	schedule_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/day_x_business"
 	payment_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/paymenth_x_business"
-
-	//contact "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/r_contact"
-	//day "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/r_day"
-	//paymenth "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/r_paymenth"
-	//services "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/r_service"
-	//typefood "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/r_typefood"
 	service_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/service_x_business"
 	typefood_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/typefood_x_business"
 )
@@ -32,46 +27,6 @@ func UpdateBanners_Consumer_Service(idbanner int, urlphoto string, idbusiness in
 	return nil
 }
 
-/*----------------------SERVICES TO SHOW ALL PUBLIC DATA----------------------*/
-
-func FindPaymenth_Service(idcountry int, idbusiness int) (int, bool, string, []models.Pg_R_PaymentMethod) {
-
-	paymenth, _ := payment_x_business_repository.Pg_Find(idbusiness, idcountry)
-	return 200, false, "", paymenth
-}
-
-/*
-func FindAllService_Service() (int, bool, string, []models.Ar_R_Service) {
-
-	services, _ := services.Ar_Find()
-
-	return 200, false, "", services
-}
-
-func FindAllTypeFood_Service(idcountry int) (int, bool, string, []models.Ar_R_TypeFood) {
-
-	typefood, _ := typefood.Ar_Find_ByCountry(idcountry)
-
-	return 200, false, "", typefood
-}
-
-func FindAllSchedule_Service() (int, bool, string, []models.Ar_R_Day) {
-
-	day, _ := day.Ar_Find()
-
-	return 200, false, "", day
-}
-
-func FindAllContact_Service() (int, bool, string, interface{}) {
-
-	contacto, error_findcontacts := contact.Ar_Find()
-	if error_findcontacts != nil {
-		return 500, true, "Error interno en el servidor al intentar buscar todos los contatos, detalle: " + error_findcontacts.Error(), contacto
-	}
-
-	return 200, false, "", contacto
-}
-*/
 /*----------------------SERVICES TO UPDATE DATA OF BUSINESS----------------------*/
 
 //NOMBRE
@@ -81,11 +36,6 @@ func UpdateName_Service(inputObjectIdBusiness int, input_b_name B_Name) (int, bo
 	if error_updatename_mongo != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar el nombre, detalle: " + error_updatename_mongo.Error(), ""
 	}
-
-	/*error_updatename_ar := business_repository.Ar_Update_Name(input_b_name.Name, inputObjectIdBusiness)
-	if error_updatename_ar != nil {
-		return 500, true, "Error interno en el servidor al intentar actualizar el nombre, detalle: " + error_updatename_ar.Error(), ""
-	}*/
 
 	return 200, false, "", "Nombre actualizado correctamente"
 }
@@ -120,18 +70,13 @@ func UpdateTypeFood_Service(inputObjectIdBusiness int, input_b_typefood []models
 		return 500, true, "Error interno en el servidor al intentar actualizar los tipos de comida, detalle: " + error_updating_typefood.Error(), ""
 	}
 
-	/*error_updating_typefood_ar := typefood_x_business_repository.Ar_Add_Edge(input_b_typefood, inputObjectIdBusiness)
-	if error_updating_typefood_ar != nil {
-		return 500, true, "Error interno en el servidor al intentar actualizar los tipos de comida en los nodos, detalle: " + error_updating_typefood_ar.Error(), ""
-	}*/
-
 	return 200, false, "", "Se registraron los tipos de comida correctamente"
 }
-func FindTypeFood_Service(inputObjectIdBusiness int) (int, bool, string, []models.Mo_TypeFood) {
+func FindTypeFood_Service(idcountry int, idbusiness int) (int, bool, string, []models.Pg_R_TypeFood) {
 
-	type_food_x_business, _ := typefood_x_business_repository.Mo_Find(inputObjectIdBusiness)
+	typefood, _ := typefood_x_business_repository.Pg_Find(idbusiness, idcountry)
 
-	return 200, false, "", type_food_x_business
+	return 200, false, "", typefood
 }
 
 //SERVICIOS
@@ -142,18 +87,13 @@ func UpdateService_Service(inputObjectIdBusiness int, input_b_service []models.M
 		return 500, true, "Error interno en el servidor al intentar actualizar los servicios, detalle: " + error_update_service.Error(), ""
 	}
 
-	/*error_update_service_ar := service_x_business_repository.Ar_Add_Edge(input_b_service, inputObjectIdBusiness)
-	if error_update_service_ar != nil {
-		return 500, true, "Error interno en el servidor al intentar actualizar los servicios en los nodos, detalle: " + error_update_service_ar.Error(), ""
-	}*/
-
 	return 200, false, "", "Se registraron los servicios correctamente"
 }
-func FindService_Service(inputObjectIdBusiness int) (int, bool, string, []models.Mo_Service) {
+func FindService_Service(idcountry int, idbusiness int) (int, bool, string, []models.Pg_R_Service) {
 
-	service_x_business, _ := service_x_business_repository.Mo_Find(inputObjectIdBusiness)
+	services, _ := service_x_business_repository.Pg_Find(idbusiness, idcountry)
 
-	return 200, false, "", service_x_business
+	return 200, false, "", services
 }
 
 //DELIVERY RANGE
@@ -174,24 +114,25 @@ func FindDeliveryRange_Service(inputObjectIdBusiness int) (int, bool, string, st
 }
 
 //PAYMENTH METHOD
-func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, input_mo_business models.Mo_Business) (int, bool, string, int, models.Mo_Business) {
+func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, input_mo_business models.Mo_Business) (int, bool, string, string) {
 
 	error_updating_paymenth := payment_x_business_repository.Mo_Update(input_mo_business, inputObjectIdBusiness)
 	if error_updating_paymenth != nil {
-		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_updating_paymenth.Error(), inputObjectIdBusiness, input_mo_business
-	}
-	error_update_pg := payment_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
-	if error_update_pg != nil {
-		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago en pg, detalle: " + error_update_pg.Error(), inputObjectIdBusiness, input_mo_business
+		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_updating_paymenth.Error(), ""
 	}
 
-	return 200, false, "", inputObjectIdBusiness, input_mo_business
+	go func() {
+		payment_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	}()
+
+	time.Sleep(2 * time.Second)
+
+	return 200, false, "", "Metodos de pagos cargados correctamente"
 }
-func FindPaymenthMeth_Service(inputObjectIdBusiness int) (int, bool, string, []models.Mo_PaymenthMeth) {
+func FindPaymenth_Service(idcountry int, idbusiness int) (int, bool, string, []models.Pg_R_PaymentMethod) {
 
-	payment_x_business, _ := payment_x_business_repository.Mo_Find(inputObjectIdBusiness)
-
-	return 200, false, "", payment_x_business
+	paymenth, _ := payment_x_business_repository.Pg_Find(idbusiness, idcountry)
+	return 200, false, "", paymenth
 }
 
 //HORARIO
@@ -238,11 +179,18 @@ func FindBanner_Service(inputObjectIdBusiness int) (int, bool, string, []models.
 
 /*----------------------GET DATA OF THE BUSINESS----------------------*/
 
-/*----------------------GET DATA OF THE BUSINESS WITH ONE ENDPOINT----------------------*/
-
 func GetInformationData_Service(inputidbusiness int) (int, bool, string, models.Mo_Business) {
 
 	business, _ := business_repository.Mo_Find_All_Data(inputidbusiness)
+
+	return 200, false, "", business
+}
+
+/*----------------------GET DATA OF THE BUSINESS WITH ONE ENDPOINT----------------------*/
+
+func GetInformationData_a_Comensal_Service(inputidbusiness_from_comensal int) (int, bool, string, models.Mo_Business) {
+
+	business, _ := business_repository.Mo_Find_All_Data(inputidbusiness_from_comensal)
 
 	return 200, false, "", business
 }

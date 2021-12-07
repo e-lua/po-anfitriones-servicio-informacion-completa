@@ -1,0 +1,35 @@
+package repositories
+
+import (
+	"context"
+
+	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
+)
+
+func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_TypeFood, error) {
+
+	db := models.Conectar_Pg_DB()
+	q := "select DISTINCT ON(t.idtypefood)t.idtypefood,t.name,t.urlphoto,coalesce(bt.isavailable,false) from r_typefood t LEFT JOIN businessr_typefood bt ON t.idtypefood=bt.idtypefood LEFT JOIN r_countryr_typefood rt ON t.idtypefood=rt.idtypefood WHERE bt.idbusiness<>$1 OR t.isavailable=false AND rt.idcountry=$2"
+	rows, error_show := db.Query(context.Background(), q, idbusiness, idcountry)
+
+	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
+	var oListPg_TypeFood []models.Pg_R_TypeFood
+
+	if error_show != nil {
+		defer db.Close()
+		return oListPg_TypeFood, error_show
+	}
+
+	//Scaneamos l resultado y lo asignamos a la variable instanciada
+	for rows.Next() {
+		var typefoods models.Pg_R_TypeFood
+		rows.Scan(&typefoods.IDTypefood, &typefoods.Name, &typefoods.Url, &typefoods.IsAvailable)
+		oListPg_TypeFood = append(oListPg_TypeFood, typefoods)
+	}
+
+	defer db.Close()
+
+	//Si todo esta bien
+	return oListPg_TypeFood, nil
+
+}

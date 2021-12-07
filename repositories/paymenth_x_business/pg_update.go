@@ -12,8 +12,6 @@ import (
 
 func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 
-	db := models.Conectar_Pg_DB()
-
 	idbusiness_pg, idpaymenth_pg, isavailable_pg := []int{}, []int{}, []bool{}
 	for _, v := range input_mo_business.PaymentMethods {
 		if v.IsAvaiable {
@@ -22,14 +20,6 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 			isavailable_pg = append(isavailable_pg, true)
 		}
 	}
-
-	defer db.Close()
-
-	/*
-		query := `INSERT INTO Business_R_Paymenth(idbusiness,idPayment,isavailable) (select * from unnest($1::int[], $2::int[],$3::boolean[]))`
-		if _, err := db.Exec(context.Background(), query, idbusiness_pg, idpaymenth_pg, isavailable_pg); err != nil {
-			return err
-		}*/
 
 	//Serializamos el MQTT
 	var serialize_paymenth models.Mqtt_PaymentMethod
@@ -71,7 +61,7 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 	return nil
 }
 
-//SERIALIZADORA
+//SERIALIZADORA PAYMENTH
 func serialize(serialize_paymenth models.Mqtt_PaymentMethod) ([]byte, error) {
 	var b bytes.Buffer
 	encoder := json.NewEncoder(&b)
