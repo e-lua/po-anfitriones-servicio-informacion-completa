@@ -10,6 +10,7 @@ import (
 	*/
 	"context"
 	"log"
+	"sync"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -18,33 +19,23 @@ import (
 //MongoCN objetivo de conexion a la BD
 var MongoCN = ConectarBD_Mo()
 
+var (
+	once_mo sync.Once
+	client  *mongo.Client
+)
+
 //Con options seteo la URL de la base de datos || "c" minuscula = será de uso interno
 var clientOptions = options.Client().ApplyURI("mongodb://mongodbbusiness_user:mongodb1151@mongo:27017")
 
 // ConectarBD: Se conecta a la base de datos, toma la conexión de clientOptions
 func ConectarBD_Mo() *mongo.Client {
-	//TODO crea sin un timeout
-	client, err := mongo.Connect(context.TODO(), clientOptions)
-	if err != nil {
-		log.Fatal(err.Error())
-		return client
-	}
-	err = client.Ping(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err.Error())
-		return client
-	}
-	log.Printf("Conexion exitosa con la BD Mo")
+
+	once_mo.Do(func() {
+		//TODO crea sin un timeout
+		client, _ = mongo.Connect(context.TODO(), clientOptions)
+
+		log.Printf("Conexion exitosa con la BD Mo")
+	})
+
 	return client
-}
-
-//ChequeoConnection es el Ping a la BD
-func ChequeoConnection_Mo() int {
-
-	err := MongoCN.Ping(context.TODO(), nil)
-	if err != nil {
-		return 0
-	}
-	return 1
-
 }
