@@ -17,7 +17,5 @@ func Pg_Add_IntialiData(anfitrionpg models.Mo_BusinessWorker_Mqtt) error {
 		return err_add_business
 	}
 
-	defer db.Close()
-
 	return nil
 }

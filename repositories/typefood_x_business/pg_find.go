@@ -16,7 +16,6 @@ func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_TypeFood, error) {
 	var oListPg_TypeFood []models.Pg_R_TypeFood
 
 	if error_show != nil {
-		defer db.Close()
 		return oListPg_TypeFood, error_show
 	}
 
@@ -26,8 +25,6 @@ func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_TypeFood, error) {
 		rows.Scan(&typefoods.IDTypefood, &typefoods.Name, &typefoods.Url, &typefoods.IsAvailable)
 		oListPg_TypeFood = append(oListPg_TypeFood, typefoods)
 	}
-
-	defer db.Close()
 
 	//Si todo esta bien
 	return oListPg_TypeFood, nil

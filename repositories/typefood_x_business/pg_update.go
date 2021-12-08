@@ -34,7 +34,6 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 		//Comienza el proceso de MQTT
 		ch, error_conection := models.MqttCN.Channel()
 		if error_conection != nil {
-			defer ch.Close()
 			log.Error(error_conection)
 		}
 
@@ -53,7 +52,6 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 			log.Error(error_publish)
 		}
 
-		defer ch.Close()
 	}()
 
 	time.Sleep(2 * time.Second)

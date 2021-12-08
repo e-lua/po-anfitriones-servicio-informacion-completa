@@ -22,7 +22,6 @@ func Pg_UpdateName(name string, idbusiness int) error {
 		//Comienza el proceso de MQTT
 		ch, error_conection := models.MqttCN.Channel()
 		if error_conection != nil {
-			defer ch.Close()
 			log.Error(error_conection)
 		}
 
@@ -41,7 +40,6 @@ func Pg_UpdateName(name string, idbusiness int) error {
 			log.Error(error_publish)
 		}
 
-		defer ch.Close()
 	}()
 
 	return nil

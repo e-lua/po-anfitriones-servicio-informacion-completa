@@ -16,7 +16,6 @@ func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_Service, error) {
 	var oListPg_Service []models.Pg_R_Service
 
 	if error_show != nil {
-		defer db.Close()
 		return oListPg_Service, error_show
 	}
 
@@ -26,8 +25,6 @@ func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_Service, error) {
 		rows.Scan(&service.IDservice, &service.Name, &service.Url, &service.IsAvailable)
 		oListPg_Service = append(oListPg_Service, service)
 	}
-
-	defer db.Close()
 
 	//Si todo esta bien
 	return oListPg_Service, nil

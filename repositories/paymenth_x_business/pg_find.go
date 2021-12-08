@@ -18,7 +18,6 @@ func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_PaymentMethod, error)
 	var oListPg_Paymenth []models.Pg_R_PaymentMethod
 
 	if error_show != nil {
-		defer db.Close()
 		return oListPg_Paymenth, error_show
 	}
 
@@ -28,8 +27,6 @@ func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_PaymentMethod, error)
 		rows.Scan(&paymenth.IDPaymenth, &paymenth.Name, &paymenth.Url, &paymenth.HasNumber, &paymenth.IsAvailable)
 		oListPg_Paymenth = append(oListPg_Paymenth, paymenth)
 	}
-
-	defer db.Close()
 
 	//Si todo esta bien
 	return oListPg_Paymenth, nil
