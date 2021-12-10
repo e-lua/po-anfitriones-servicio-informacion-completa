@@ -101,6 +101,8 @@ func Consumer_Data() {
 		log.Fatal("Error connection cola " + err_consume.Error())
 	}
 
+	noStop := make(chan bool)
+
 	go func() {
 		for d := range msgs {
 			var anfitrion models.Mo_BusinessWorker_Mqtt
@@ -113,6 +115,8 @@ func Consumer_Data() {
 			register.RegisterFrom_SAInitialData.RegisterInitialData(anfitrion)
 		}
 	}()
+
+	<-noStop
 
 }
 
@@ -128,6 +132,8 @@ func Consumer_Banner() {
 		log.Fatal("Error connection cola " + err_consume.Error())
 	}
 
+	noStop2 := make(chan bool)
+
 	go func() {
 		for d := range msgs {
 			var toCarta models.Mo_ToBanner_Mqtt
@@ -140,5 +146,7 @@ func Consumer_Banner() {
 			informacion.InformacionRouter_mo.UpdateBanners_Consumer(toCarta.IdBanner_Category_Element, toCarta.Url, toCarta.IdBusiness)
 		}
 	}()
+
+	<-noStop2
 
 }
