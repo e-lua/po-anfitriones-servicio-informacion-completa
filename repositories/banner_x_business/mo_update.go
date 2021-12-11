@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func Mo_Update(urlphoto string, idbusiness int) error {
+func Mo_Update(idbanner int, urlphoto string, idbusiness int) error {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -19,9 +19,17 @@ func Mo_Update(urlphoto string, idbusiness int) error {
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("business")
 
+	var banners []models.Mo_Banner
+
+	var banner models.Mo_Banner
+	banner.IdBanner = idbanner
+	banner.UrlImage = urlphoto
+
+	banners = append(banners, banner)
+
 	updtString := bson.M{
 		"$set": bson.M{
-			"banners": urlphoto,
+			"banners": banners,
 		},
 	}
 

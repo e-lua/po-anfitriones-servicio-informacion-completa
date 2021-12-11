@@ -33,7 +33,7 @@ type Mo_Business struct {
 }
 
 type Mo_Banner struct {
-	IdBanner string `bson:"id" json:"id"`
+	IdBanner int    `bson:"id" json:"id"`
 	UrlImage string `bson:"url" json:"url"`
 }
 
