@@ -19,17 +19,21 @@ func Mo_Update(idbanner int, urlphoto string, idbusiness int) error {
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("business")
 
+	//Todo sobre el banner
 	var banners []models.Mo_Banner
-
 	var banner models.Mo_Banner
 	banner.IdBanner = idbanner
 	banner.UrlImage = urlphoto
-
 	banners = append(banners, banner)
+
+	//Ponemos el banner en el business
+	var business models.Mo_Business
+
+	business.Banner = banners
 
 	updtString := bson.M{
 		"$set": bson.M{
-			"banners": banners,
+			"banners": business.Banner,
 		},
 	}
 
