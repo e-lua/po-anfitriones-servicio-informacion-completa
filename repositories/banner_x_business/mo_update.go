@@ -21,7 +21,7 @@ func Mo_Update(urlphoto string, idbusiness int) error {
 
 	updtString := bson.M{
 		"$set": bson.M{
-			"banner": urlphoto,
+			"banners": urlphoto,
 		},
 	}
 
