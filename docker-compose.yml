@@ -41,7 +41,7 @@ services:
       - "traefik.http.routers.api.rule=Host(`localhost`)"
     ports: 
       - 100:80
-      - 8052:8080
+      - 9004:8080
       - 443:443
     volumes: 
       - /var/run/docker.sock:/var/run/docker.sock
