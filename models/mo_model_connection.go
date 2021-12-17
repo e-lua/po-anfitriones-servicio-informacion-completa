@@ -1,13 +1,6 @@
 package models
 
 import (
-	/* Context: es un espacio en memoria donde podre ir a compartiendo, setear un
-	   conexto de ejecución, por ejemplo, que una ejecución no supere los 15 seg, esto
-	   para evitar los cuelgues. Por lo tanto, nos sirve para comunicar información
-	   entre ejcuciones y además nos permirte setear una serie de valores com un Timeout.
-	   Se tiene que ejcutar en 15 segudos, por lo que si ocurre un cuelgue en la BD, no se
-	   colgará la API, ya que esto antes causaba que todas las API se cuelguen.
-	*/
 	"context"
 	"log"
 	"sync"
@@ -33,6 +26,25 @@ func ConectarBD_Mo() *mongo.Client {
 	once_mo.Do(func() {
 		//TODO crea sin un timeout
 		client, _ = mongo.Connect(context.TODO(), clientOptions)
+
+		log.Printf("Conexion exitosa con la BD Mo")
+	})
+
+	return client
+}
+
+//MongoCN objetivo de conexion a la BD
+var MongoCN_Externo = ConectarBD_Mo_Externo()
+
+//Con options seteo la URL de la base de datos || "c" minuscula = será de uso interno
+var clientOptions_externo = options.Client().ApplyURI("mongodb://mongodbbusine55_user:mongodb6921@mongo:45045")
+
+// ConectarBD: Se conecta a la base de datos, toma la conexión de clientOptions
+func ConectarBD_Mo_Externo() *mongo.Client {
+
+	once_mo.Do(func() {
+		//TODO crea sin un timeout
+		client, _ = mongo.Connect(context.TODO(), clientOptions_externo)
 
 		log.Printf("Conexion exitosa con la BD Mo")
 	})

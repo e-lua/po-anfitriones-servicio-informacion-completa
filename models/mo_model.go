@@ -114,3 +114,24 @@ type Mo_Registro_FromMqtt struct {
 	CreatedDate    time.Time `json:"createddate"`
 	IsOpen         bool      `json:"isopen"`
 }
+
+type Mo_Business_Cards struct {
+	IDBusiness     int               `json:"idbusiness"`
+	ICountry       int               `json:"idcountry"`
+	Name           string            `json:"name"`
+	Latitude       float32           `json:"latitude"`
+	Longitude      float32           `json:"longitude"`
+	Location       Location          `json:"location"`
+	Available      bool              `json:"available"`
+	IsOpen         bool              `json:"isopen"`
+	OrdersRejected int               `json:"ordersrejected"`
+	Banner         []Mo_Banner       `bson:"banners" json:"banners"`
+	TypeOfFood     []Mo_TypeFood     `bson:"typeoffood" json:"typeoffood"`
+	Services       []Mo_Service      `bson:"services" json:"services"`
+	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
+}
+
+type Location struct {
+	GeoJSONType string    `json:"type" bson:"type"`
+	Coordinates []float64 `json:"coordinates" bson:"coordinates"`
+}
