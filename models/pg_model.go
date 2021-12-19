@@ -15,10 +15,12 @@ type Pg_PaymentMethod_X_Business struct {
 }
 
 type Pg_R_Service struct {
-	IDservice   int    `json:"id"`
-	Name        string `json:"name"`
-	Url         string `json:"url"`
-	IsAvailable bool   `json:"available"`
+	IDservice   int     `json:"id"`
+	Name        string  `json:"name"`
+	Pricing     float32 `json:"price"`
+	TypeMoney   string  `json:"typemoney"`
+	Url         string  `json:"url"`
+	IsAvailable bool    `json:"available"`
 }
 
 type Pg_R_TypeFood struct {
