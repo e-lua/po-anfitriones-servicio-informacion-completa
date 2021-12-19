@@ -9,7 +9,7 @@ import (
 func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_Service, error) {
 
 	db := models.Conectar_Pg_DB()
-	q := "select DISTINCT ON(s.idservice)s.idservice,s.name,bs.pricing,bs.typemoney,s.urlphoto,coalesce(bs.isavailable,false) from r_service s LEFT JOIN bussinessr_service bs ON s.idservice=bs.idservice LEFT JOIN r_countryr_service rs ON s.idservice=rs.idservice WHERE bs.idbusiness<>$1 OR s.isavailable=false AND rs.idcountry=$2"
+	q := "select DISTINCT ON(s.idservice)s.idservice,s.name,coalesce(bs.pricing,0),coalesce(bs.typemoney,0),s.urlphoto,coalesce(bs.isavailable,false) from r_service s LEFT JOIN bussinessr_service bs ON s.idservice=bs.idservice LEFT JOIN r_countryr_service rs ON s.idservice=rs.idservice WHERE bs.idbusiness<>$1 OR s.isavailable=false AND rs.idcountry=$2"
 	rows, error_show := db.Query(context.Background(), q, idbusiness, idcountry)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
