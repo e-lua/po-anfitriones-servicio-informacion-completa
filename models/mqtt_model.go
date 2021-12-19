@@ -8,10 +8,12 @@ type Mqtt_PaymentMethod struct {
 }
 
 type Mqtt_Service struct {
-	IdBusiness     int    `json:"idbusiness"`
-	Idbusiness_pg  []int  `json:"idbusiness_pg"`
-	Idservice_pg   []int  `json:"idservice_pg"`
-	Isavailable_pg []bool `json:"isavailable_pg"`
+	IdBusiness     int       `json:"idbusiness"`
+	Idbusiness_pg  []int     `json:"idbusiness_pg"`
+	Idservice_pg   []int     `json:"idservice_pg"`
+	Pricing_pg     []float32 `json:"pricing_pg"`
+	TypeMoney_pg   []int     `json:"typemoney_pg"`
+	Isavailable_pg []bool    `json:"isavailable_pg"`
 }
 
 type Mqtt_TypeFood struct {

@@ -12,11 +12,13 @@ import (
 
 func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 
-	idbusiness_pg, idservice_pg, isavailable_pg := []int{}, []int{}, []bool{}
+	idbusiness_pg, idservice_pg, pricing_pg, typemoney_pg, isavailable_pg := []int{}, []int{}, []float32{}, []int{}, []bool{}
 	for _, v := range input_mo_business.Services {
 		if v.IsAvaiable {
 			idbusiness_pg = append(idbusiness_pg, idbusiness)
 			idservice_pg = append(idservice_pg, v.IDService)
+			pricing_pg = append(pricing_pg, v.Price)
+			typemoney_pg = append(typemoney_pg, v.TypeMoney)
 			isavailable_pg = append(isavailable_pg, true)
 		}
 	}
@@ -25,6 +27,8 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 	var serialize_service models.Mqtt_Service
 	serialize_service.Idbusiness_pg = idbusiness_pg
 	serialize_service.Idservice_pg = idservice_pg
+	serialize_service.Pricing_pg = pricing_pg
+	serialize_service.TypeMoney_pg = typemoney_pg
 	serialize_service.Isavailable_pg = isavailable_pg
 	serialize_service.IdBusiness = idbusiness
 
