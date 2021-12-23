@@ -29,3 +29,11 @@ type Pg_R_TypeFood struct {
 	Url         string `json:"url"`
 	IsAvailable bool   `json:"available"`
 }
+
+type Pg_Schedule struct {
+	IDSchedule int    `json:"idschedule"`
+	IDBusiness int    `json:"idbusiness"`
+	Starttime  string `json:"starttime"`
+	Endtime    string `json:"endtime"`
+	Available  bool   `json:"available"`
+}

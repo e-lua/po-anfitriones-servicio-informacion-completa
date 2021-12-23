@@ -174,6 +174,12 @@ func UpdateSchedule_Service(inputObjectIdBusiness int, input_mo_business models.
 		return 500, true, "Error interno en el servidor al intentar actualizar el horario, detalle: " + error_update_schedule.Error(), ""
 	}
 
+	go func() {
+		schedule_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	}()
+
+	time.Sleep(1 * time.Second)
+
 	return 200, false, "", "Se registraro el horario correctamente"
 }
 func FindSchedule_Service(inputObjectIdBusiness int) (int, bool, string, []models.Mo_Day) {
