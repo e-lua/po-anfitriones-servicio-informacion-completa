@@ -4,6 +4,7 @@ type Pg_R_PaymentMethod struct {
 	IDPaymenth  int    `json:"id"`
 	Name        string `json:"name"`
 	Url         string `json:"url"`
+	PhoneNumber string `bson:"phonenumber" json:"phonenumber"`
 	HasNumber   bool   `json:"hasnumber"`
 	IsAvailable bool   `json:"available"`
 }
