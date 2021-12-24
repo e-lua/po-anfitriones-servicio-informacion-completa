@@ -21,8 +21,8 @@ type Mo_Business_Basic_Data struct {
 
 type Mo_Business struct {
 	Name           string            `bson:"name" json:"name"`
+	TimeZone       string            `bson:"timezone" json:"timezone"`
 	DeliveryRange  string            `bson:"deliveryrange" json:"deliveryrange"`
-	IsOpen         bool              `bson:"isopen" json:"isopen"`
 	Contact        []Mo_Contact      `bson:"contact" json:"contact"`
 	DailySchedule  []Mo_Day          `bson:"schedule" json:"schedule"`
 	Address        Mo_Address        `bson:"address" json:"address"`

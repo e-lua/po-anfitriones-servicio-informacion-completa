@@ -50,15 +50,15 @@ func FindName_Service(inputObjectIdBusiness int) (int, bool, string, string) {
 }
 
 //ISOPEN
-func UpdateOpen_Service(inputObjectIdBusiness int, input_b_open B_Open) (int, bool, string, string) {
+func UpdateTimeZone_Service(inputObjectIdBusiness int, input_business models.Mo_Business) (int, bool, string, string) {
 
-	error_updatename_mongo := business_repository.Mo_Update_Open(input_b_open.IsOpen, inputObjectIdBusiness)
+	error_updatename_mongo := business_repository.Mo_Update_TimeZone(input_business, inputObjectIdBusiness)
 	if error_updatename_mongo != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar el nombre, detalle: " + error_updatename_mongo.Error(), ""
 	}
 
 	go func() {
-		business_repository.Pg_UpdateIsOpen(input_b_open.IsOpen, inputObjectIdBusiness)
+		business_repository.Pg_Update_TimeZone(input_business.TimeZone, inputObjectIdBusiness)
 	}()
 
 	return 200, false, "", "Nombre actualizado correctamente"

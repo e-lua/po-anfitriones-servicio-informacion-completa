@@ -9,11 +9,11 @@ import (
 	"github.com/streadway/amqp"
 )
 
-func Pg_UpdateIsOpen(isOpen bool, idbusiness int) error {
+func Pg_Update_TimeZone(timezone string, idbusiness int) error {
 
 	//Serializamos el MQTT
-	var serialize_open models.Mqtt_IsOpen
-	serialize_open.IsaOpen = isOpen
+	var serialize_open models.Mqtt_TimeZone
+	serialize_open.TimeZone = timezone
 	serialize_open.IdBusiness = idbusiness
 
 	//Comenzamos el envio al MQTT
@@ -25,12 +25,12 @@ func Pg_UpdateIsOpen(isOpen bool, idbusiness int) error {
 			log.Error(error_conection)
 		}
 
-		bytes, error_serializar := serialize_isopen(serialize_open)
+		bytes, error_serializar := serialize_timezone(serialize_open)
 		if error_serializar != nil {
 			log.Error(error_serializar)
 		}
 
-		error_publish := ch.Publish("", "anfitrion/isopen", false, false,
+		error_publish := ch.Publish("", "anfitrion/timezone", false, false,
 			amqp.Publishing{
 				DeliveryMode: amqp.Persistent,
 				ContentType:  "text/plain",
@@ -46,10 +46,10 @@ func Pg_UpdateIsOpen(isOpen bool, idbusiness int) error {
 }
 
 //SERIALIZADORA
-func serialize_isopen(serialize_open models.Mqtt_IsOpen) ([]byte, error) {
+func serialize_timezone(serialize_timezone models.Mqtt_TimeZone) ([]byte, error) {
 	var b bytes.Buffer
 	encoder := json.NewEncoder(&b)
-	err := encoder.Encode(serialize_open)
+	err := encoder.Encode(serialize_timezone)
 	if err != nil {
 		return b.Bytes(), err
 	}

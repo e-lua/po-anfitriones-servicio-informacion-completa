@@ -44,7 +44,7 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 	}
 
 	//HORARIO
-	q_schedulerange := `INSERT INTO BusinessSchedule(idschedule,idbusiness,starttime,endtime,available) (SELECT * FROM unnest($1::int[],$2::int[],$3::varchar(14)[],$4::varchar(14)[],$5::boolean[]));`
+	q_schedulerange := `INSERT INTO BusinessSchedule(idschedule,idbusiness,starttime,endtime,available,zonetime) (SELECT * FROM unnest($1::int[],$2::int[],$3::varchar(14)[],$4::varchar(14)[],$5::boolean[]));`
 	if _, err_schedule := tx.Exec(context.Background(), q_schedulerange, idday_pg, idbusiness_pg, starttime_pg, endtime_pg, available_pg); err_schedule != nil {
 		return err_schedule
 	}

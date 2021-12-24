@@ -34,7 +34,7 @@ type Mqtt_Address struct {
 	Longitude  float64 `json:"longitude"`
 }
 
-type Mqtt_IsOpen struct {
-	IdBusiness int  `json:"idbusiness"`
-	IsaOpen    bool `json:"isopen"`
+type Mqtt_TimeZone struct {
+	IdBusiness int    `json:"idbusiness"`
+	TimeZone   string `json:"timezone"`
 }

@@ -88,7 +88,7 @@ func (ir *informacionRouter_mo) UpdateName(c echo.Context) error {
 
 }
 
-func (ir *informacionRouter_mo) UpdateOpen(c echo.Context) error {
+func (ir *informacionRouter_mo) UpdateTimeZone(c echo.Context) error {
 
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
@@ -102,17 +102,17 @@ func (ir *informacionRouter_mo) UpdateOpen(c echo.Context) error {
 	}
 
 	//Instanciamos una variable del modelo B_Name
-	var b_open B_Open
+	var b_business models.Mo_Business
 
 	//Agregamos los valores enviados a la variable creada
-	err := c.Bind(&b_open)
+	err := c.Bind(&b_business)
 	if err != nil {
 		results := Response{Error: true, DataError: "Se debe enviar el nombre del negocio, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdateOpen_Service(data_idbusiness, b_open)
+	status, boolerror, dataerror, data := UpdateTimeZone_Service(data_idbusiness, b_business)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
