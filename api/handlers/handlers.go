@@ -38,6 +38,7 @@ func Manejadores() {
 	//V1 FROM V1 TO ...TO ENTITY BUSINESS
 	router_business := version_1.Group("/business")
 	router_business.GET("", informacion.InformacionRouter_mo.GetInformationData)
+	router_business.GET("/basicdata", informacion.InformacionRouter_mo.GetBasicData)
 	router_business.GET("/comensal/bnss/:idbusiness", informacion.InformacionRouter_mo.GetInformationData_a_Comensal)
 
 	//V1 FROM BUSINESS TO ...BANNER

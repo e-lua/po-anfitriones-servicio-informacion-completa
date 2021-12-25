@@ -15,6 +15,13 @@ type ResponseBusiness struct {
 	Data      models.Mo_Business `json:"data"`
 }
 
+//BASICDATA
+type ResponseBasicData struct {
+	Error     bool                `json:"error"`
+	DataError string              `json:"dataError"`
+	Data      models.Pg_BasicData `json:"data"`
+}
+
 //NAME
 type B_Name struct {
 	Name string `json:"name"`

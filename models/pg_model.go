@@ -38,3 +38,9 @@ type Pg_Schedule struct {
 	Endtime    string `json:"endtime"`
 	Available  bool   `json:"available"`
 }
+
+type Pg_BasicData struct {
+	IsOpen   int    `json:"isopen"`
+	Name     string `json:"name"`
+	TimeZone string `json:"timezone"`
+}

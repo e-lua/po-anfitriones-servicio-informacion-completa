@@ -223,6 +223,13 @@ func GetInformationData_Service(inputidbusiness int) (int, bool, string, models.
 	return 200, false, "", business
 }
 
+func GetBasicData_Service(inputidbusiness int) (int, bool, string, models.Pg_BasicData) {
+
+	business, _ := business_repository.Pg_Find_BasicData(inputidbusiness)
+
+	return 200, false, "", business
+}
+
 /*----------------------GET DATA OF THE BUSINESS WITH ONE ENDPOINT----------------------*/
 
 func GetInformationData_a_Comensal_Service(inputidbusiness_from_comensal int) (int, bool, string, models.Mo_Business) {
