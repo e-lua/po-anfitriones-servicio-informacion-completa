@@ -40,7 +40,7 @@ type Pg_Schedule struct {
 }
 
 type Pg_BasicData struct {
-	IsOpen   int    `json:"isopen"`
+	IsOpen   bool   `json:"isopen"`
 	Name     string `json:"name"`
 	TimeZone string `json:"timezone"`
 }
