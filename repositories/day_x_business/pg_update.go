@@ -33,6 +33,7 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 	//BEGIN
 	tx, error_tx := db.Begin(context.Background())
 	if error_tx != nil {
+		tx.Rollback(context.Background())
 		return error_tx
 	}
 
@@ -40,18 +41,21 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 	q_delete := `DELETE FROM BusinessSchedule WHERE idbusiness=$1`
 	_, err := tx.Exec(context.Background(), q_delete, idbusiness)
 	if err != nil {
+		tx.Rollback(context.Background())
 		return err
 	}
 
 	//HORARIO
 	q_schedulerange := `INSERT INTO BusinessSchedule(idschedule,idbusiness,starttime,endtime,available,zonetime) (SELECT * FROM unnest($1::int[],$2::int[],$3::varchar(14)[],$4::varchar(14)[],$5::boolean[]));`
 	if _, err_schedule := tx.Exec(context.Background(), q_schedulerange, idday_pg, idbusiness_pg, starttime_pg, endtime_pg, available_pg); err_schedule != nil {
+		tx.Rollback(context.Background())
 		return err_schedule
 	}
 
 	//TERMINAMOS LA TRANSACCION
 	err_commit := tx.Commit(context.Background())
 	if err_commit != nil {
+		tx.Rollback(context.Background())
 		return err_commit
 	}
 	return nil
