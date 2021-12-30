@@ -25,7 +25,7 @@ func Manejadores() {
 
 	//Consumidor-MQTT
 	go Consumer_Data()
-	go Consumer_Banner()
+	go Consumer_Banner_Mo()
 
 	e.GET("/", index)
 	//VERSION
@@ -124,33 +124,33 @@ func Consumer_Data() {
 
 }
 
-func Consumer_Banner() {
+func Consumer_Banner_Mo() {
 
 	ch, error_conection := models.MqttCN.Channel()
 	if error_conection != nil {
 		log.Fatal("Error connection canal " + error_conection.Error())
 	}
 
-	msgs, err_consume := ch.Consume("anfitrion/banner", "", true, false, false, false, nil)
+	msgs, err_consume := ch.Consume("anfitrion/bannermo", "", true, false, false, false, nil)
 	if err_consume != nil {
 		log.Fatal("Error connection cola " + err_consume.Error())
 	}
 
-	noStop2 := make(chan bool)
+	noStop3 := make(chan bool)
 
 	go func() {
 		for d := range msgs {
-			var toCarta models.Mo_ToBanner_Mqtt
+			var banner models.Mo_BusinessBanner_Mqtt
 			buf := bytes.NewBuffer(d.Body)
 			decoder := json.NewDecoder(buf)
-			err_consume := decoder.Decode(&toCarta)
+			err_consume := decoder.Decode(&banner)
 			if err_consume != nil {
 				log.Fatal("Error decoding")
 			}
-			informacion.InformacionRouter_mo.UpdateBanners_Consumer(toCarta.IdBanner_Category_Element, toCarta.Url, toCarta.IdBusiness)
+			informacion.InformacionRouter_mo.UpdateBanners_Consumer(banner)
 		}
 	}()
 
-	<-noStop2
+	<-noStop3
 
 }

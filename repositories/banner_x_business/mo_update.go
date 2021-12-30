@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func Mo_Update(idbanner int, urlphoto string, idbusiness int) error {
+func Mo_Update(banner models.Mo_BusinessBanner_Mqtt) error {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -19,25 +19,13 @@ func Mo_Update(idbanner int, urlphoto string, idbusiness int) error {
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("business")
 
-	//Todo sobre el banner
-	var banners []models.Mo_Banner
-	var banner models.Mo_Banner
-	banner.IdBanner = idbanner
-	banner.UrlImage = urlphoto
-	banners = append(banners, banner)
-
-	//Ponemos el banner en el business
-	var business models.Mo_Business
-
-	business.Banner = banners
-
 	updtString := bson.M{
 		"$set": bson.M{
-			"banners": banners,
+			"banners": banner.Banner,
 		},
 	}
 
-	filtro := bson.M{"idbusiness": idbusiness}
+	filtro := bson.M{"idbusiness": banner.IDBusiness}
 
 	_, error_update := col.UpdateOne(ctx, filtro, updtString)
 

@@ -135,3 +135,7 @@ type Location struct {
 	GeoJSONType string    `json:"type" bson:"type"`
 	Coordinates []float64 `json:"coordinates" bson:"coordinates"`
 }
+type Mo_BusinessBanner_Mqtt struct {
+	IDBusiness int       `bson:"idbusiness" json:"idbusiness"`
+	Banner     Mo_Banner `bson:"banners" json:"banners"`
+}

@@ -42,9 +42,9 @@ func GetJWT_Country(jwt string, service int, module int, epic int, endpoint int)
 
 /*----------------------CONSUMER----------------------*/
 
-func (ir *informacionRouter_mo) UpdateBanners_Consumer(idbanner int, urlphoto string, idbusiness int) {
+func (ir *informacionRouter_mo) UpdateBanners_Consumer(banner models.Mo_BusinessBanner_Mqtt) {
 	//Enviamos los datos al servicio
-	error_consumer_banner := UpdateBanners_Consumer_Service(idbanner, urlphoto, idbusiness)
+	error_consumer_banner := UpdateBanners_Consumer_Service(banner)
 	if error_consumer_banner != nil {
 		log.Fatal(error_consumer_banner)
 	}

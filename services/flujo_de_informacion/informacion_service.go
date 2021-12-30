@@ -19,8 +19,8 @@ import (
 
 /*----------------------CONSUMER----------------------*/
 
-func UpdateBanners_Consumer_Service(idbanner int, urlphoto string, idbusiness int) error {
-	error_add_banner_mo := banner_x_busines_repository.Mo_Update(idbanner, urlphoto, idbusiness)
+func UpdateBanners_Consumer_Service(banner models.Mo_BusinessBanner_Mqtt) error {
+	error_add_banner_mo := banner_x_busines_repository.Mo_Update(banner)
 	if error_add_banner_mo != nil {
 		log.Fatal(error_add_banner_mo)
 	}
