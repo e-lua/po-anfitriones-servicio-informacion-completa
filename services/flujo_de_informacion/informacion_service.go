@@ -54,14 +54,14 @@ func UpdateTimeZone_Service(inputObjectIdBusiness int, input_business models.Mo_
 
 	error_updatename_mongo := business_repository.Mo_Update_TimeZone(input_business, inputObjectIdBusiness)
 	if error_updatename_mongo != nil {
-		return 500, true, "Error interno en el servidor al intentar actualizar el nombre, detalle: " + error_updatename_mongo.Error(), ""
+		return 500, true, "Error interno en el servidor al intentar actualizar la zona horaria, detalle: " + error_updatename_mongo.Error(), ""
 	}
 
 	go func() {
 		business_repository.Pg_Update_TimeZone(input_business.TimeZone, inputObjectIdBusiness)
 	}()
 
-	return 200, false, "", "Nombre actualizado correctamente"
+	return 200, false, "", "Zona horaria actualizado correctamente"
 }
 
 //DIRECCION

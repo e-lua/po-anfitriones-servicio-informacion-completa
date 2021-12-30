@@ -47,6 +47,9 @@ func Manejadores() {
 	//V1 FROM BUSINESS TO ...NAME
 	router_business.PUT("/name", informacion.InformacionRouter_mo.UpdateName)
 
+	//V1 FROM BUSINESS TO ...TYMEZONE
+	router_business.PUT("/timezone", informacion.InformacionRouter_mo.UpdateTimeZone)
+
 	//V1 FROM BUSINESS TO ...ADDRESS
 	router_business.PUT("/address", informacion.InformacionRouter_mo.UpdateAddress)
 
