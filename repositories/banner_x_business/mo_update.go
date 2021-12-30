@@ -19,9 +19,12 @@ func Mo_Update(banner models.Mo_BusinessBanner_Mqtt) error {
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("business")
 
+	var banner_business models.Mo_Business
+	banner_business.Banner = append(banner_business.Banner, banner.Banner)
+
 	updtString := bson.M{
 		"$set": bson.M{
-			"banners": banner.Banner,
+			"banners": banner_business.Banner,
 		},
 	}
 
