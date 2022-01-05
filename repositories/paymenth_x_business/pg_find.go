@@ -9,7 +9,7 @@ import (
 func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_PaymentMethod, error) {
 
 	db := models.Conectar_Pg_DB()
-	q := "select DISTINCT ON(p.idpayment)p.idpayment,p.name,p.urlphoto,p.hasnumber,p.phonenumber,coalesce(bp.isavailable,false) from r_paymentmethod p LEFT JOIN business_r_paymenth bp ON p.idpayment=bp.idpayment LEFT JOIN r_countryr_payment rp ON p.idpayment=rp.idpayment WHERE bp.idbusiness<>$1 OR p.isavailable=false AND rp.idcountry=$2"
+	q := "select DISTINCT ON(p.idpayment)p.idpayment,p.name,p.urlphoto,p.hasnumber,bp.phonenumber,coalesce(bp.isavailable,false) from r_paymentmethod p LEFT JOIN business_r_paymenth bp ON p.idpayment=bp.idpayment LEFT JOIN r_countryr_payment rp ON p.idpayment=rp.idpayment WHERE bp.idbusiness<>$1 OR p.isavailable=false AND rp.idcountry=$2"
 	rows, error_show := db.Query(context.Background(), q, idbusiness, idcountry)
 
 	//.Scan(&typeF_x_Business.IDTypeFood, &typeF_x_Business.NameFood, &typeF_x_Business.URLPhoto, &typeF_x_Business.Weight)
