@@ -4,7 +4,6 @@ import (
 
 	//REPOSITORIES
 	"log"
-	"time"
 
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
 	address_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/address_x_business"
@@ -57,9 +56,10 @@ func UpdateTimeZone_Service(inputObjectIdBusiness int, input_business models.Mo_
 		return 500, true, "Error interno en el servidor al intentar actualizar la zona horaria, detalle: " + error_updatename_mongo.Error(), ""
 	}
 
-	go func() {
-		business_repository.Pg_Update_TimeZone(input_business.TimeZone, inputObjectIdBusiness)
-	}()
+	error_update_pg := business_repository.Pg_Update_TimeZone(input_business.TimeZone, inputObjectIdBusiness)
+	if error_update_pg != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar la zona horaria, detalle: " + error_update_pg.Error(), ""
+	}
 
 	return 200, false, "", "Zona horaria actualizado correctamente"
 }
@@ -93,9 +93,10 @@ func UpdateTypeFood_Service(inputObjectIdBusiness int, input_mo_business models.
 		return 500, true, "Error interno en el servidor al intentar actualizar los tipos de comida, detalle: " + error_updating_typefood.Error(), ""
 	}
 
-	go func() {
-		typefood_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
-	}()
+	error_update_pg := typefood_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	if error_update_pg != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar los tipos de comida, detalle: " + error_update_pg.Error(), ""
+	}
 
 	return 200, false, "", "Se registraron los tipos de comida correctamente"
 }
@@ -114,9 +115,10 @@ func UpdateService_Service(inputObjectIdBusiness int, input_mo_business models.M
 		return 500, true, "Error interno en el servidor al intentar actualizar los servicios, detalle: " + error_update_service.Error(), ""
 	}
 
-	go func() {
-		service_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
-	}()
+	error_update_pg := service_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	if error_update_pg != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar los servicios, detalle: " + error_update_pg.Error(), ""
+	}
 
 	return 200, false, "", "Se registraron los servicios correctamente"
 }
@@ -152,11 +154,10 @@ func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, input_mo_business mod
 		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_updating_paymenth.Error(), ""
 	}
 
-	go func() {
-		payment_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
-	}()
-
-	time.Sleep(2 * time.Second)
+	error_update_pg := payment_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	if error_update_pg != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_update_pg.Error(), ""
+	}
 
 	return 200, false, "", "Metodos de pagos cargados correctamente"
 }
@@ -174,11 +175,10 @@ func UpdateSchedule_Service(inputObjectIdBusiness int, input_mo_business models.
 		return 500, true, "Error interno en el servidor al intentar actualizar el horario, detalle: " + error_update_schedule.Error(), ""
 	}
 
-	go func() {
-		schedule_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
-	}()
-
-	time.Sleep(1 * time.Second)
+	error_update_pg := schedule_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	if error_update_pg != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar el horario, detalle: " + error_update_pg.Error(), ""
+	}
 
 	return 200, false, "", "Se registraro el horario correctamente"
 }

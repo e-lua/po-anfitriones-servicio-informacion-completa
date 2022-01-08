@@ -3,7 +3,6 @@ package repositories
 import (
 	"bytes"
 	"encoding/json"
-	"time"
 
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
 	"github.com/labstack/gommon/log"
@@ -28,33 +27,26 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 	serialize_typefood.Isavailable_pg = isavailable_pg
 	serialize_typefood.IdBusiness = idbusiness
 
-	//Comenzamos el envio al MQTT
+	//Comienza el proceso de MQTT
+	ch, error_conection := models.MqttCN.Channel()
+	if error_conection != nil {
+		log.Error(error_conection)
+	}
 
-	go func() {
-		//Comienza el proceso de MQTT
-		ch, error_conection := models.MqttCN.Channel()
-		if error_conection != nil {
-			log.Error(error_conection)
-		}
+	bytes, error_serializar := serialize(serialize_typefood)
+	if error_serializar != nil {
+		log.Error(error_serializar)
+	}
 
-		bytes, error_serializar := serialize(serialize_typefood)
-		if error_serializar != nil {
-			log.Error(error_serializar)
-		}
-
-		error_publish := ch.Publish("", "anfitrion/typefood", false, false,
-			amqp.Publishing{
-				DeliveryMode: amqp.Persistent,
-				ContentType:  "text/plain",
-				Body:         bytes,
-			})
-		if error_publish != nil {
-			log.Error(error_publish)
-		}
-
-	}()
-
-	time.Sleep(1 * time.Second)
+	error_publish := ch.Publish("", "anfitrion/typefood", false, false,
+		amqp.Publishing{
+			DeliveryMode: amqp.Persistent,
+			ContentType:  "text/plain",
+			Body:         bytes,
+		})
+	if error_publish != nil {
+		log.Error(error_publish)
+	}
 
 	return nil
 }

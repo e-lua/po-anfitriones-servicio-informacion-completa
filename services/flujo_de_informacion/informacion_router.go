@@ -76,7 +76,7 @@ func (ir *informacionRouter_mo) UpdateName(c echo.Context) error {
 	}
 
 	//Validamos los valores enviados
-	if len(b_name.Name) > 20 {
+	if len(b_name.Name) > 50 {
 		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
 		return c.JSON(403, results)
 	}
@@ -109,6 +109,14 @@ func (ir *informacionRouter_mo) UpdateTimeZone(c echo.Context) error {
 	if err != nil {
 		results := Response{Error: true, DataError: "Se debe enviar el nombre del negocio, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
+	}
+
+	timezone, _ := strconv.Atoi(b_business.TimeZone)
+
+	//Validamos los valores enviados
+	if timezone > 13 || timezone < -11 {
+		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
+		return c.JSON(403, results)
 	}
 
 	//Enviamos los datos al servicio
