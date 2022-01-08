@@ -114,17 +114,10 @@ type ResponseBanner struct {
 
 //SCHEDULE
 type ResponseSchedule struct {
-	Error     bool            `json:"error"`
-	DataError string          `json:"dataError"`
-	Data      []models.Mo_Day `json:"data"`
+	Error     bool                   `json:"error"`
+	DataError string                 `json:"dataError"`
+	Data      []models.Pg_R_Schedule `json:"data"`
 }
-
-//SCHEDULE_ALL
-/*type ResponseScheduleAll struct {
-	Error     bool              `json:"error"`
-	DataError string            `json:"dataError"`
-	Data      []models.Ar_R_Day `json:"data"`
-}*/
 
 //CONTACT
 type ResponseContact struct {

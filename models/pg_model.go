@@ -27,7 +27,6 @@ type Pg_R_Service struct {
 	Name        string  `json:"name"`
 	Pricing     float32 `json:"price"`
 	TypeMoney   int     `json:"typemoney"`
-	Url         string  `json:"url"`
 	IsAvailable bool    `json:"available"`
 }
 

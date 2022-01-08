@@ -71,6 +71,7 @@ func Manejadores() {
 
 	//V1 FROM BUSINESS TO ...SCHEDULE
 	router_business.PUT("/schedule", informacion.InformacionRouter_mo.UpdateSchedule)
+	router_business.GET("/schedule", informacion.InformacionRouter_mo.FindSchedule)
 
 	//V1 FROM BUSINESS TO ...PHONECONTACT
 	router_business.PUT("/contact", informacion.InformacionRouter_mo.UpdateContact)

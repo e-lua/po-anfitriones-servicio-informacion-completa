@@ -182,9 +182,9 @@ func UpdateSchedule_Service(inputObjectIdBusiness int, input_mo_business models.
 
 	return 200, false, "", "Se registraro el horario correctamente"
 }
-func FindSchedule_Service(inputObjectIdBusiness int) (int, bool, string, []models.Mo_Day) {
+func FindSchedule_Service(idBusiness int) (int, bool, string, []models.Pg_R_Schedule) {
 
-	day_x_business, _ := schedule_x_business_repository.Mo_Find(inputObjectIdBusiness)
+	day_x_business, _ := schedule_x_business_repository.Pg_Find(idBusiness)
 
 	return 200, false, "", day_x_business
 }
