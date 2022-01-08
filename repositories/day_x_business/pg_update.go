@@ -13,7 +13,7 @@ import (
 func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 
 	//Instanciamos los datos
-	idday_pg, idbusiness_pg, starttime_pg, endtime_pg, available_pg, name_pg := []int{}, []int{}, []string{}, []string{}, []bool{}, []string{}
+	idday_pg, idbusiness_pg, starttime_pg, endtime_pg, available_pg := []int{}, []int{}, []string{}, []string{}, []bool{}
 
 	//Convertimos a formato 24 horas
 	for _, day := range input_mo_business.DailySchedule {
@@ -28,7 +28,6 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 		starttime_pg = append(starttime_pg, startTime.Format("15:04"))
 		endtime_pg = append(endtime_pg, endTime.Format("15:04"))
 		available_pg = append(available_pg, day.IsAvaiable)
-		name_pg = append(name_pg, day.Name)
 	}
 
 	//Serializamos el MQTT
@@ -39,7 +38,6 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 	serialize_schedule.Idschedule_pg = idday_pg
 	serialize_schedule.Starttime_pg = starttime_pg
 	serialize_schedule.Endtime_pg = endtime_pg
-	serialize_schedule.Name_pg = name_pg
 
 	//Comenzamos el envio al MQTT
 	go func() {

@@ -11,7 +11,6 @@ type Pg_R_PaymentMethod struct {
 
 type Pg_R_Schedule struct {
 	IDSchedule int    `json:"idschedule"`
-	Name       string `json:"name"`
 	Starttime  string `json:"starttime"`
 	Endtime    string `json:"endtime"`
 	Available  bool   `json:"available"`

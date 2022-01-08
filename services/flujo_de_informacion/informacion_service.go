@@ -227,6 +227,11 @@ func GetBasicData_Service(inputidbusiness int) (int, bool, string, models.Pg_Bas
 
 	business, _ := business_repository.Pg_Find_BasicData(inputidbusiness)
 
+	if business.Name == "" {
+		business_withoutdata, _ := business_repository.Pg_Find_BasicData_WithoutData(inputidbusiness)
+		return 200, false, "", business_withoutdata
+	}
+
 	return 200, false, "", business
 }
 

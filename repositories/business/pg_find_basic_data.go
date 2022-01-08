@@ -21,3 +21,19 @@ func Pg_Find_BasicData(idbusiness int) (models.Pg_BasicData, error) {
 	//Si todo esta bien
 	return basic_data, nil
 }
+
+func Pg_Find_BasicData_WithoutData(idbusiness int) (models.Pg_BasicData, error) {
+
+	var basic_data models.Pg_BasicData
+
+	db := models.Conectar_Pg_DB()
+	q := "SELECT b.name,b.timezone,false FROM business as b WHERE b.idbusiness=$1"
+	error_shown := db.QueryRow(context.Background(), q, idbusiness).Scan(&basic_data.Name, &basic_data.TimeZone, &basic_data.IsOpen)
+
+	if error_shown != nil {
+		return basic_data, error_shown
+	}
+
+	//Si todo esta bien
+	return basic_data, nil
+}

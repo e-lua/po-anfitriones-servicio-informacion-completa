@@ -15,7 +15,6 @@ type Mqtt_Schedule struct {
 	Isavailable_pg []bool   `json:"isavailable_pg"`
 	Starttime_pg   []string `json:"starttime_pg"`
 	Endtime_pg     []string `json:"endtime_pg"`
-	Name_pg        []string `json:"name_pg"`
 }
 
 type Mqtt_Service struct {
