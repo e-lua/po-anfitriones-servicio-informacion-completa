@@ -1,16 +1,19 @@
 package repositories
 
 import (
-	"context"
+	"bytes"
+	"encoding/json"
 	"time"
 
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
+	"github.com/labstack/gommon/log"
+	"github.com/streadway/amqp"
 )
 
 func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 
 	//Instanciamos los datos
-	idday_pg, idbusiness_pg, starttime_pg, endtime_pg, available_pg := []int{}, []int{}, []string{}, []string{}, []bool{}
+	idday_pg, idbusiness_pg, starttime_pg, endtime_pg, available_pg, name_pg := []int{}, []int{}, []string{}, []string{}, []bool{}, []string{}
 
 	//Convertimos a formato 24 horas
 	for _, day := range input_mo_business.DailySchedule {
@@ -25,38 +28,55 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 		starttime_pg = append(starttime_pg, startTime.Format("15:04"))
 		endtime_pg = append(endtime_pg, endTime.Format("15:04"))
 		available_pg = append(available_pg, day.IsAvaiable)
+		name_pg = append(name_pg, day.Name)
 	}
 
-	//Conexion con la BD
-	db := models.Conectar_Pg_DB()
+	//Serializamos el MQTT
+	var serialize_schedule models.Mqtt_Schedule
+	serialize_schedule.Idbusiness_pg = idbusiness_pg
+	serialize_schedule.Isavailable_pg = available_pg
+	serialize_schedule.IdBusiness = idbusiness
+	serialize_schedule.Idschedule_pg = idday_pg
+	serialize_schedule.Starttime_pg = starttime_pg
+	serialize_schedule.Endtime_pg = endtime_pg
+	serialize_schedule.Name_pg = name_pg
 
-	//BEGIN
-	tx, error_tx := db.Begin(context.Background())
-	if error_tx != nil {
-		tx.Rollback(context.Background())
-		return error_tx
-	}
+	//Comenzamos el envio al MQTT
+	go func() {
+		//Comienza el proceso de MQTT
+		ch, error_conection := models.MqttCN.Channel()
+		if error_conection != nil {
+			log.Error(error_conection)
+		}
 
-	//ELIMINAR DATOS
-	q_delete := `DELETE FROM BusinessSchedule WHERE idbusiness=$1`
-	_, err := tx.Exec(context.Background(), q_delete, idbusiness)
-	if err != nil {
-		tx.Rollback(context.Background())
-		return err
-	}
+		bytes, error_serializar := serialize(serialize_schedule)
+		if error_serializar != nil {
+			log.Error(error_serializar)
+		}
 
-	//HORARIO
-	q_schedulerange := `INSERT INTO BusinessSchedule(idschedule,idbusiness,starttime,endtime,available,zonetime) (SELECT * FROM unnest($1::int[],$2::int[],$3::varchar(14)[],$4::varchar(14)[],$5::boolean[]));`
-	if _, err_schedule := tx.Exec(context.Background(), q_schedulerange, idday_pg, idbusiness_pg, starttime_pg, endtime_pg, available_pg); err_schedule != nil {
-		tx.Rollback(context.Background())
-		return err_schedule
-	}
+		error_publish := ch.Publish("", "anfitrion/horario", false, false,
+			amqp.Publishing{
+				DeliveryMode: amqp.Persistent,
+				ContentType:  "text/plain",
+				Body:         bytes,
+			})
+		if error_publish != nil {
+			log.Error(error_publish)
+		}
 
-	//TERMINAMOS LA TRANSACCION
-	err_commit := tx.Commit(context.Background())
-	if err_commit != nil {
-		tx.Rollback(context.Background())
-		return err_commit
-	}
+	}()
+
+	time.Sleep(1 * time.Second)
 	return nil
+}
+
+//SERIALIZADORA SCHEDULE
+func serialize(serialize_schedule models.Mqtt_Schedule) ([]byte, error) {
+	var b bytes.Buffer
+	encoder := json.NewEncoder(&b)
+	err := encoder.Encode(serialize_schedule)
+	if err != nil {
+		return b.Bytes(), err
+	}
+	return b.Bytes(), nil
 }

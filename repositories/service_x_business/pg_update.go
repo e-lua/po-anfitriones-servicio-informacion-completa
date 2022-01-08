@@ -58,7 +58,7 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 
 	}()
 
-	time.Sleep(2 * time.Second)
+	time.Sleep(1 * time.Second)
 
 	return nil
 }

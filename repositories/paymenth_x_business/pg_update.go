@@ -12,12 +12,13 @@ import (
 
 func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 
-	idbusiness_pg, idpaymenth_pg, isavailable_pg := []int{}, []int{}, []bool{}
+	idbusiness_pg, idpaymenth_pg, isavailable_pg, phonenumber_pg := []int{}, []int{}, []bool{}, []string{}
 	for _, v := range input_mo_business.PaymentMethods {
 		if v.IsAvaiable {
 			idbusiness_pg = append(idbusiness_pg, idbusiness)
 			idpaymenth_pg = append(idpaymenth_pg, v.IDPaymenth)
 			isavailable_pg = append(isavailable_pg, true)
+			phonenumber_pg = append(phonenumber_pg, v.PhoneNumber)
 		}
 	}
 
@@ -27,6 +28,7 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 	serialize_paymenth.Idpaymenth_pg = idpaymenth_pg
 	serialize_paymenth.Isavailable_pg = isavailable_pg
 	serialize_paymenth.IdBusiness = idbusiness
+	serialize_paymenth.PhoneNumber = phonenumber_pg
 
 	//Comenzamos el envio al MQTT
 
@@ -54,7 +56,7 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 
 	}()
 
-	time.Sleep(2 * time.Second)
+	time.Sleep(1 * time.Second)
 
 	return nil
 }

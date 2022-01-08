@@ -9,7 +9,7 @@ import (
 func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_Service, error) {
 
 	db := models.Conectar_Pg_DB()
-	q := "select DISTINCT ON(s.idservice)s.idservice,s.name,coalesce(bs.pricing,0),coalesce(bs.typemoney,0),s.urlphoto,coalesce(bs.isavailable,false) from r_service s LEFT JOIN bussinessr_service bs ON s.idservice=bs.idservice LEFT JOIN r_countryr_service rs ON s.idservice=rs.idservice WHERE bs.idbusiness<>$1 OR s.isavailable=false AND rs.idcountry=$2"
+	q := "SELECT r.idservice,r.name,bs.pricing,bs.typemoney,bs.isavailable FROM r_service AS r LEFT JOIN bussinessr_service AS bs ON bs.idservice=r.idservice WHERE bs.idbusiness=$1 UNION SELECT r.idservice,r.name,0,0,false FROM r_service AS r LEFT JOIN bussinessr_service AS bs ON bs.idservice=r.idservice LEFT JOIN r_countryr_service AS rr ON rr.idservice=r.idservice WHERE r.idservice NOT IN (SELECT bs.idservice FROM bussinessr_service AS bs WHERE bs.idbusiness=$1)AND rr.idcountry=$2"
 	rows, error_show := db.Query(context.Background(), q, idbusiness, idcountry)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
@@ -22,7 +22,7 @@ func Pg_Find(idbusiness int, idcountry int) ([]models.Pg_R_Service, error) {
 	//Scaneamos l resultado y lo asignamos a la variable instanciada
 	for rows.Next() {
 		var service models.Pg_R_Service
-		rows.Scan(&service.IDservice, &service.Name, &service.Pricing, &service.TypeMoney, &service.Url, &service.IsAvailable)
+		rows.Scan(&service.IDservice, &service.Name, &service.Pricing, &service.TypeMoney, &service.IsAvailable)
 		oListPg_Service = append(oListPg_Service, service)
 	}
 

@@ -9,6 +9,14 @@ type Pg_R_PaymentMethod struct {
 	IsAvailable bool   `json:"available"`
 }
 
+type Pg_R_Schedule struct {
+	IDSchedule int    `json:"idschedule"`
+	Name       string `json:"name"`
+	Starttime  string `json:"starttime"`
+	Endtime    string `json:"endtime"`
+	Available  bool   `json:"available"`
+}
+
 type Pg_PaymentMethod_X_Business struct {
 	IDPaymenth  int
 	IDBusiness  int
@@ -29,14 +37,6 @@ type Pg_R_TypeFood struct {
 	Name        string `json:"name"`
 	Url         string `json:"url"`
 	IsAvailable bool   `json:"available"`
-}
-
-type Pg_Schedule struct {
-	IDSchedule int    `json:"idschedule"`
-	IDBusiness int    `json:"idbusiness"`
-	Starttime  string `json:"starttime"`
-	Endtime    string `json:"endtime"`
-	Available  bool   `json:"available"`
 }
 
 type Pg_BasicData struct {
