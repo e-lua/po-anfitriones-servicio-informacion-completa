@@ -536,31 +536,6 @@ func (ir *informacionRouter_mo) FindSchedule(c echo.Context) error {
 
 }
 
-func (ir *informacionRouter_mo) FindBanner(c echo.Context) error {
-
-	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 21)
-	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
-		return c.JSON(status, results)
-	}
-	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
-		return c.JSON(400, results)
-	}
-
-	//Validamos los valores enviados
-	if data_idbusiness < 1 {
-		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
-		return c.JSON(403, results)
-	}
-
-	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindBanner_Service(data_idbusiness)
-	results := ResponseBanner{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
-
-}
 func (ir *informacionRouter_mo) FindContact(c echo.Context) error {
 
 	//Obtenemos los datos del auth

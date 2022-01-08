@@ -207,13 +207,6 @@ func FindContact_Service(inputObjectIdBusiness int) (int, bool, string, []models
 	return 200, false, "", contact_x_business
 }
 
-func FindBanner_Service(inputObjectIdBusiness int) (int, bool, string, []models.Mo_Banner) {
-
-	banner_x_business, _ := banner_x_busines_repository.Mo_Find(inputObjectIdBusiness)
-
-	return 200, false, "", banner_x_business
-}
-
 /*----------------------GET DATA OF THE BUSINESS----------------------*/
 
 func GetInformationData_Service(inputidbusiness int) (int, bool, string, models.Mo_Business) {

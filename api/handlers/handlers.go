@@ -41,9 +41,6 @@ func Manejadores() {
 	router_business.GET("/basicdata", informacion.InformacionRouter_mo.GetBasicData)
 	router_business.GET("/comensal/bnss/:idbusiness", informacion.InformacionRouter_mo.GetInformationData_a_Comensal)
 
-	//V1 FROM BUSINESS TO ...BANNER
-	router_business.GET("/banner", informacion.InformacionRouter_mo.FindBanner)
-
 	//V1 FROM BUSINESS TO ...NAME
 	router_business.PUT("/name", informacion.InformacionRouter_mo.UpdateName)
 
