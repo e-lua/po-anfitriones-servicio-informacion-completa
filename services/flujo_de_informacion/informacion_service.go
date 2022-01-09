@@ -100,12 +100,6 @@ func UpdateTypeFood_Service(inputObjectIdBusiness int, input_mo_business models.
 
 	return 200, false, "", "Se registraron los tipos de comida correctamente"
 }
-func FindTypeFood_Service(idcountry int, idbusiness int) (int, bool, string, []models.Pg_R_TypeFood) {
-
-	typefood, _ := typefood_x_business_repository.Pg_Find(idbusiness, idcountry)
-
-	return 200, false, "", typefood
-}
 
 //SERVICIOS
 func UpdateService_Service(inputObjectIdBusiness int, input_mo_business models.Mo_Business) (int, bool, string, string) {
@@ -121,12 +115,6 @@ func UpdateService_Service(inputObjectIdBusiness int, input_mo_business models.M
 	}
 
 	return 200, false, "", "Se registraron los servicios correctamente"
-}
-func FindService_Service(idcountry int, idbusiness int) (int, bool, string, []models.Pg_R_Service) {
-
-	services, _ := service_x_business_repository.Pg_Find(idbusiness, idcountry)
-
-	return 200, false, "", services
 }
 
 //DELIVERY RANGE
@@ -161,11 +149,6 @@ func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, input_mo_business mod
 
 	return 200, false, "", "Metodos de pagos cargados correctamente"
 }
-func FindPaymenth_Service(idcountry int, idbusiness int) (int, bool, string, []models.Pg_R_PaymentMethod) {
-
-	paymenth, _ := payment_x_business_repository.Pg_Find(idbusiness, idcountry)
-	return 200, false, "", paymenth
-}
 
 //HORARIO
 func UpdateSchedule_Service(inputObjectIdBusiness int, input_mo_business models.Mo_Business) (int, bool, string, string) {
@@ -181,12 +164,6 @@ func UpdateSchedule_Service(inputObjectIdBusiness int, input_mo_business models.
 	}
 
 	return 200, false, "", "Se registraro el horario correctamente"
-}
-func FindSchedule_Service(idBusiness int) (int, bool, string, []models.Pg_R_Schedule) {
-
-	day_x_business, _ := schedule_x_business_repository.Pg_Find(idBusiness)
-
-	return 200, false, "", day_x_business
 }
 
 //CONTACTO
@@ -212,18 +189,6 @@ func FindContact_Service(inputObjectIdBusiness int) (int, bool, string, []models
 func GetInformationData_Service(inputidbusiness int) (int, bool, string, models.Mo_Business) {
 
 	business, _ := business_repository.Mo_Find_All_Data(inputidbusiness)
-
-	return 200, false, "", business
-}
-
-func GetBasicData_Service(inputidbusiness int) (int, bool, string, models.Pg_BasicData) {
-
-	business, _ := business_repository.Pg_Find_BasicData(inputidbusiness)
-
-	if business.Name == "" {
-		business_withoutdata, _ := business_repository.Pg_Find_BasicData_WithoutData(inputidbusiness)
-		return 200, false, "", business_withoutdata
-	}
 
 	return 200, false, "", business
 }

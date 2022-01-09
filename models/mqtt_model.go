@@ -48,3 +48,8 @@ type Mqtt_TimeZone struct {
 	IdBusiness int    `json:"idbusiness"`
 	TimeZone   string `json:"timezone"`
 }
+
+type Mqtt_CreateInitialData struct {
+	IDBusiness int `json:"idbusiness"`
+	Country    int `json:"country"`
+}

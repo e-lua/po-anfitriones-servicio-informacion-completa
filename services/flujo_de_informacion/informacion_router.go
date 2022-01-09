@@ -445,11 +445,17 @@ func (ir *informacionRouter_mo) FindTypeFood(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindTypeFood_Service(data_idcountry, data_idbusiness)
-	results := ResponseTypeFood{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
+	//Obtenemos los datos
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/export/typefood?idbusiness=" + strconv.Itoa(data_idbusiness))
+	var get_respuesta ResponseInterface_FromComensal
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		results := ResponseInterface_FromComensal{Error: true, DataError: "Error en el servidor interno al intentar decodificar la respuesta", Data: get_respuesta.Data}
+		return c.JSON(500, results)
+	}
 
+	results := ResponseInterface_FromComensal{Error: get_respuesta.Error, DataError: get_respuesta.DataError, Data: get_respuesta.Data}
+	return c.JSON(200, results)
 }
 
 func (ir *informacionRouter_mo) FindService(c echo.Context) error {
@@ -465,11 +471,18 @@ func (ir *informacionRouter_mo) FindService(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindService_Service(data_idcountry, data_idbusiness)
-	results := ResponseService{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
+	//Obtenemos los datos
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/export/service?idbusiness=" + strconv.Itoa(data_idbusiness))
+	var get_respuesta ResponseInterface_FromComensal
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		results := ResponseInterface_FromComensal{Error: true, DataError: "Error en el servidor interno al intentar decodificar la respuesta", Data: get_respuesta.Data}
+		return c.JSON(500, results)
+	}
 
+	//Enviamos los datos al servicio
+	results := ResponseInterface_FromComensal{Error: get_respuesta.Error, DataError: get_respuesta.DataError, Data: get_respuesta.Data}
+	return c.JSON(status, results)
 }
 
 func (ir *informacionRouter_mo) FindDeliveryRange(c echo.Context) error {
@@ -511,9 +524,17 @@ func (ir *informacionRouter_mo) FindPaymenthMeth(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindPaymenth_Service(data_idcountry, data_idbusiness)
-	results := ResponsePaymeth{Error: boolerror, DataError: dataerror, Data: data}
+	//Obtenemos los datos
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/export/payment?idbusiness=" + strconv.Itoa(data_idbusiness))
+	var get_respuesta ResponseInterface_FromComensal
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		results := ResponseInterface_FromComensal{Error: true, DataError: "Error en el servidor interno al intentar decodificar la respuesta", Data: get_respuesta.Data}
+		return c.JSON(500, results)
+	}
+
+	//Enviamos los datos al paymenth
+	results := ResponseInterface_FromComensal{Error: get_respuesta.Error, DataError: get_respuesta.DataError, Data: get_respuesta.Data}
 	return c.JSON(status, results)
 
 }
@@ -537,11 +558,18 @@ func (ir *informacionRouter_mo) FindSchedule(c echo.Context) error {
 		return c.JSON(403, results)
 	}
 
-	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindSchedule_Service(data_idbusiness)
-	results := ResponseSchedule{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
+	//Obtenemos los datos
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/export/schedule?idbusiness=" + strconv.Itoa(data_idbusiness))
+	var get_respuesta ResponseInterface_FromComensal
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		results := ResponseInterface_FromComensal{Error: true, DataError: "Error en el servidor interno al intentar decodificar la respuesta", Data: get_respuesta.Data}
+		return c.JSON(500, results)
+	}
 
+	//Enviamos los datos al servicio
+	results := ResponseInterface_FromComensal{Error: get_respuesta.Error, DataError: get_respuesta.DataError, Data: get_respuesta.Data}
+	return c.JSON(status, results)
 }
 
 func (ir *informacionRouter_mo) FindContact(c echo.Context) error {
@@ -595,7 +623,6 @@ func (ir *informacionRouter_mo) GetInformationData(c echo.Context) error {
 	status, boolerror, dataerror, data := GetInformationData_Service(data_idbusiness)
 	results := ResponseBusiness{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
-
 }
 
 func (ir *informacionRouter_mo) GetBasicData(c echo.Context) error {
@@ -617,11 +644,18 @@ func (ir *informacionRouter_mo) GetBasicData(c echo.Context) error {
 		return c.JSON(403, results)
 	}
 
-	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := GetBasicData_Service(data_idbusiness)
-	results := ResponseBasicData{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
+	//Obtenemos los datos
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/export/basicdata?idbusiness=" + strconv.Itoa(data_idbusiness))
+	var get_respuesta ResponseInterface_FromComensal
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		results := ResponseInterface_FromComensal{Error: true, DataError: "Error en el servidor interno al intentar decodificar la respuesta", Data: get_respuesta.Data}
+		return c.JSON(500, results)
+	}
 
+	//Enviamos los datos al servicio
+	results := ResponseInterface_FromComensal{Error: get_respuesta.Error, DataError: get_respuesta.DataError, Data: get_respuesta.Data}
+	return c.JSON(status, results)
 }
 
 /*----------------------SERVIMOS LOS DATOS CON CONSULTA DEL COMENSAL----------------------*/

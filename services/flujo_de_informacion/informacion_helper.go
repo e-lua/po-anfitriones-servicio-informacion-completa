@@ -15,13 +15,6 @@ type ResponseBusiness struct {
 	Data      models.Mo_Business `json:"data"`
 }
 
-//BASICDATA
-type ResponseBasicData struct {
-	Error     bool                `json:"error"`
-	DataError string              `json:"dataError"`
-	Data      models.Pg_BasicData `json:"data"`
-}
-
 //NAME
 type B_Name struct {
 	Name string `json:"name"`
@@ -59,26 +52,12 @@ type B_Address struct {
 	ReferenceAddress string  `json:"referenceAddress"`
 }
 
-//TYPEFOOD
-type ResponseTypeFood struct {
-	Error     bool                   `json:"error"`
-	DataError string                 `json:"dataError"`
-	Data      []models.Pg_R_TypeFood `json:"data"`
+//INTERFACE
+type ResponseInterface_FromComensal struct {
+	Error     bool        `json:"error"`
+	DataError string      `json:"dataError"`
+	Data      interface{} `json:"data"`
 }
-
-//SERVICE
-type ResponseService struct {
-	Error     bool                  `json:"error"`
-	DataError string                `json:"dataError"`
-	Data      []models.Pg_R_Service `json:"data"`
-}
-
-//SERVICE_ALL
-/*type ResponseServiceAll struct {
-	Error     bool                  `json:"error"`
-	DataError string                `json:"dataError"`
-	Data      []models.Ar_R_Service `json:"data"`
-}*/
 
 //DELIVERYRANGE
 type ResponseDeliveryRange struct {
@@ -98,25 +77,11 @@ type ResponsePaymentMeth struct {
 	Data      []models.Mo_PaymenthMeth `json:"data"`
 }
 
-//PAYMENTMETH_ALL
-type ResponsePaymeth struct {
-	Error     bool                        `json:"error"`
-	DataError string                      `json:"dataError"`
-	Data      []models.Pg_R_PaymentMethod `json:"data"`
-}
-
 //BANNER
 type ResponseBanner struct {
 	Error     bool               `json:"error"`
 	DataError string             `json:"dataError"`
 	Data      []models.Mo_Banner `json:"data"`
-}
-
-//SCHEDULE
-type ResponseSchedule struct {
-	Error     bool                   `json:"error"`
-	DataError string                 `json:"dataError"`
-	Data      []models.Pg_R_Schedule `json:"data"`
 }
 
 //CONTACT
