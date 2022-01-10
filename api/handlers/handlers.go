@@ -49,6 +49,7 @@ func Manejadores() {
 
 	//V1 FROM BUSINESS TO ...ADDRESS
 	router_business.PUT("/address", informacion.InformacionRouter_mo.UpdateAddress)
+	router_business.GET("/address", informacion.InformacionRouter_mo.FindAddress)
 
 	//V1 FROM BUSINESS TO ...TYPEFOOD
 	router_business.PUT("/typefood", informacion.InformacionRouter_mo.UpdateTypeFood)

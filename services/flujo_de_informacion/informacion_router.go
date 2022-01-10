@@ -408,25 +408,18 @@ func (ir *informacionRouter_mo) FindName(c echo.Context) error {
 
 func (ir *informacionRouter_mo) FindAddress(c echo.Context) error {
 
-	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 41)
-	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
-		return c.JSON(status, results)
-	}
-	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
-		return c.JSON(400, results)
-	}
+	idbusiness_string := c.Request().URL.Query().Get("idbusiness")
+
+	idbusiness_int, _ := strconv.Atoi(idbusiness_string)
 
 	//Validamos los valores enviados
-	if data_idbusiness < 1 {
+	if idbusiness_int < 1 {
 		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
 		return c.JSON(403, results)
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := FindAddress_Service(data_idbusiness)
+	status, boolerror, dataerror, data := FindAddress_Service(idbusiness_int)
 	results := ResponseAddress{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
