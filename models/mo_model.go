@@ -134,7 +134,20 @@ type Location struct {
 	GeoJSONType string    `json:"type" bson:"type"`
 	Coordinates []float64 `json:"coordinates" bson:"coordinates"`
 }
+
 type Mo_BusinessBanner_Mqtt struct {
 	IDBusiness int       `bson:"idbusiness" json:"idbusiness"`
 	Banner     Mo_Banner `bson:"banners" json:"banners"`
+}
+
+type Mo_View_Information struct {
+	IDBusiness int       `bson:"idbusiness" json:"idbusiness"`
+	IDComensal int       `bson:"idcomensal" json:"idcomensal"`
+	Date       time.Time `bson:"date" json:"date"`
+}
+
+type Mo_View_Element struct {
+	IDElement  int       `bson:"idelement" json:"idelement"`
+	IDComensal int       `bson:"idcomensal" json:"idcomensal"`
+	Date       time.Time `bson:"date" json:"date"`
 }

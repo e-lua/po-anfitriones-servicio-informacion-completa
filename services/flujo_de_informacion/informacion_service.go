@@ -14,6 +14,7 @@ import (
 	payment_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/paymenth_x_business"
 	service_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/service_x_business"
 	typefood_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/typefood_x_business"
+	view "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/view"
 )
 
 /*----------------------CONSUMER----------------------*/
@@ -200,4 +201,24 @@ func GetInformationData_a_Comensal_Service(inputidbusiness_from_comensal int) (i
 	business, _ := business_repository.Mo_Find_All_Data(inputidbusiness_from_comensal)
 
 	return 200, false, "", business
+}
+
+/*----------------------GET DATA OF THE BUSINESS WITH ONE ENDPOINT----------------------*/
+
+func AddViewInformation_Service(input_view models.Mo_View_Information) (int, bool, string, string) {
+
+	error_add_view := view.Mo_Add_Information(input_view)
+	if error_add_view != nil {
+		return 500, true, "Error interno en el servidor al intentar registrar la vista del negocio, detalle: " + error_add_view.Error(), ""
+	}
+	return 200, false, "", "Vista agregada correctamente"
+}
+
+func AddViewElement_Service(input_view models.Mo_View_Element) (int, bool, string, string) {
+
+	error_add_view := view.Mo_Add_Element(input_view)
+	if error_add_view != nil {
+		return 500, true, "Error interno en el servidor al intentar registrar la vista del elemento, detalle: " + error_add_view.Error(), ""
+	}
+	return 200, false, "", "Vista agregada correctamente"
 }

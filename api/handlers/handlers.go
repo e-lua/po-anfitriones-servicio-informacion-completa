@@ -74,6 +74,10 @@ func Manejadores() {
 	//V1 FROM BUSINESS TO ...PHONECONTACT
 	router_business.PUT("/contact", informacion.InformacionRouter_mo.UpdateContact)
 
+	//V1 FROM BUSINESS TO ...VIEW
+	router_business.POST("/viewinformation", informacion.InformacionRouter_mo.AddViewInformation)
+	router_business.POST("/viewelement", informacion.InformacionRouter_mo.AddViewElement)
+
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")
 	//Si dice que existe PORT
