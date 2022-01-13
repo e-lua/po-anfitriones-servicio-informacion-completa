@@ -205,20 +205,20 @@ func GetInformationData_a_Comensal_Service(inputidbusiness_from_comensal int) (i
 
 /*----------------------GET DATA OF THE BUSINESS WITH ONE ENDPOINT----------------------*/
 
-func AddViewInformation_Service(input_view models.Mo_View_Information) (int, bool, string, string) {
+func UpdateViewInformation_Consumer_Service(input_view models.Mqtt_View_Information) string {
 
 	error_add_view := view.Mo_Add_Information(input_view)
 	if error_add_view != nil {
-		return 500, true, "Error interno en el servidor al intentar registrar la vista del negocio, detalle: " + error_add_view.Error(), ""
+		return "Error interno en el servidor al intentar registrar la vista del negocio, detalle: " + error_add_view.Error()
 	}
-	return 200, false, "", "Vista agregada correctamente"
+	return ""
 }
 
-func AddViewElement_Service(input_view models.Mo_View_Element) (int, bool, string, string) {
+func UpdateViewElement_Consumer_Service(input_view models.Mqtt_View_Element) string {
 
 	error_add_view := view.Mo_Add_Element(input_view)
 	if error_add_view != nil {
-		return 500, true, "Error interno en el servidor al intentar registrar la vista del elemento, detalle: " + error_add_view.Error(), ""
+		return "Error interno en el servidor al intentar registrar la vista del negocio, detalle: " + error_add_view.Error()
 	}
-	return 200, false, "", "Vista agregada correctamente"
+	return ""
 }

@@ -7,7 +7,7 @@ import (
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
 )
 
-func Mo_Add_Element(view models.Mo_View_Element) error {
+func Mo_Add_Element(view models.Mqtt_View_Element) error {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

@@ -26,6 +26,8 @@ func Manejadores() {
 	//Consumidor-MQTT
 	go Consumer_Data()
 	go Consumer_Banner_Mo()
+	go Consumer_ViewInformation()
+	go Consumer_ViewElement()
 
 	e.GET("/", index)
 	//VERSION
@@ -73,10 +75,6 @@ func Manejadores() {
 
 	//V1 FROM BUSINESS TO ...PHONECONTACT
 	router_business.PUT("/contact", informacion.InformacionRouter_mo.UpdateContact)
-
-	//V1 FROM BUSINESS TO ...VIEW
-	router_business.POST("/viewinformation", informacion.InformacionRouter_mo.AddViewInformation)
-	router_business.POST("/viewelement", informacion.InformacionRouter_mo.AddViewElement)
 
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")
@@ -155,5 +153,67 @@ func Consumer_Banner_Mo() {
 	}()
 
 	<-noStop3
+
+}
+
+func Consumer_ViewInformation() {
+
+	ch, error_conection := models.MqttCN.Channel()
+	if error_conection != nil {
+		log.Fatal("Error connection canal " + error_conection.Error())
+	}
+
+	msgs, err_consume := ch.Consume("comensal/viewinformation", "", true, false, false, false, nil)
+	if err_consume != nil {
+		log.Fatal("Error connection cola " + err_consume.Error())
+	}
+
+	noStop4 := make(chan bool)
+
+	go func() {
+		for d := range msgs {
+			var view models.Mqtt_View_Information
+			buf := bytes.NewBuffer(d.Body)
+			decoder := json.NewDecoder(buf)
+			err_consume := decoder.Decode(&view)
+			if err_consume != nil {
+				log.Fatal("Error decoding")
+			}
+			informacion.InformacionRouter_mo.UpdateViewInformation_Consumer(view)
+		}
+	}()
+
+	<-noStop4
+
+}
+
+func Consumer_ViewElement() {
+
+	ch, error_conection := models.MqttCN.Channel()
+	if error_conection != nil {
+		log.Fatal("Error connection canal " + error_conection.Error())
+	}
+
+	msgs, err_consume := ch.Consume("comensal/viewelement", "", true, false, false, false, nil)
+	if err_consume != nil {
+		log.Fatal("Error connection cola " + err_consume.Error())
+	}
+
+	noStop5 := make(chan bool)
+
+	go func() {
+		for d := range msgs {
+			var view models.Mqtt_View_Element
+			buf := bytes.NewBuffer(d.Body)
+			decoder := json.NewDecoder(buf)
+			err_consume := decoder.Decode(&view)
+			if err_consume != nil {
+				log.Fatal("Error decoding")
+			}
+			informacion.InformacionRouter_mo.UpdateViewElement_Consumer(view)
+		}
+	}()
+
+	<-noStop5
 
 }

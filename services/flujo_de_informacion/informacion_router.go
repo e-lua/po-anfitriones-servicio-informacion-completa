@@ -668,38 +668,20 @@ func (ir *informacionRouter_mo) GetInformationData_a_Comensal(c echo.Context) er
 
 /*----------------------INSERTAMOS LAS VISTAS----------------------*/
 
-func (ir *informacionRouter_mo) AddViewInformation(c echo.Context) error {
-
-	//Instanciamos una variable del modelo de negocio
-	var mo_view_info models.Mo_View_Information
-
-	//Agregamos los valores enviados a la variable creada
-	err := c.Bind(&mo_view_info)
-	if err != nil {
-		results := Response{Error: true, DataError: "Se debe enviar el id, precio, tipo de moneda y disponibilidad del servicio, revise la estructura o los valores", Data: ""}
-		return c.JSON(400, results)
-	}
+func (ir *informacionRouter_mo) UpdateViewInformation_Consumer(mo_view_info models.Mqtt_View_Information) {
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := AddViewInformation_Service(mo_view_info)
-	results := Response{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
+	error_r := UpdateViewInformation_Consumer_Service(mo_view_info)
+	if error_r != "" {
+		log.Fatal(error_r)
+	}
 }
 
-func (ir *informacionRouter_mo) AddViewElement(c echo.Context) error {
-
-	//Instanciamos una variable del modelo de negocio
-	var mo_view_element models.Mo_View_Element
-
-	//Agregamos los valores enviados a la variable creada
-	err := c.Bind(&mo_view_element)
-	if err != nil {
-		results := Response{Error: true, DataError: "Se debe enviar el id, precio, tipo de moneda y disponibilidad del servicio, revise la estructura o los valores", Data: ""}
-		return c.JSON(400, results)
-	}
+func (ir *informacionRouter_mo) UpdateViewElement_Consumer(mo_view_element models.Mqtt_View_Element) {
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := AddViewElement_Service(mo_view_element)
-	results := Response{Error: boolerror, DataError: dataerror, Data: data}
-	return c.JSON(status, results)
+	error_r := UpdateViewElement_Consumer_Service(mo_view_element)
+	if error_r != "" {
+		log.Fatal(error_r)
+	}
 }
