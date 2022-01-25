@@ -49,6 +49,21 @@ func FindName_Service(inputObjectIdBusiness int) (int, bool, string, string) {
 	return 200, false, "", name
 }
 
+//UNIQUE-NOMBRE
+func UpdateUniqueName_Service(inputObjectIdBusiness int, uniquename string) (int, bool, string, string) {
+
+	error_updatename_mongo := business_repository.Mo_Update_Uniquename(uniquename, inputObjectIdBusiness)
+	if error_updatename_mongo != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar el nombre, detalle: " + error_updatename_mongo.Error(), ""
+	}
+
+	go func() {
+		business_repository.Pg_UpdateUniquename(uniquename, inputObjectIdBusiness)
+	}()
+
+	return 200, false, "", "Nombre único actualizado correctamente"
+}
+
 //ISOPEN
 func UpdateTimeZone_Service(inputObjectIdBusiness int, input_business models.Mo_Business) (int, bool, string, string) {
 

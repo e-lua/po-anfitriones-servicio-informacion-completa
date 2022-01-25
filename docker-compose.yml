@@ -25,7 +25,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: mongodbbusiness_user
       MONGO_INITDB_ROOT_PASSWORD: mongodb1151
   mongo-express:
-    image: mongo-express
+    image: "mongo-express:1.0.0-alpha.4"
     restart: always
     ports:
       - "9001:8081"
@@ -33,7 +33,10 @@ services:
       - backend
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: mongobusiness_user
-      ME_CONFIG_MONGODB_ADMINPASSWORD: mongodb4d2s
+      ME_CONFIG_MONGODB_ADMINPASSWORD: adgadsfg234GWe5Ggwf34G435g3
+      ME_CONFIG_BASICAUTH_USERNAME: mongobasicauthfw2345f
+      ME_CONFIG_BASICAUTH_PASSWORD: dasd23GGFa435fuj6c
+      ME_CONFIG_OPTIONS_EDITORTHEME: "ambiance"
       ME_CONFIG_MONGODB_URL: mongodb://mongodbbusiness_user:mongodb1151@mongo:27017/
   traefik: # apache.app.test - nginx.app.test
     image: traefik:v2.3.6

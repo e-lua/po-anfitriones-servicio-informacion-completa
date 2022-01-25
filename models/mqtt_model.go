@@ -40,6 +40,11 @@ type Mqtt_Name struct {
 	Name       string `json:"name"`
 }
 
+type Mqtt_Uniquename struct {
+	IdBusiness int    `json:"idbusiness"`
+	Uniquename string `json:"uniquename"`
+}
+
 type Mqtt_Address struct {
 	IdBusiness int     `json:"idbusiness"`
 	Latitude   float64 `json:"latitude"`

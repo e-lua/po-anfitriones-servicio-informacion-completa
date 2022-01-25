@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 
@@ -40,6 +41,17 @@ func GetJWT_Country(jwt string, service int, module int, epic int, endpoint int)
 	return 200, false, "", get_respuesta.Data.IdCountry, get_respuesta.Data.IdBusiness
 }
 
+func GetJWT_Rol(jwt string, service int, module int, epic int, endpoint int) (int, bool, string, int, int) {
+	//Obtenemos los datos del auth
+	respuesta, _ := http.Get("http://a-registro-authenticacion.restoner-api.fun:5000/v1/trylogin?jwt=" + jwt + "&service=" + strconv.Itoa(service) + "&module=" + strconv.Itoa(module) + "&epic=" + strconv.Itoa(epic) + "&endpoint=" + strconv.Itoa(endpoint))
+	var get_respuesta ResponseJWT
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		return 500, true, "Error en el sevidor interno al intentar decodificar la autenticacion, detalles: " + error_decode_respuesta.Error(), 0, 0
+	}
+	return 200, false, "", get_respuesta.Data.IdRol, get_respuesta.Data.IdBusiness
+}
+
 /*----------------------CONSUMER----------------------*/
 
 func (ir *informacionRouter_mo) UpdateBanners_Consumer(banner models.Mo_BusinessBanner_Mqtt) {
@@ -57,11 +69,11 @@ func (ir *informacionRouter_mo) UpdateName(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -88,16 +100,88 @@ func (ir *informacionRouter_mo) UpdateName(c echo.Context) error {
 
 }
 
+func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idrol, data_idbusiness := GetJWT_Rol(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+	if data_idrol != 1 {
+		results := Response{Error: true, DataError: "111" + "Rol incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Instanciamos una variable del modelo B_Name
+	var business models.Mo_Business
+
+	//Agregamos los valores enviados a la variable creada
+	err := c.Bind(&business)
+	if err != nil {
+		results := Response{Error: true, DataError: "Se debe enviar el nombre del negocio, revise la estructura o los valores", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Validamos el texto
+	counter_arroba := 0
+	counter := 0
+	uniquename_lower := strings.ToLower(business.Uniquename)
+
+	for i := 0; i < len(uniquename_lower); i++ {
+		if uniquename_lower[i] > 96 && uniquename_lower[i] < 123 || uniquename_lower[i] == 95 || uniquename_lower[i] == 64 {
+			counter = counter + 1
+		} else {
+			counter = counter + 30
+		}
+		if uniquename_lower[i] == 64 {
+			counter_arroba = counter_arroba + 10
+		}
+		if uniquename_lower[0] != 64 {
+			counter_arroba = counter_arroba + 100
+		}
+	}
+
+	//Validamos los valores enviados
+	if len(business.Uniquename) > 25 && len(business.Uniquename) < 8 || counter > 27 || counter_arroba != 10 {
+		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio, el uniquename debe contener maximo 25 caracteres"}
+		return c.JSON(403, results)
+	}
+
+	//Validamos que no exista el uniquename ya creado
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/business/uniquenames?uniquename=" + business.Uniquename)
+	var get_respuesta Response_Uniquenames
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		results := Response{Error: true, DataError: "Error en el sevidor interno al intentar buscar los nombre unicos, detalles: " + error_decode_respuesta.Error(), Data: ""}
+		return c.JSON(500, results)
+	}
+	if get_respuesta.Data != "" {
+		results := Response{Error: true, DataError: "222" + "Este nombre ya ha sido tomado", Data: ""}
+		return c.JSON(403, results)
+	}
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := UpdateUniqueName_Service(data_idbusiness, uniquename_lower)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
 func (ir *informacionRouter_mo) UpdateTimeZone(c echo.Context) error {
 
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -131,11 +215,11 @@ func (ir *informacionRouter_mo) UpdateAddress(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 4)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -167,11 +251,11 @@ func (ir *informacionRouter_mo) UpdateTypeFood(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 5)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -203,11 +287,11 @@ func (ir *informacionRouter_mo) UpdateService(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 6)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -239,11 +323,11 @@ func (ir *informacionRouter_mo) UpdateDeliveryRange(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 7)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -275,11 +359,11 @@ func (ir *informacionRouter_mo) UpdatePaymenthMeth(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 8)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -311,11 +395,11 @@ func (ir *informacionRouter_mo) UpdateSchedule(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 9)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -347,11 +431,11 @@ func (ir *informacionRouter_mo) UpdateContact(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -385,11 +469,11 @@ func (ir *informacionRouter_mo) FindName(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 31)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -430,11 +514,11 @@ func (ir *informacionRouter_mo) FindTypeFood(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idcountry <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -456,11 +540,11 @@ func (ir *informacionRouter_mo) FindService(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idcountry <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -483,11 +567,11 @@ func (ir *informacionRouter_mo) FindDeliveryRange(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 71)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -509,11 +593,11 @@ func (ir *informacionRouter_mo) FindPaymenthMeth(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idcountry <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -537,11 +621,11 @@ func (ir *informacionRouter_mo) FindSchedule(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 91)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -570,11 +654,11 @@ func (ir *informacionRouter_mo) FindContact(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 101)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -598,11 +682,11 @@ func (ir *informacionRouter_mo) GetInformationData(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 1)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -623,11 +707,11 @@ func (ir *informacionRouter_mo) GetBasicData(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 1)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 

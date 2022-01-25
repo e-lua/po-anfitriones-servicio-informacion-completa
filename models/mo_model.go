@@ -30,6 +30,7 @@ type Mo_Business struct {
 	TypeOfFood     []Mo_TypeFood     `bson:"typeoffood" json:"typeoffood"`
 	Services       []Mo_Service      `bson:"services" json:"services"`
 	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
+	Uniquename     string            `bson:"uniquename" json:"uniquename"`
 }
 
 type Mo_Banner struct {
@@ -111,7 +112,6 @@ type Mo_Registro_FromMqtt struct {
 	OrdersRejected int       `json:"ordersrejected"`
 	Available      bool      `json:"available"`
 	CreatedDate    time.Time `json:"createddate"`
-	IsOpen         bool      `json:"isopen"`
 }
 
 type Mo_Business_Cards struct {

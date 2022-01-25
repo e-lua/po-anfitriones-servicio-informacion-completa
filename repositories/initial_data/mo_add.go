@@ -28,7 +28,6 @@ func Mo_Add(anfitrion_mo models.Mo_BusinessWorker_Mqtt) error {
 	registro.CreatedDate = anfitrion_mo.UpdatedDate
 	registro.Available = true
 	registro.OrdersRejected = 0
-	registro.IsOpen = false
 
 	_, error_add := col.InsertOne(ctx, registro)
 

@@ -142,3 +142,11 @@ type JWT struct {
 	DataError string                          `json:"dataError"`
 	Data      []models.Mo_Business_Basic_Data `json:"data"`
 }*/
+
+//OBTENER UNIQUENAMES
+
+type Response_Uniquenames struct {
+	Error     bool   `json:"error"`
+	DataError string `json:"dataError"`
+	Data      string `json:"data"`
+}
