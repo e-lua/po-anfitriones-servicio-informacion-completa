@@ -15,8 +15,8 @@ type recoverRouter_mo struct {
 func (rr *recoverRouter_mo) RecoverAll(c echo.Context) error {
 
 	//Aseguramos que no recupere los datos cualquier persona
-	key := c.Request().Header.Get("Key")
-	if key != "ods8SAEUYng87dhdfn8hfna9s76fnnsaiosr7ffi9nasm" {
+	key_string := c.Request().Header.Get("Key")
+	if key_string != "ods8SAEUYng87dhdfn8hfna9s76fnnsaiosr7ffi9nasm" {
 		results := Response{Error: true, DataError: "No puede acceder a este recurso debido a que no tiene autorizacion", Data: ""}
 		return c.JSON(403, results)
 	}
@@ -39,7 +39,7 @@ func (rr *recoverRouter_mo) RecoverAll(c echo.Context) error {
 func (rr *recoverRouter_mo) RecoverOne(c echo.Context) error {
 
 	idbusiness_string := c.Request().URL.Query().Get("idbusiness")
-	if idbusiness_string != "" {
+	if idbusiness_string == "" {
 		results := Response{Error: true, DataError: "Debe enviar el id del negocio", Data: ""}
 		return c.JSON(403, results)
 	}
