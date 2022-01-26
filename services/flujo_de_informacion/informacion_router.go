@@ -118,7 +118,7 @@ func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
 	}
 
 	//Instanciamos una variable del modelo B_Name
-	var uniquename_string string
+	var uniquename_string B_Uniquename
 
 	//Agregamos los valores enviados a la variable creada
 	err := c.Bind(&uniquename_string)
@@ -130,7 +130,7 @@ func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
 	//Validamos el texto
 	counter_arroba := 0
 	counter := 0
-	uniquename_lower := strings.ToLower(uniquename_string)
+	uniquename_lower := strings.ToLower(uniquename_string.Uniquename)
 
 	for i := 0; i < len(uniquename_lower); i++ {
 		if uniquename_lower[i] > 96 && uniquename_lower[i] < 123 || uniquename_lower[i] == 95 || uniquename_lower[i] == 64 {
@@ -147,13 +147,13 @@ func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
 	}
 
 	//Validamos los valores enviados
-	if len(uniquename_string) > 25 && len(uniquename_string) < 8 || counter > 27 || counter_arroba != 10 {
+	if len(uniquename_string.Uniquename) > 25 && len(uniquename_string.Uniquename) < 8 || counter > 27 || counter_arroba != 10 {
 		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio, el uniquename debe contener maximo 25 caracteres"}
 		return c.JSON(403, results)
 	}
 
 	//Validamos que no exista el uniquename ya creado
-	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/business/uniquenames?uniquename=" + uniquename_string)
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/business/uniquenames?uniquename=" + uniquename_string.Uniquename)
 	var get_respuesta Response_Uniquenames
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {

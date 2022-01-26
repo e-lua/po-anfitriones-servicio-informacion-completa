@@ -20,6 +20,11 @@ type B_Name struct {
 	Name string `json:"name"`
 }
 
+//UNIQUENAME
+type B_Uniquename struct {
+	Uniquename string `json:"uniquename"`
+}
+
 //ISOPEN
 type B_Open struct {
 	IsOpen bool `bson:"isopen" json:"isopen"`
