@@ -14,6 +14,7 @@ import (
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
 	informacion "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/services/flujo_de_informacion"
 	register "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/services/flujo_de_sesion/register_from_initialdata"
+	recover "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/services/recover_data"
 )
 
 func Manejadores() {
@@ -78,6 +79,10 @@ func Manejadores() {
 
 	//V1 FROM BUSINESS TO ...PHONECONTACT
 	router_business.PUT("/contact", informacion.InformacionRouter_mo.UpdateContact)
+
+	//V1 FROM BUSINESS TO ...RECOVERDATA
+	router_business.POST("/recoverdata_all", recover.RecoverRouter_mo.RecoverAll)
+	router_business.POST("/recoverdata_one", recover.RecoverRouter_mo.RecoverOne)
 
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")
