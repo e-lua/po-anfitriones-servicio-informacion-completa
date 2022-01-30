@@ -234,7 +234,7 @@ func (ir *informacionRouter_mo) UpdateAddress(c echo.Context) error {
 	}
 
 	//Validamos los valores enviados
-	if data_idbusiness < 1 || len(mo_business.Address.FullAddress) < 10 || mo_business.Address.PostalCode < 0 {
+	if data_idbusiness < 1 || len(mo_business.Address.FullAddress) < 5 || mo_business.Address.PostalCode < 0 {
 		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
 		return c.JSON(403, results)
 	}
