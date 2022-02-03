@@ -133,7 +133,7 @@ func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
 	uniquename_lower := strings.ToLower(uniquename_string.Uniquename)
 
 	for i := 0; i < len(uniquename_lower); i++ {
-		if uniquename_lower[i] > 96 && uniquename_lower[i] < 123 || uniquename_lower[i] == 95 || uniquename_lower[i] == 64 {
+		if uniquename_lower[i] > 47 && uniquename_lower[i] < 58 || uniquename_lower[i] > 96 && uniquename_lower[i] < 123 || uniquename_lower[i] == 95 || uniquename_lower[i] == 64 {
 			counter = counter + 1
 		} else {
 			counter = counter + 30
@@ -147,7 +147,7 @@ func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
 	}
 
 	//Validamos los valores enviados
-	if len(uniquename_string.Uniquename) > 25 && len(uniquename_string.Uniquename) < 8 || counter > 27 || counter_arroba != 10 {
+	if len(uniquename_string.Uniquename) > 25 || len(uniquename_string.Uniquename) < 8 || counter > 27 || counter_arroba != 10 {
 		results := Response{Error: true, DataError: "333" + "El valor ingresado no cumple con la regla de negocio, el uniquename debe contener maximo 25 caracteres y minimo 8 caracteres, debe tener un @(arroba) al comienzo del texto y solo un @, y no enviar caracteres especiales"}
 		return c.JSON(403, results)
 	}
