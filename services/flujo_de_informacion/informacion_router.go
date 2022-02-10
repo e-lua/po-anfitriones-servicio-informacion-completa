@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -125,6 +126,14 @@ func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
 	if err != nil {
 		results := Response{Error: true, DataError: "Se debe enviar el nombre del negocio, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
+	}
+
+	res1, _ := regexp.MatchString(`restoner`, "r_estoner_reston_nose")
+
+	//Validamos los valores enviados
+	if res1 {
+		results := Response{Error: true, DataError: "333" + "El valor ingresado no cumple con la regla de negocio, no debe contener el texto restoner"}
+		return c.JSON(403, results)
 	}
 
 	//Validamos el texto
