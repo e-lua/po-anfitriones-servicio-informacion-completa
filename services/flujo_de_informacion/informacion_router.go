@@ -128,7 +128,7 @@ func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	res1, _ := regexp.MatchString(`restoner`, "r_estoner_reston_nose")
+	res1, _ := regexp.MatchString(`restoner`, uniquename_string.Uniquename)
 
 	//Validamos los valores enviados
 	if res1 {
