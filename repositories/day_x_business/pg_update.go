@@ -18,15 +18,11 @@ func Pg_Update(input_mo_business models.Mo_Business, idbusiness int) error {
 	//Convertimos a formato 24 horas
 	for _, day := range input_mo_business.DailySchedule {
 
-		//Convertimos la hora
-		startTime, _ := time.Parse("15:04 PM", day.StarTime)
-		endTime, _ := time.Parse("15:04 PM", day.EndTime)
-
 		//Append
 		idday_pg = append(idday_pg, day.IDDia)
 		idbusiness_pg = append(idbusiness_pg, idbusiness)
-		starttime_pg = append(starttime_pg, startTime.Format("15:04"))
-		endtime_pg = append(endtime_pg, endTime.Format("15:04"))
+		starttime_pg = append(starttime_pg, day.StarTime)
+		endtime_pg = append(endtime_pg, day.EndTime)
 		available_pg = append(available_pg, day.IsAvaiable)
 	}
 
