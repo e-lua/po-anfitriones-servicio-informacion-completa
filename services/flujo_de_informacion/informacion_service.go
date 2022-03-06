@@ -4,9 +4,6 @@ import (
 
 	//REPOSITORIES
 	"log"
-	"net/http"
-	"net/url"
-	"strconv"
 
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
 	address_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/address_x_business"
@@ -43,20 +40,6 @@ func UpdateName_Service(inputObjectIdBusiness int, input_b_name B_Name) (int, bo
 	go func() {
 		business_repository.Pg_UpdateName(input_b_name.Name, inputObjectIdBusiness)
 	}()
-
-	//Envianos la notificación
-
-	params := url.Values{}
-	params.Add("message", "Se ha modificado el nombre de us negocio")
-	params.Add("iduser", strconv.Itoa(inputObjectIdBusiness))
-	params.Add("typeuser", "1")
-
-	resp, err_post := http.PostForm("c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", params)
-	if err_post != nil {
-		return 500, true, "Error interno en el servidor al intentar enviar la notificacion, detalle: " + err_post.Error(), ""
-	}
-
-	defer resp.Body.Close()
 
 	return 200, false, "", "Nombre actualizado correctamente"
 }
