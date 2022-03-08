@@ -22,7 +22,7 @@ func Mo_Find_Struct(idbusiness int) ([]interface{}, error) {
 	/*Condiciones*/
 	datacomments := []bson.M{
 		{
-			"idbusiness": idbusiness,
+			"$match": bson.D{{Key: "idbusiness", Value: idbusiness}},
 		},
 		{
 			"$group": bson.M{
