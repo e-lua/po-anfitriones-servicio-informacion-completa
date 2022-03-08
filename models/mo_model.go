@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 /*------------------------BASIC DATA FOR SEARCH------------------------*/
 
@@ -30,6 +34,7 @@ type Mo_Business struct {
 	TypeOfFood     []Mo_TypeFood     `bson:"typeoffood" json:"typeoffood"`
 	Services       []Mo_Service      `bson:"services" json:"services"`
 	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
+	Comments       Mo_Commentario    `bson:"comments" json:"comments"`
 	Uniquename     string            `bson:"uniquename" json:"uniquename"`
 }
 
@@ -146,8 +151,26 @@ type Mo_View_Information struct {
 	Date       time.Time `bson:"date" json:"date"`
 }
 
+type Mo_Commentario struct {
+	AvgStars    float32 `bson:"avgstars" json:"avgstars"`
+	QtyComments int     `bson:"qtycomment" json:"qtycomment"`
+	OneComment  string  `bson:"onecomment" json:"onecomment"`
+}
+
 type Mo_View_Element struct {
 	IDElement  int       `bson:"idelement" json:"idelement"`
 	IDComensal int       `bson:"idcomensal" json:"idcomensal"`
 	Date       time.Time `bson:"date" json:"date"`
+}
+
+type Mo_Comment struct {
+	ID               primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Stars            int                `bson:"stars" json:"stars"`
+	Comment          string             `json:"comment" bson:"comment"`
+	IDBusiness       int                `json:"idbusiness" bson:"idbusiness"`
+	IDComensal       int                `json:"idcomensal" bson:"idcomensal"`
+	FullNameComensal string             `json:"fullnamecomensal" bson:"fullnamecomensal"`
+	PhoneComensal    int                `json:"phonecomensal" bson:"phonecomensal"`
+	Dateregistered   time.Time          `json:"dateregistered" bson:"dateregistered"`
+	IsVisible        bool               `json:"isvisible" bson:"isvisible"`
 }

@@ -471,6 +471,71 @@ func (ir *informacionRouter_mo) UpdateContact(c echo.Context) error {
 
 }
 
+func (ir *informacionRouter_mo) AddComment(c echo.Context) error {
+
+	//Instanciamos una variable del modelo de negocio
+	var mo_comment models.Mo_Comment
+
+	//Agregamos los valores enviados a la variable creada
+	err := c.Bind(&mo_comment)
+	if err != nil {
+		results := Response{Error: true, DataError: "Se debe enviar el id del contacto,el nombre el dato, y si esta disponible o no, revise la estructura o los valores ", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := AddComment_Service(mo_comment)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
+func (ir *informacionRouter_mo) GetComments(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	page_string := c.Request().URL.Query().Get("page")
+	page_int, _ := strconv.ParseInt(page_string, 10, 64)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetComments_Service(data_idbusiness, page_int)
+	results := Response_Comments{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
+func (ir *informacionRouter_mo) UpdateComment(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Recibimos el id del Business Owner
+	idcomment := c.Param("idcomment")
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := UpdateComment_Service(idcomment)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
 /*----------------------GET DATA OF THE BUSINESS----------------------*/
 
 func (ir *informacionRouter_mo) FindName(c echo.Context) error {

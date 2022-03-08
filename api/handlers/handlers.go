@@ -80,6 +80,11 @@ func Manejadores() {
 	//V1 FROM BUSINESS TO ...PHONECONTACT
 	router_business.PUT("/contact", informacion.InformacionRouter_mo.UpdateContact)
 
+	//V1 FROM BUSINESS TO ...COMMENT
+	router_business.POST("/comment", informacion.InformacionRouter_mo.AddComment)
+	router_business.GET("/comment", informacion.InformacionRouter_mo.GetComments)
+	router_business.PUT("/comment/:idcomment", informacion.InformacionRouter_mo.UpdateComment)
+
 	//V1 FROM BUSINESS TO ...RECOVERDATA
 	router_business.POST("/recoverdata_all", recover.RecoverRouter_mo.RecoverAll)
 	router_business.POST("/recoverdata_one", recover.RecoverRouter_mo.RecoverOne)

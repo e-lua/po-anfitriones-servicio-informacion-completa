@@ -155,3 +155,15 @@ type Response_Uniquenames struct {
 	DataError string `json:"dataError"`
 	Data      string `json:"data"`
 }
+
+type Post_Notification struct {
+	Message  string `bson:"message" json:"message,omitempty"`
+	IDUser   int    `bson:"iduser" json:"iduser,omitempty"`
+	TypeUser int    `bson:"typeuser" json:"typeuser,omitempty"`
+}
+
+type Response_Comments struct {
+	Error     bool                 `json:"error"`
+	DataError string               `json:"dataError"`
+	Data      []*models.Mo_Comment `json:"data"`
+}

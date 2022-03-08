@@ -3,12 +3,17 @@ package informacion
 import (
 
 	//REPOSITORIES
+	"bytes"
+	"encoding/json"
 	"log"
+	"net/http"
+	"strconv"
 
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
 	address_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/address_x_business"
 	banner_x_busines_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/banner_x_business"
 	business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/business"
+	comment_x_business "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/comments"
 	contact_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/contact_x_business"
 	schedule_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/day_x_business"
 	payment_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/paymenth_x_business"
@@ -41,6 +46,17 @@ func UpdateName_Service(inputObjectIdBusiness int, input_b_name B_Name) (int, bo
 		business_repository.Pg_UpdateName(input_b_name.Name, inputObjectIdBusiness)
 	}()
 
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "Se actualizó el nombre de su negocio a: " + input_b_name.Name,
+			"iduser":   inputObjectIdBusiness,
+			"typeuser": 1,
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}()
 	return 200, false, "", "Nombre actualizado correctamente"
 }
 func FindName_Service(inputObjectIdBusiness int) (int, bool, string, string) {
@@ -61,6 +77,18 @@ func UpdateUniqueName_Service(inputObjectIdBusiness int, uniquename string) (int
 		business_repository.Pg_UpdateUniquename(uniquename, inputObjectIdBusiness)
 	}()
 
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "Se actualizó el nombre único de su negocio a: " + uniquename,
+			"iduser":   inputObjectIdBusiness,
+			"typeuser": 1,
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}()
+
 	return 200, false, "", "Nombre único actualizado correctamente"
 }
 
@@ -77,6 +105,18 @@ func UpdateTimeZone_Service(inputObjectIdBusiness int, input_business models.Mo_
 		return 500, true, "Error interno en el servidor al intentar actualizar la zona horaria, detalle: " + error_update_pg.Error(), ""
 	}
 
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "Se actualizó la zona horaria a: " + input_business.TimeZone,
+			"iduser":   inputObjectIdBusiness,
+			"typeuser": 1,
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}()
+
 	return 200, false, "", "Zona horaria actualizado correctamente"
 }
 
@@ -90,6 +130,18 @@ func UpdateAddress_Service(inputObjectIdBusiness int, intpu_mo_business models.M
 
 	go func() {
 		address_x_business_repository.Pg_UpdateAddress(intpu_mo_business, inputObjectIdBusiness)
+	}()
+
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "Se actualizó la dirección a: " + intpu_mo_business.Address.FullAddress,
+			"iduser":   inputObjectIdBusiness,
+			"typeuser": 1,
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
 	}()
 
 	return 200, false, "", "Direccion actualizada correctamente"
@@ -114,6 +166,18 @@ func UpdateTypeFood_Service(inputObjectIdBusiness int, input_mo_business models.
 		return 500, true, "Error interno en el servidor al intentar actualizar los tipos de comida, detalle: " + error_update_pg.Error(), ""
 	}
 
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "Se actualizaron los tipos de comida",
+			"iduser":   inputObjectIdBusiness,
+			"typeuser": 1,
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}()
+
 	return 200, false, "", "Se registraron los tipos de comida correctamente"
 }
 
@@ -130,6 +194,18 @@ func UpdateService_Service(inputObjectIdBusiness int, input_mo_business models.M
 		return 500, true, "Error interno en el servidor al intentar actualizar los servicios, detalle: " + error_update_pg.Error(), ""
 	}
 
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "Se actualizaron los servicios",
+			"iduser":   inputObjectIdBusiness,
+			"typeuser": 1,
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}()
+
 	return 200, false, "", "Se registraron los servicios correctamente"
 }
 
@@ -140,6 +216,18 @@ func UpdateDeliveryRange_Service(inputObjectIdBusiness int, b_deliveryrange B_De
 	if error_update_deliveryrage != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los rango de delivery, detalle: " + error_update_deliveryrage.Error(), ""
 	}
+
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "Se actualizó el rango de delivery",
+			"iduser":   inputObjectIdBusiness,
+			"typeuser": 1,
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}()
 
 	return 200, false, "", "Rango de delivery actualizado correctamente"
 }
@@ -163,6 +251,18 @@ func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, input_mo_business mod
 		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_update_pg.Error(), ""
 	}
 
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "Se actualizaron los métodos de pago",
+			"iduser":   inputObjectIdBusiness,
+			"typeuser": 1,
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}()
+
 	return 200, false, "", "Metodos de pagos cargados correctamente"
 }
 
@@ -179,6 +279,18 @@ func UpdateSchedule_Service(inputObjectIdBusiness int, input_mo_business models.
 		return 500, true, "Error interno en el servidor al intentar actualizar el horario, detalle: " + error_update_pg.Error(), ""
 	}
 
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "Se actualizó el horario",
+			"iduser":   inputObjectIdBusiness,
+			"typeuser": 1,
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}()
+
 	return 200, false, "", "Se registraro el horario correctamente"
 }
 
@@ -190,6 +302,18 @@ func UpdateContact_Service(inputObjectIdBusiness int, input_mo_business models.M
 		return 500, true, "Error interno en el servidor al intentar actualizar los contactos, detalle: " + error_updating_contact.Error(), ""
 	}
 
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "Se actualizó el contacto",
+			"iduser":   inputObjectIdBusiness,
+			"typeuser": 1,
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}()
+
 	return 200, false, "", "Se registraron los medios de contacto correctamente"
 }
 
@@ -198,6 +322,49 @@ func FindContact_Service(inputObjectIdBusiness int) (int, bool, string, []models
 	contact_x_business, _ := contact_x_business_repository.Mo_Find(inputObjectIdBusiness)
 
 	return 200, false, "", contact_x_business
+}
+
+//COMENTARIO
+func AddComment_Service(input_comment models.Mo_Comment) (int, bool, string, string) {
+
+	error_updating_comment := comment_x_business.Mo_Add(input_comment)
+	if error_updating_comment != nil {
+		return 500, true, "Error interno en el servidor al intentar agregar el comentario al negocio, detalle: " + error_updating_comment.Error(), ""
+	}
+
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  input_comment.FullNameComensal + " agregó un comentairo con una calificación de " + strconv.Itoa(input_comment.Stars) + " estrellas",
+			"iduser":   input_comment.IDBusiness,
+			"typeuser": 1,
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}()
+
+	return 200, false, "", "Se registraron los medios de contacto correctamente"
+}
+
+func GetComments_Service(input_data_idbusiness int, page_int int64) (int, bool, string, []*models.Mo_Comment) {
+
+	comments, error_find_comments := comment_x_business.Mo_Find(input_data_idbusiness, page_int)
+	if error_find_comments != nil {
+		return 500, true, "Error interno en el servidor al intentar buscar los comentarios del negocio, detalle: " + error_find_comments.Error(), comments
+	}
+
+	return 200, false, "", comments
+}
+
+func UpdateComment_Service(input_idcommment string) (int, bool, string, string) {
+
+	error_updating_comment := comment_x_business.Mo_Update(input_idcommment)
+	if error_updating_comment != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar el comentario, detalle: " + error_updating_comment.Error(), ""
+	}
+
+	return 200, false, "", "Comentario actualizado correctamente"
 }
 
 /*----------------------GET DATA OF THE BUSINESS----------------------*/
