@@ -25,6 +25,7 @@ func Mo_Find_Resume(idbusiness int) (interface{}, error) {
 		},
 		{
 			"$group": bson.M{
+				"_id":         "",
 				"avgstars":    bson.M{"$avg": "$stars"},
 				"qtycomments": bson.M{"$sum": 1},
 			},
