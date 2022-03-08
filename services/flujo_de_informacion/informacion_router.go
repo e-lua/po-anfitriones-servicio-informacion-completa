@@ -544,7 +544,7 @@ func (ir *informacionRouter_mo) GetComments_TEST(c echo.Context) error {
 
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := GetComments_TEST_Service(idbusiness_int)
-	results := Response_interface{Error: boolerror, DataError: dataerror, Data: data}
+	results := ResponseBusiness{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
 }

@@ -9,15 +9,14 @@ import (
 )
 
 //Traeremos los tips de anfitriones
-func Mo_Find_Struct(idbusiness int) ([]interface{}, error) {
+func Mo_Find_Resume(idbusiness int) (interface{}, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*8)
 	defer cancel()
 
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("comment")
 
-	/*Aca pude haber hecho un make, es decir, resultado:=make([]...)*/
-	var resultado []interface{}
+	var resultado interface{}
 
 	/*Condiciones*/
 	datacomments := []bson.M{
@@ -26,9 +25,14 @@ func Mo_Find_Struct(idbusiness int) ([]interface{}, error) {
 		},
 		{
 			"$group": bson.M{
-				"_id":        "",
-				"avgstars":   bson.M{"$avg": "$stars"},
-				"qtycomment": bson.M{"$sum": 1},
+				"avgstars":    bson.M{"$avg": "$stars"},
+				"qtycomments": bson.M{"$sum": 1},
+			},
+		},
+		{
+			"$project": bson.M{
+				"avgstar":    "$avgstars",
+				"qtycomment": "$qtycomments",
 			},
 		},
 	}
@@ -39,16 +43,9 @@ func Mo_Find_Struct(idbusiness int) ([]interface{}, error) {
 	if err != nil {
 		return resultado, err
 	}
-	//contexto, en este caso, me crea un contexto vacio
-	for cursor.Next(context.TODO()) {
-		/*Aca trabajare con cada Tweet. El resultado lo grabará en registro*/
-		var registro interface{}
-		err := cursor.Decode(&registro)
-		if err != nil {
-			return resultado, err
-		}
-		/*Recordar que Append sirve para añadir un elemento a un slice*/
-		resultado = append(resultado, &registro)
+
+	if err = cursor.All(ctx, &resultado); err != nil {
+		panic(err)
 	}
 
 	return resultado, nil

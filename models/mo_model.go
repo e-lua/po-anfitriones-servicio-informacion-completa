@@ -34,7 +34,7 @@ type Mo_Business struct {
 	TypeOfFood     []Mo_TypeFood     `bson:"typeoffood" json:"typeoffood"`
 	Services       []Mo_Service      `bson:"services" json:"services"`
 	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
-	Comments       Mo_Commentario    `bson:"comments" json:"comments"`
+	Comments       interface{}       `bson:"comments" json:"comments"`
 	Uniquename     string            `bson:"uniquename" json:"uniquename"`
 }
 
@@ -149,12 +149,6 @@ type Mo_View_Information struct {
 	IDBusiness int       `bson:"idbusiness" json:"idbusiness"`
 	IDComensal int       `bson:"idcomensal" json:"idcomensal"`
 	Date       time.Time `bson:"date" json:"date"`
-}
-
-type Mo_Commentario struct {
-	AvgStars    float32 `bson:"avgstars" json:"avgstars"`
-	QtyComments int     `bson:"qtycomment" json:"qtycomment"`
-	OneComment  string  `bson:"onecomment" json:"onecomment"`
 }
 
 type Mo_View_Element struct {
