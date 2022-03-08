@@ -367,6 +367,16 @@ func UpdateComment_Service(input_idcommment string) (int, bool, string, string) 
 	return 200, false, "", "Comentario actualizado correctamente"
 }
 
+func GetComments_TEST_Service(input_idbusiness int) (int, bool, string, []interface{}) {
+
+	datas, error_updating_comment := comment_x_business.Mo_Find_Struct(input_idbusiness)
+	if error_updating_comment != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar el comentario, detalle: " + error_updating_comment.Error(), datas
+	}
+
+	return 200, false, "", datas
+}
+
 /*----------------------GET DATA OF THE BUSINESS----------------------*/
 
 func GetInformationData_Service(inputidbusiness int) (int, bool, string, models.Mo_Business) {

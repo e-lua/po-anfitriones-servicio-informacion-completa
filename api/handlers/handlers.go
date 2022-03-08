@@ -85,6 +85,8 @@ func Manejadores() {
 	router_business.GET("/comment", informacion.InformacionRouter_mo.GetComments)
 	router_business.PUT("/comment/:idcomment", informacion.InformacionRouter_mo.UpdateComment)
 
+	router_business.PUT("/test/:idbusiness", informacion.InformacionRouter_mo.GetComments_TEST)
+
 	//V1 FROM BUSINESS TO ...RECOVERDATA
 	router_business.POST("/recoverdata_all", recover.RecoverRouter_mo.RecoverAll)
 	router_business.POST("/recoverdata_one", recover.RecoverRouter_mo.RecoverOne)

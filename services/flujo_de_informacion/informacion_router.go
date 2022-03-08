@@ -536,6 +536,19 @@ func (ir *informacionRouter_mo) UpdateComment(c echo.Context) error {
 
 }
 
+func (ir *informacionRouter_mo) GetComments_TEST(c echo.Context) error {
+
+	//Recibimos el id del Business Owner
+	idbusiness := c.Param("idbusiness")
+	idbusiness_int, _ := strconv.Atoi(idbusiness)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetComments_TEST_Service(idbusiness_int)
+	results := Response_interface{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
 /*----------------------GET DATA OF THE BUSINESS----------------------*/
 
 func (ir *informacionRouter_mo) FindName(c echo.Context) error {

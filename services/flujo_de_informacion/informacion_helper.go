@@ -167,3 +167,9 @@ type Response_Comments struct {
 	DataError string               `json:"dataError"`
 	Data      []*models.Mo_Comment `json:"data"`
 }
+
+type Response_interface struct {
+	Error     bool          `json:"error"`
+	DataError string        `json:"dataError"`
+	Data      []interface{} `json:"data"`
+}

@@ -9,7 +9,7 @@ import (
 )
 
 //Traeremos los tips de anfitriones
-func Mo_Find_Struct(idbusiness int, pagina int64) ([]interface{}, error) {
+func Mo_Find_Struct(idbusiness int) ([]interface{}, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*8)
 	defer cancel()
 
