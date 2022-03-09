@@ -53,6 +53,17 @@ func GetJWT_Rol(jwt string, service int, module int, epic int, endpoint int) (in
 	return 200, false, "", get_respuesta.Data.IdRol, get_respuesta.Data.IdBusiness
 }
 
+func GetJWT_Comensal(jwt string) (int, bool, string, int) {
+	//Obtenemos los datos del auth
+	respuesta, _ := http.Get("http://c-registro-authenticacion.restoner-api.fun:3000/v1/trylogin?jwt=" + jwt)
+	var get_respuesta ResponseJWT_Comensal
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		return 500, true, "Error en el sevidor interno al intentar decodificar la autenticacion, detalles: " + error_decode_respuesta.Error(), 0
+	}
+	return 200, false, "", get_respuesta.Data.IDComensal
+}
+
 /*----------------------CONSUMER----------------------*/
 
 func (ir *informacionRouter_mo) UpdateBanners_Consumer(banner models.Mo_BusinessBanner_Mqtt) {
@@ -473,6 +484,17 @@ func (ir *informacionRouter_mo) UpdateContact(c echo.Context) error {
 
 func (ir *informacionRouter_mo) AddComment(c echo.Context) error {
 
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idcomensal := GetJWT_Comensal(c.Request().Header.Get("Authorization"))
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idcomensal <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
 	//Instanciamos una variable del modelo de negocio
 	var mo_comment models.Mo_Comment
 
@@ -483,6 +505,8 @@ func (ir *informacionRouter_mo) AddComment(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
+	mo_comment.IDComensal = data_idcomensal
+
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := AddComment_Service(mo_comment)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
@@ -490,7 +514,7 @@ func (ir *informacionRouter_mo) AddComment(c echo.Context) error {
 
 }
 
-func (ir *informacionRouter_mo) GetComments(c echo.Context) error {
+func (ir *informacionRouter_mo) GetCommentsBusiness(c echo.Context) error {
 
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
@@ -507,8 +531,51 @@ func (ir *informacionRouter_mo) GetComments(c echo.Context) error {
 	page_int, _ := strconv.ParseInt(page_string, 10, 64)
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := GetComments_Service(data_idbusiness, page_int)
+	status, boolerror, dataerror, data := GetCommentsBusiness_Service(data_idbusiness, page_int)
 	results := Response_Comments{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
+func (ir *informacionRouter_mo) GetCommentsStadistics(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetCommentsStadistics_Service(data_idbusiness)
+	results := Response_Comment_Resume{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
+func (ir *informacionRouter_mo) GetCommentsComensal(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	page_string := c.Request().URL.Query().Get("page")
+	page_int, _ := strconv.ParseInt(page_string, 10, 64)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetCommentsComensal_Service(data_idbusiness, page_int)
+	results := Response_Comments_Comensal{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
 }
@@ -536,15 +603,74 @@ func (ir *informacionRouter_mo) UpdateComment(c echo.Context) error {
 
 }
 
-func (ir *informacionRouter_mo) GetComments_TEST(c echo.Context) error {
+func (ir *informacionRouter_mo) AddCommentReport(c echo.Context) error {
 
-	//Recibimos el id del Business Owner
-	idbusiness := c.Param("idbusiness")
-	idbusiness_int, _ := strconv.Atoi(idbusiness)
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Instanciamos una variable del modelo de negocio
+	var mo_reporte_comment models.Mo_Comment_Reported
+
+	//Agregamos los valores enviados a la variable creada
+	err := c.Bind(&mo_reporte_comment)
+	if err != nil {
+		results := Response{Error: true, DataError: "Se debe enviar el id del contacto,el nombre el dato, y si esta disponible o no, revise la estructura o los valores ", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Validamos los valores enviados
+	if mo_reporte_comment.IDReason < 1 || mo_reporte_comment.Reason == "" {
+		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
+		return c.JSON(403, results)
+	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := GetComments_TEST_Service(idbusiness_int)
-	results := ResponseBusiness{Error: boolerror, DataError: dataerror, Data: data}
+	status, boolerror, dataerror, data := AddCommentReport_Service(mo_reporte_comment)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
+func (ir *informacionRouter_mo) AddBusinessReport(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Instanciamos una variable del modelo de negocio
+	var mo_reporte_business models.Mo_Business_Reported
+
+	//Agregamos los valores enviados a la variable creada
+	err := c.Bind(&mo_reporte_business)
+	if err != nil {
+		results := Response{Error: true, DataError: "Se debe enviar el id del contacto,el nombre el dato, y si esta disponible o no, revise la estructura o los valores ", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Validamos los valores enviados
+	if mo_reporte_business.IDReason < 1 || mo_reporte_business.Reason == "" {
+		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
+		return c.JSON(403, results)
+	}
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := AddBusinessReport_Service(mo_reporte_business)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
 }

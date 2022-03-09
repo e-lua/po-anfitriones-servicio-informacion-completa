@@ -168,3 +168,40 @@ type Mo_Comment struct {
 	Dateregistered   time.Time          `json:"dateregistered" bson:"dateregistered"`
 	IsVisible        bool               `json:"isvisible" bson:"isvisible"`
 }
+
+type Mo_Comment_Comensal struct {
+	ID               primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Stars            int                `bson:"stars" json:"stars"`
+	Comment          string             `json:"comment" bson:"comment"`
+	IDBusiness       int                `json:"idbusiness" bson:"idbusiness"`
+	IDComensal       int                `json:"idcomensal" bson:"idcomensal"`
+	FullNameComensal string             `json:"fullnamecomensal" bson:"fullnamecomensal"`
+	Dateregistered   time.Time          `json:"dateregistered" bson:"dateregistered"`
+}
+
+/*================REPORTES===================*/
+
+type Mo_Comment_Reported struct {
+	ID               primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Stars            int                `bson:"stars" json:"stars"`
+	Comment          string             `json:"comment" bson:"comment"`
+	IDBusiness       int                `json:"idbusiness" bson:"idbusiness"`
+	IDComensal       int                `json:"idcomensal" bson:"idcomensal"`
+	FullNameComensal string             `json:"fullnamecomensal" bson:"fullnamecomensal"`
+	PhoneComensal    int                `json:"phonecomensal" bson:"phonecomensal"`
+	Dateregistered   time.Time          `json:"dateregistered" bson:"dateregistered"`
+	IsVisible        bool               `json:"isvisible" bson:"isvisible"`
+	Datereported     time.Time          `json:"datereported" bson:"datereported"`
+	Reason           string             `json:"reason" bson:"reason"`
+	IDReason         int                `json:"idreason" bson:"idreason"`
+	WasView          bool               `json:"wasview" bson:"wasview"`
+}
+
+type Mo_Business_Reported struct {
+	IDBusiness   int       `json:"idbusiness" bson:"idbusiness"`
+	IDComensal   int       `json:"idcomensal" bson:"idcomensal"`
+	Datereported time.Time `json:"datereported" bson:"datereported"`
+	Reason       string    `json:"reason" bson:"reason"`
+	IDReason     int       `json:"idreason" bson:"idreason"`
+	WasView      bool      `json:"wasview" bson:"wasview"`
+}

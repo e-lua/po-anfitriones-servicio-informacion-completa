@@ -142,6 +142,18 @@ type JWT struct {
 	IdRol      int `json:"rol"`
 }
 
+type ResponseJWT_Comensal struct {
+	Error     bool         `json:"error"`
+	DataError string       `json:"dataError"`
+	Data      JWT_Comensal `json:"data"`
+}
+
+type JWT_Comensal struct {
+	Phone      int `json:"phone"`
+	Country    int `json:"country"`
+	IDComensal int ` json:"comensal"`
+}
+
 /*type ResponseCBusinessBasicData_Mo struct {
 	Error     bool                            `json:"error"`
 	DataError string                          `json:"dataError"`
@@ -166,4 +178,16 @@ type Response_Comments struct {
 	Error     bool                 `json:"error"`
 	DataError string               `json:"dataError"`
 	Data      []*models.Mo_Comment `json:"data"`
+}
+
+type Response_Comment_Resume struct {
+	Error     bool        `json:"error"`
+	DataError string      `json:"dataError"`
+	Data      interface{} `json:"data"`
+}
+
+type Response_Comments_Comensal struct {
+	Error     bool                          `json:"error"`
+	DataError string                        `json:"dataError"`
+	Data      []*models.Mo_Comment_Comensal `json:"data"`
 }

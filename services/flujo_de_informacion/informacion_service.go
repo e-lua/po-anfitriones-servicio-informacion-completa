@@ -17,6 +17,7 @@ import (
 	contact_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/contact_x_business"
 	schedule_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/day_x_business"
 	payment_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/paymenth_x_business"
+	reports "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/reports"
 	service_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/service_x_business"
 	typefood_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/typefood_x_business"
 	view "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/view"
@@ -327,6 +328,8 @@ func FindContact_Service(inputObjectIdBusiness int) (int, bool, string, []models
 //COMENTARIO
 func AddComment_Service(input_comment models.Mo_Comment) (int, bool, string, string) {
 
+	input_comment.IsVisible = true
+
 	error_updating_comment := comment_x_business.Mo_Add(input_comment)
 	if error_updating_comment != nil {
 		return 500, true, "Error interno en el servidor al intentar agregar el comentario al negocio, detalle: " + error_updating_comment.Error(), ""
@@ -347,7 +350,7 @@ func AddComment_Service(input_comment models.Mo_Comment) (int, bool, string, str
 	return 200, false, "", "Se registraron los medios de contacto correctamente"
 }
 
-func GetComments_Service(input_data_idbusiness int, page_int int64) (int, bool, string, []*models.Mo_Comment) {
+func GetCommentsBusiness_Service(input_data_idbusiness int, page_int int64) (int, bool, string, []*models.Mo_Comment) {
 
 	comments, error_find_comments := comment_x_business.Mo_Find(input_data_idbusiness, page_int)
 	if error_find_comments != nil {
@@ -355,6 +358,26 @@ func GetComments_Service(input_data_idbusiness int, page_int int64) (int, bool, 
 	}
 
 	return 200, false, "", comments
+}
+
+func GetCommentsStadistics_Service(input_data_idbusiness int) (int, bool, string, interface{}) {
+
+	comments_resume, error_find_comments := comment_x_business.Mo_Find_Resume(input_data_idbusiness)
+	if error_find_comments != nil {
+		return 500, true, "Error interno en el servidor al intentar buscar los comentarios del negocio, detalle: " + error_find_comments.Error(), comments_resume
+	}
+
+	return 200, false, "", comments_resume
+}
+
+func GetCommentsComensal_Service(input_data_idbusiness int, page_int int64) (int, bool, string, []*models.Mo_Comment_Comensal) {
+
+	comments_visible, error_find_comments := comment_x_business.Mo_Find_Visible(input_data_idbusiness, page_int)
+	if error_find_comments != nil {
+		return 500, true, "Error interno en el servidor al intentar buscar los comentarios del negocio, detalle: " + error_find_comments.Error(), comments_visible
+	}
+
+	return 200, false, "", comments_visible
 }
 
 func UpdateComment_Service(input_idcommment string) (int, bool, string, string) {
@@ -367,18 +390,24 @@ func UpdateComment_Service(input_idcommment string) (int, bool, string, string) 
 	return 200, false, "", "Comentario actualizado correctamente"
 }
 
-func GetComments_TEST_Service(input_idbusiness int) (int, bool, string, models.Mo_Business) {
+func AddCommentReport_Service(input_comment_reported models.Mo_Comment_Reported) (int, bool, string, string) {
 
-	business, _ := business_repository.Mo_Find_All_Data(input_idbusiness)
-
-	datas, error_updating_comment := comment_x_business.Mo_Find_Resume(input_idbusiness)
-	if error_updating_comment != nil {
-		return 500, true, "Error interno en el servidor al intentar actualizar el comentario, detalle: " + error_updating_comment.Error(), business
+	error_add_report_comment := reports.Mo_Add_Comment(input_comment_reported)
+	if error_add_report_comment != nil {
+		return 500, true, "Error interno en el servidor al intentar reportar el comentario, detalle: " + error_add_report_comment.Error(), ""
 	}
 
-	business.Comments = datas
+	return 200, false, "", "Comentario reportado exitosamente"
+}
 
-	return 200, false, "", business
+func AddBusinessReport_Service(input_comment_reported models.Mo_Business_Reported) (int, bool, string, string) {
+
+	error_add_report_business := reports.Mo_Add_Business(input_comment_reported)
+	if error_add_report_business != nil {
+		return 500, true, "Error interno en el servidor al intentar reportar el comentario, detalle: " + error_add_report_business.Error(), ""
+	}
+
+	return 200, false, "", "Negocio reportado exitosamente"
 }
 
 /*----------------------GET DATA OF THE BUSINESS----------------------*/
@@ -395,6 +424,13 @@ func GetInformationData_Service(inputidbusiness int) (int, bool, string, models.
 func GetInformationData_a_Comensal_Service(inputidbusiness_from_comensal int) (int, bool, string, models.Mo_Business) {
 
 	business, _ := business_repository.Mo_Find_All_Data(inputidbusiness_from_comensal)
+
+	datas, error_updating_comment := comment_x_business.Mo_Find_Resume(inputidbusiness_from_comensal)
+	if error_updating_comment != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar el comentario, detalle: " + error_updating_comment.Error(), business
+	}
+
+	business.Comments = datas
 
 	return 200, false, "", business
 }

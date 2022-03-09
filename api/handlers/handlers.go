@@ -80,12 +80,18 @@ func Manejadores() {
 	//V1 FROM BUSINESS TO ...PHONECONTACT
 	router_business.PUT("/contact", informacion.InformacionRouter_mo.UpdateContact)
 
-	//V1 FROM BUSINESS TO ...COMMENT
-	router_business.POST("/comment", informacion.InformacionRouter_mo.AddComment)
-	router_business.GET("/comment", informacion.InformacionRouter_mo.GetComments)
-	router_business.PUT("/comment/:idcomment", informacion.InformacionRouter_mo.UpdateComment)
+	/*---------------V1 TO COMMENT---------------*/
+	router_comment := version_1.Group("/comment")
+	router_comment.POST("", informacion.InformacionRouter_mo.AddComment)
+	router_comment.GET("/stadistic", informacion.InformacionRouter_mo.GetCommentsStadistics)
+	router_comment.GET("/business", informacion.InformacionRouter_mo.GetCommentsBusiness)
+	router_comment.GET("/comensal", informacion.InformacionRouter_mo.GetCommentsComensal)
+	router_comment.PUT("/:idcomment", informacion.InformacionRouter_mo.UpdateComment)
 
-	router_business.GET("/test/:idbusiness", informacion.InformacionRouter_mo.GetComments_TEST)
+	/*---------------V1 TO REPORT---------------*/
+	router_report := version_1.Group("/report")
+	router_report.POST("/business", informacion.InformacionRouter_mo.AddCommentReport)
+	router_report.POST("/comment", informacion.InformacionRouter_mo.AddBusinessReport)
 
 	//V1 FROM BUSINESS TO ...RECOVERDATA
 	router_business.POST("/recoverdata_all", recover.RecoverRouter_mo.RecoverAll)
