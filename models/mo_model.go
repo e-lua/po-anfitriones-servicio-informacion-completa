@@ -34,7 +34,7 @@ type Mo_Business struct {
 	TypeOfFood     []Mo_TypeFood     `bson:"typeoffood" json:"typeoffood"`
 	Services       []Mo_Service      `bson:"services" json:"services"`
 	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
-	Comments       interface{}       `bson:"comments" json:"comments"`
+	Comments       []interface{}     `bson:"comments" json:"comments"`
 	Uniquename     string            `bson:"uniquename" json:"uniquename"`
 }
 

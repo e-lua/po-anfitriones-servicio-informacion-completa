@@ -360,7 +360,7 @@ func GetCommentsBusiness_Service(input_data_idbusiness int, page_int int64) (int
 	return 200, false, "", comments
 }
 
-func GetCommentsStadistics_Service(input_data_idbusiness int) (int, bool, string, interface{}) {
+func GetCommentsStadistics_Service(input_data_idbusiness int) (int, bool, string, []interface{}) {
 
 	comments_resume, error_find_comments := comment_x_business.Mo_Find_Resume(input_data_idbusiness)
 	if error_find_comments != nil {

@@ -9,14 +9,14 @@ import (
 )
 
 //Traeremos los tips de anfitriones
-func Mo_Find_Resume(idbusiness int) (interface{}, error) {
+func Mo_Find_Resume(idbusiness int) ([]interface{}, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*8)
 	defer cancel()
 
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("comment")
 
-	var resultado interface{}
+	var resultado []interface{}
 
 	/*Condiciones*/
 	datacomments := []bson.M{
@@ -32,8 +32,6 @@ func Mo_Find_Resume(idbusiness int) (interface{}, error) {
 		},
 	}
 
-	/*Cursor es como una tabla de base de datos donde se van a grabar los resultados
-	y podre ir recorriendo 1 a la vez*/
 	cursor, err := col.Aggregate(ctx, datacomments)
 	if err != nil {
 		return resultado, err
