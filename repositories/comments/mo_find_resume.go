@@ -24,6 +24,9 @@ func Mo_Find_Resume(idbusiness int) ([]interface{}, error) {
 			"$match": bson.D{{Key: "idbusiness", Value: idbusiness}},
 		},
 		{
+			"$match": bson.D{{Key: "isvisible", Value: true}},
+		},
+		{
 			"$group": bson.M{
 				"_id":         "",
 				"avgstars":    bson.M{"$avg": "$stars"},

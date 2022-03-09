@@ -22,6 +22,7 @@ func Mo_Find(idbusiness int, pagina int64) ([]*models.Mo_Comment, error) {
 
 	condicion := bson.M{
 		"idbusiness": idbusiness,
+		"isvisible":  true,
 	}
 
 	opciones := options.Find()
