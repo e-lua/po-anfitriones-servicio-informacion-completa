@@ -183,6 +183,7 @@ type Mo_Comment_Comensal struct {
 
 type Mo_Comment_Reported struct {
 	ID               primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	IDComment        string             `bson:"idcomment" json:"idcomment"`
 	Stars            int                `bson:"stars" json:"stars"`
 	Comment          string             `json:"comment" bson:"comment"`
 	IDBusiness       int                `json:"idbusiness" bson:"idbusiness"`
@@ -198,11 +199,12 @@ type Mo_Comment_Reported struct {
 }
 
 type Mo_Business_Reported struct {
-	IDBusiness   int       `json:"idbusiness" bson:"idbusiness"`
-	IDComensal   int       `json:"idcomensal" bson:"idcomensal"`
-	Datereported time.Time `json:"datereported" bson:"datereported"`
-	Reason       string    `json:"reason" bson:"reason"`
-	IDReason     int       `json:"idreason" bson:"idreason"`
-	WasView      bool      `json:"wasview" bson:"wasview"`
-	ReportedBy   int       `json:"reportedby" bson:"reportedby"`
+	ID           primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	IDBusiness   int                `json:"idbusiness" bson:"idbusiness"`
+	IDComensal   int                `json:"idcomensal" bson:"idcomensal"`
+	Datereported time.Time          `json:"datereported" bson:"datereported"`
+	Reason       string             `json:"reason" bson:"reason"`
+	IDReason     int                `json:"idreason" bson:"idreason"`
+	WasView      bool               `json:"wasview" bson:"wasview"`
+	ReportedBy   int                `json:"reportedby" bson:"reportedby"`
 }
