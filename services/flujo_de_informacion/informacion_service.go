@@ -338,7 +338,7 @@ func AddComment_Service(input_comment models.Mo_Comment) (int, bool, string, str
 	go func() {
 		/*--SENT NOTIFICATION--*/
 		notification := map[string]interface{}{
-			"message":  input_comment.FullNameComensal + " agregó un comentairo con una calificación de " + strconv.Itoa(input_comment.Stars) + " estrellas",
+			"message":  input_comment.FullNameComensal + " agregó un comentario con una calificación de " + strconv.Itoa(input_comment.Stars) + " estrellas",
 			"iduser":   input_comment.IDBusiness,
 			"typeuser": 1,
 		}
@@ -347,7 +347,7 @@ func AddComment_Service(input_comment models.Mo_Comment) (int, bool, string, str
 		/*---------------------*/
 	}()
 
-	return 200, false, "", "Se registraron los medios de contacto correctamente"
+	return 200, false, "", "Se registró el comentario correctamente"
 }
 
 func GetCommentsBusiness_Service(input_data_idbusiness int, page_int int64) (int, bool, string, []*models.Mo_Comment) {
@@ -387,7 +387,7 @@ func UpdateCommentBusiness_Service(input_idcommment string) (int, bool, string, 
 		return 500, true, "Error interno en el servidor al intentar actualizar el comentario, detalle: " + error_updating_comment.Error(), ""
 	}
 
-	return 200, false, "", "Comentario actualizado correctamente"
+	return 200, false, "", "Comentario eliminado correctamente"
 }
 
 func UpdateCommentComensal_Service(input_idcommment string) (int, bool, string, string) {
@@ -397,7 +397,7 @@ func UpdateCommentComensal_Service(input_idcommment string) (int, bool, string, 
 		return 500, true, "Error interno en el servidor al intentar actualizar el comentario, detalle: " + error_updating_comment.Error(), ""
 	}
 
-	return 200, false, "", "Comentario actualizado correctamente"
+	return 200, false, "", "Comentario eliminado correctamente"
 }
 
 func AddCommentReport_Service(input_comment_reported models.Mo_Comment_Reported) (int, bool, string, string) {
