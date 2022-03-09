@@ -86,7 +86,7 @@ func Manejadores() {
 	router_comment.GET("/stadistic", informacion.InformacionRouter_mo.GetCommentsStadistics)
 	router_comment.GET("/business", informacion.InformacionRouter_mo.GetCommentsBusiness)
 	router_comment.GET("/comensal", informacion.InformacionRouter_mo.GetCommentsComensal)
-	router_comment.PUT("/:idcomment", informacion.InformacionRouter_mo.UpdateCommentBusiness)
+	router_comment.PUT("/business/:idcomment", informacion.InformacionRouter_mo.UpdateCommentBusiness)
 
 	/*---------------V1 TO REPORT---------------*/
 	router_report := version_1.Group("/report")
