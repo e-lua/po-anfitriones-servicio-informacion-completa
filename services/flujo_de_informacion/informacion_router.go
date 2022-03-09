@@ -572,7 +572,7 @@ func (ir *informacionRouter_mo) GetCommentsComensal(c echo.Context) error {
 
 }
 
-func (ir *informacionRouter_mo) UpdateComment(c echo.Context) error {
+func (ir *informacionRouter_mo) UpdateCommentBusiness(c echo.Context) error {
 
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
@@ -589,7 +589,30 @@ func (ir *informacionRouter_mo) UpdateComment(c echo.Context) error {
 	idcomment := c.Param("idcomment")
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdateComment_Service(idcomment)
+	status, boolerror, dataerror, data := UpdateCommentBusiness_Service(idcomment)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
+func (ir *informacionRouter_mo) UpdateCommentComensal(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idcomensal := GetJWT_Comensal(c.Request().Header.Get("Authorization"))
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idcomensal <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Recibimos el id del Business Owner
+	idcomment := c.Param("idcomment")
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := UpdateCommentComensal_Service(idcomment)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 

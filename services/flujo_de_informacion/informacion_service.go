@@ -380,7 +380,17 @@ func GetCommentsComensal_Service(input_data_idbusiness int, page_int int64) (int
 	return 200, false, "", comments_visible
 }
 
-func UpdateComment_Service(input_idcommment string) (int, bool, string, string) {
+func UpdateCommentBusiness_Service(input_idcommment string) (int, bool, string, string) {
+
+	error_updating_comment := comment_x_business.Mo_Update(input_idcommment)
+	if error_updating_comment != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar el comentario, detalle: " + error_updating_comment.Error(), ""
+	}
+
+	return 200, false, "", "Comentario actualizado correctamente"
+}
+
+func UpdateCommentComensal_Service(input_idcommment string) (int, bool, string, string) {
 
 	error_updating_comment := comment_x_business.Mo_Update(input_idcommment)
 	if error_updating_comment != nil {
