@@ -86,13 +86,12 @@ func Manejadores() {
 	router_comment.GET("/stadistic", informacion.InformacionRouter_mo.GetCommentsStadistics)
 	router_comment.GET("/business", informacion.InformacionRouter_mo.GetCommentsBusiness)
 	router_comment.GET("/comensal", informacion.InformacionRouter_mo.GetCommentsComensal)
-	router_comment.PUT("/anfitrion/:idcomment", informacion.InformacionRouter_mo.UpdateCommentBusiness)
-	router_comment.PUT("/comensal/:idcomment", informacion.InformacionRouter_mo.UpdateCommentComensal)
+	router_comment.PUT("/:idcomment", informacion.InformacionRouter_mo.UpdateCommentBusiness)
 
 	/*---------------V1 TO REPORT---------------*/
 	router_report := version_1.Group("/report")
-	router_report.POST("/business", informacion.InformacionRouter_mo.AddCommentReport)
-	router_report.POST("/comment", informacion.InformacionRouter_mo.AddBusinessReport)
+	router_report.POST("/business", informacion.InformacionRouter_mo.AddBusinessReport)
+	router_report.POST("/comment", informacion.InformacionRouter_mo.AddCommentReport)
 
 	//V1 FROM BUSINESS TO ...RECOVERDATA
 	router_business.POST("/recoverdata_all", recover.RecoverRouter_mo.RecoverAll)
