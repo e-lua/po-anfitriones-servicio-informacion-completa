@@ -559,22 +559,14 @@ func (ir *informacionRouter_mo) GetCommentsStadistics(c echo.Context) error {
 
 func (ir *informacionRouter_mo) GetCommentsComensal(c echo.Context) error {
 
-	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 10)
-	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
-		return c.JSON(status, results)
-	}
-	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
-		return c.JSON(400, results)
-	}
+	idbusiness_string := c.Request().URL.Query().Get("idbusiness")
+	idbusiness_int, _ := strconv.Atoi(idbusiness_string)
 
 	page_string := c.Request().URL.Query().Get("page")
 	page_int, _ := strconv.ParseInt(page_string, 10, 64)
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := GetCommentsComensal_Service(data_idbusiness, page_int)
+	status, boolerror, dataerror, data := GetCommentsComensal_Service(idbusiness_int, page_int)
 	results := Response_Comments_Comensal{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
