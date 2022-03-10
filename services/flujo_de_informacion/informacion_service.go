@@ -50,9 +50,11 @@ func UpdateName_Service(inputObjectIdBusiness int, input_b_name B_Name) (int, bo
 	go func() {
 		/*--SENT NOTIFICATION--*/
 		notification := map[string]interface{}{
-			"message":  "Se actualizó el nombre de su negocio a: " + input_b_name.Name,
+			"message":  "Se actualizó el nombre de su negocio a " + input_b_name.Name,
 			"iduser":   inputObjectIdBusiness,
 			"typeuser": 1,
+			"priority": 1,
+			"title":    "Restoner anfitriones",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
@@ -81,9 +83,11 @@ func UpdateUniqueName_Service(inputObjectIdBusiness int, uniquename string) (int
 	go func() {
 		/*--SENT NOTIFICATION--*/
 		notification := map[string]interface{}{
-			"message":  "Se actualizó el nombre único de su negocio a: " + uniquename,
+			"message":  "Se actualizó el nombre único de su negocio a " + uniquename,
 			"iduser":   inputObjectIdBusiness,
 			"typeuser": 1,
+			"priority": 1,
+			"title":    "Restoner anfitriones",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
@@ -106,18 +110,6 @@ func UpdateTimeZone_Service(inputObjectIdBusiness int, input_business models.Mo_
 		return 500, true, "Error interno en el servidor al intentar actualizar la zona horaria, detalle: " + error_update_pg.Error(), ""
 	}
 
-	go func() {
-		/*--SENT NOTIFICATION--*/
-		notification := map[string]interface{}{
-			"message":  "Se actualizó la zona horaria a: " + input_business.TimeZone,
-			"iduser":   inputObjectIdBusiness,
-			"typeuser": 1,
-		}
-		json_data, _ := json.Marshal(notification)
-		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
-		/*---------------------*/
-	}()
-
 	return 200, false, "", "Zona horaria actualizado correctamente"
 }
 
@@ -136,9 +128,11 @@ func UpdateAddress_Service(inputObjectIdBusiness int, intpu_mo_business models.M
 	go func() {
 		/*--SENT NOTIFICATION--*/
 		notification := map[string]interface{}{
-			"message":  "Se actualizó la dirección a: " + intpu_mo_business.Address.FullAddress,
+			"message":  "Se actualizó la dirección a " + intpu_mo_business.Address.FullAddress,
 			"iduser":   inputObjectIdBusiness,
 			"typeuser": 1,
+			"priority": 1,
+			"title":    "Restoner anfitriones",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
@@ -173,6 +167,8 @@ func UpdateTypeFood_Service(inputObjectIdBusiness int, input_mo_business models.
 			"message":  "Se actualizaron los tipos de comida",
 			"iduser":   inputObjectIdBusiness,
 			"typeuser": 1,
+			"priority": 1,
+			"title":    "Restoner anfitriones",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
@@ -201,6 +197,8 @@ func UpdateService_Service(inputObjectIdBusiness int, input_mo_business models.M
 			"message":  "Se actualizaron los servicios",
 			"iduser":   inputObjectIdBusiness,
 			"typeuser": 1,
+			"priority": 1,
+			"title":    "Restoner anfitriones",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
@@ -224,6 +222,8 @@ func UpdateDeliveryRange_Service(inputObjectIdBusiness int, b_deliveryrange B_De
 			"message":  "Se actualizó el rango de delivery",
 			"iduser":   inputObjectIdBusiness,
 			"typeuser": 1,
+			"priority": 1,
+			"title":    "Restoner anfitriones",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
@@ -258,6 +258,8 @@ func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, input_mo_business mod
 			"message":  "Se actualizaron los métodos de pago",
 			"iduser":   inputObjectIdBusiness,
 			"typeuser": 1,
+			"priority": 1,
+			"title":    "Restoner anfitriones",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
@@ -286,6 +288,8 @@ func UpdateSchedule_Service(inputObjectIdBusiness int, input_mo_business models.
 			"message":  "Se actualizó el horario",
 			"iduser":   inputObjectIdBusiness,
 			"typeuser": 1,
+			"priority": 1,
+			"title":    "Restoner anfitriones",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
@@ -309,6 +313,8 @@ func UpdateContact_Service(inputObjectIdBusiness int, input_mo_business models.M
 			"message":  "Se actualizó el contacto",
 			"iduser":   inputObjectIdBusiness,
 			"typeuser": 1,
+			"priority": 1,
+			"title":    "Restoner anfitriones",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
@@ -341,6 +347,22 @@ func AddComment_Service(input_comment models.Mo_Comment) (int, bool, string, str
 			"message":  input_comment.FullNameComensal + " agregó un comentario con una calificación de " + strconv.Itoa(input_comment.Stars) + " estrellas",
 			"iduser":   input_comment.IDBusiness,
 			"typeuser": 1,
+			"priority": 1,
+			"title":    "Nuevo comentario",
+		}
+		json_data, _ := json.Marshal(notification)
+		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
+		/*---------------------*/
+	}()
+
+	go func() {
+		/*--SENT NOTIFICATION--*/
+		notification := map[string]interface{}{
+			"message":  "Agregaste un comentario con una calificación de " + strconv.Itoa(input_comment.Stars) + " estrellas a " + input_comment.FullNameBusiness,
+			"iduser":   input_comment.IDComensal,
+			"typeuser": 2,
+			"priority": 1,
+			"title":    "Nuevo comentario",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))

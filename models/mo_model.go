@@ -164,6 +164,7 @@ type Mo_Comment struct {
 	IDBusiness       int                `json:"idbusiness" bson:"idbusiness"`
 	IDComensal       int                `json:"idcomensal" bson:"idcomensal"`
 	FullNameComensal string             `json:"fullnamecomensal" bson:"fullnamecomensal"`
+	FullNameBusiness string             `json:"fullnamebusiness" bson:"fullnamebusiness"`
 	PhoneComensal    int                `json:"phonecomensal" bson:"phonecomensal"`
 	Dateregistered   time.Time          `json:"dateregistered" bson:"dateregistered"`
 	IsVisible        bool               `json:"isvisible" bson:"isvisible"`
