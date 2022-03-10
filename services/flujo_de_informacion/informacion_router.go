@@ -666,7 +666,7 @@ func (ir *informacionRouter_mo) AddBusinessReport(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	mo_reporte_business.ReportedBy = data_idcomensal
+	mo_reporte_business.IDComensal = data_idcomensal
 
 	//Validamos los valores enviados
 	if mo_reporte_business.IDReason < 1 || mo_reporte_business.Reason == "" {

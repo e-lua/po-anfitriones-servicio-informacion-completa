@@ -206,5 +206,4 @@ type Mo_Business_Reported struct {
 	Reason       string             `json:"reason" bson:"reason"`
 	IDReason     int                `json:"idreason" bson:"idreason"`
 	WasView      bool               `json:"wasview" bson:"wasview"`
-	ReportedBy   int                `json:"reportedby" bson:"reportedby"`
 }
