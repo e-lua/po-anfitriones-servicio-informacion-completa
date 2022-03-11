@@ -572,6 +572,21 @@ func (ir *informacionRouter_mo) GetCommentsComensal(c echo.Context) error {
 
 }
 
+func (ir *informacionRouter_mo) GetCommentsOne_Comensal(c echo.Context) error {
+
+	idcomensal_string := c.Request().URL.Query().Get("idcomensal")
+	idcomensal_int, _ := strconv.Atoi(idcomensal_string)
+
+	idbusiness_string := c.Request().URL.Query().Get("idbusiness")
+	idbusiness_int, _ := strconv.Atoi(idbusiness_string)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetCommentsOne_Comensal_Service(idbusiness_int, idcomensal_int)
+	results := Response_CommentFound{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
 func (ir *informacionRouter_mo) UpdateCommentBusiness(c echo.Context) error {
 
 	//Obtenemos los datos del auth

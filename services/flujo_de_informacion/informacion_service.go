@@ -336,9 +336,20 @@ func AddComment_Service(input_comment models.Mo_Comment) (int, bool, string, str
 
 	input_comment.IsVisible = true
 
-	error_updating_comment := comment_x_business.Mo_Add(input_comment)
-	if error_updating_comment != nil {
-		return 500, true, "Error interno en el servidor al intentar agregar el comentario al negocio, detalle: " + error_updating_comment.Error(), ""
+	if input_comment.ISToUpdate {
+
+		error_updating_comment := comment_x_business.Mo_Update_MainData(input_comment)
+		if error_updating_comment != nil {
+			return 500, true, "Error interno en el servidor al intentar actualizar el comentario al negocio, detalle: " + error_updating_comment.Error(), ""
+		}
+
+	} else {
+
+		error_updating_comment := comment_x_business.Mo_Add(input_comment)
+		if error_updating_comment != nil {
+			return 500, true, "Error interno en el servidor al intentar agregar el comentario al negocio, detalle: " + error_updating_comment.Error(), ""
+		}
+
 	}
 
 	go func() {
@@ -400,6 +411,26 @@ func GetCommentsComensal_Service(input_data_idbusiness int, page_int int64) (int
 	}
 
 	return 200, false, "", comments_visible
+}
+
+func GetCommentsOne_Comensal_Service(input_data_idbusiness int, input_data_idcomensal int) (int, bool, string, CommentFound) {
+
+	var comment_found CommentFound
+
+	comment_one, error_find_comments := comment_x_business.Mo_Find_CommentComensal(input_data_idbusiness, input_data_idcomensal)
+	if error_find_comments != nil {
+		return 500, true, "Error interno en el servidor al intentar buscar los comentarios del negocio, detalle: " + error_find_comments.Error(), comment_found
+	}
+
+	if comment_one.Comment != "" {
+		comment_found.Hascomment = true
+	} else {
+		comment_found.Hascomment = false
+	}
+
+	comment_found.Comment = comment_one
+
+	return 200, false, "", comment_found
 }
 
 func UpdateCommentBusiness_Service(input_idcommment string) (int, bool, string, string) {

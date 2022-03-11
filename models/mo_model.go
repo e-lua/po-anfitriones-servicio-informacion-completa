@@ -168,6 +168,7 @@ type Mo_Comment struct {
 	PhoneComensal    int                `json:"phonecomensal" bson:"phonecomensal"`
 	Dateregistered   time.Time          `json:"dateregistered" bson:"dateregistered"`
 	IsVisible        bool               `json:"isvisible" bson:"isvisible"`
+	ISToUpdate       bool               `json:"istoupdate" bson:"istoupdate"`
 }
 
 type Mo_Comment_Comensal struct {
@@ -178,6 +179,12 @@ type Mo_Comment_Comensal struct {
 	IDComensal       int                `json:"idcomensal" bson:"idcomensal"`
 	FullNameComensal string             `json:"fullnamecomensal" bson:"fullnamecomensal"`
 	Dateregistered   time.Time          `json:"dateregistered" bson:"dateregistered"`
+}
+
+type Mo_Comment_ComensalFound struct {
+	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Stars   int                `bson:"stars" json:"stars"`
+	Comment string             `json:"comment" bson:"comment"`
 }
 
 /*================REPORTES===================*/
