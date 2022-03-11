@@ -27,7 +27,7 @@ func Mo_Find_Visible(idbusiness int, pagina int64) ([]*models.Mo_Comment_Comensa
 
 	opciones := options.Find()
 	/*Indicar como ira ordenado*/
-	opciones.SetSort(bson.D{{Key: "stars", Value: -1}})
+	opciones.SetSort(bson.D{{Key: "dateregistered", Value: -1}})
 	opciones.SetSkip((pagina - 1) * 20)
 
 	/*Cursor es como una tabla de base de datos donde se van a grabar los resultados
