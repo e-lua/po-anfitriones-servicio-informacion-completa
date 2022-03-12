@@ -355,11 +355,11 @@ func AddComment_Service(input_comment models.Mo_Comment) (int, bool, string, str
 	go func() {
 		/*--SENT NOTIFICATION--*/
 		notification := map[string]interface{}{
-			"message":  input_comment.FullNameComensal + " agregó un comentario con una calificación de " + strconv.Itoa(input_comment.Stars) + " estrellas",
+			"message":  input_comment.FullNameComensal + " agregó un comentario 💬 con una calificación de " + strconv.Itoa(input_comment.Stars) + " estrellas",
 			"iduser":   input_comment.IDBusiness,
 			"typeuser": 1,
 			"priority": 1,
-			"title":    "Nuevo comentario",
+			"title":    "Nuevo comentario 💬",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
@@ -369,11 +369,11 @@ func AddComment_Service(input_comment models.Mo_Comment) (int, bool, string, str
 	go func() {
 		/*--SENT NOTIFICATION--*/
 		notification := map[string]interface{}{
-			"message":  "Agregaste un comentario con una calificación de " + strconv.Itoa(input_comment.Stars) + " estrellas a " + input_comment.FullNameBusiness,
+			"message":  "Agregaste un comentario 💬 con una calificación de " + strconv.Itoa(input_comment.Stars) + " estrellas a " + input_comment.FullNameBusiness,
 			"iduser":   input_comment.IDComensal,
 			"typeuser": 2,
 			"priority": 1,
-			"title":    "Nuevo comentario",
+			"title":    "Nuevo comentario 💬",
 		}
 		json_data, _ := json.Marshal(notification)
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
