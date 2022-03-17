@@ -76,6 +76,42 @@ func (ir *informacionRouter_mo) UpdateBanners_Consumer(banner models.Mo_Business
 
 /*----------------------UPDATE DATA OF THE BUSINESS----------------------*/
 
+func (ir *informacionRouter_mo) UpdateDescription(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Instanciamos una variable del modelo B_Description
+	var b_description B_Description
+
+	//Agregamos los valores enviados a la variable creada
+	err := c.Bind(&b_description)
+	if err != nil {
+		results := Response{Error: true, DataError: "Se debe enviar el nombre del negocio, revise la estructura o los valores", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Validamos los valores enviados
+	if len(b_description.Description) > 300 {
+		results := Response{Error: true, DataError: "El valor ingresado no cumple con la regla de negocio"}
+		return c.JSON(403, results)
+	}
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := UpdateDescription_Service(data_idbusiness, b_description)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
 func (ir *informacionRouter_mo) UpdateName(c echo.Context) error {
 
 	//Obtenemos los datos del auth
@@ -352,10 +388,10 @@ func (ir *informacionRouter_mo) UpdateDeliveryRange(c echo.Context) error {
 	}
 
 	//Instanciamos una variable del modelo B_Name
-	var b_deliveryrange B_DeliveryRange
+	var b_delivery models.Mo_Delivery
 
 	//Agregamos los valores enviados a la variable creada
-	err := c.Bind(&b_deliveryrange)
+	err := c.Bind(&b_delivery)
 	if err != nil {
 		results := Response{Error: true, DataError: "Se debe enviar el rango de reparto, revise la estructura o los valores", Data: ""}
 		return c.JSON(400, results)
@@ -368,7 +404,7 @@ func (ir *informacionRouter_mo) UpdateDeliveryRange(c echo.Context) error {
 	}
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := UpdateDeliveryRange_Service(data_idbusiness, b_deliveryrange)
+	status, boolerror, dataerror, data := UpdateDeliveryRange_Service(data_idbusiness, b_delivery)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 

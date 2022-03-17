@@ -15,6 +15,11 @@ type ResponseBusiness struct {
 	Data      models.Mo_Business `json:"data"`
 }
 
+//DESCRIPTION
+type B_Description struct {
+	Description string `json:"description"`
+}
+
 //NAME
 type B_Name struct {
 	Name string `json:"name"`
@@ -62,17 +67,6 @@ type ResponseInterface_FromComensal struct {
 	Error     bool        `json:"error"`
 	DataError string      `json:"dataError"`
 	Data      interface{} `json:"data"`
-}
-
-//DELIVERYRANGE
-type ResponseDeliveryRange struct {
-	Error     bool            `json:"error"`
-	DataError string          `json:"dataError"`
-	Data      B_DeliveryRange `json:"data"`
-}
-
-type B_DeliveryRange struct {
-	DeliveryRange string `json:"deliveryRange"`
 }
 
 //PAYMENTMETH

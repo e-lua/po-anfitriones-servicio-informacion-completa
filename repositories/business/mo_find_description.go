@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func Mo_Update_DeliveryRange(delivery models.Mo_Delivery, idbusiness int) error {
+func Mo_Find_Description(idbusiness int) (string, error) {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -19,19 +19,18 @@ func Mo_Update_DeliveryRange(delivery models.Mo_Delivery, idbusiness int) error 
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("business")
 
-	updtString := bson.M{
-		"$set": bson.M{
-			"delivery": delivery,
-		},
+	condicion := bson.M{"idbusiness": idbusiness}
+
+	//Resultado de la query
+	var resultado models.Mo_Business
+
+	//Asignamos los datos del cursor
+	err_find := col.FindOne(ctx, condicion).Decode(&resultado)
+
+	if err_find != nil {
+		return resultado.Description, err_find
 	}
 
-	filtro := bson.M{"idbusiness": idbusiness}
-
-	_, error_update := col.UpdateOne(ctx, filtro, updtString)
-
-	if error_update != nil {
-		return error_update
-	}
-
-	return nil
+	//Si todo esta bien
+	return resultado.Description, nil
 }

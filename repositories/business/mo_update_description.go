@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func Mo_Update_DeliveryRange(delivery models.Mo_Delivery, idbusiness int) error {
+func Mo_Update_Description(description string, idbusiness int) error {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -21,7 +21,7 @@ func Mo_Update_DeliveryRange(delivery models.Mo_Delivery, idbusiness int) error 
 
 	updtString := bson.M{
 		"$set": bson.M{
-			"delivery": delivery,
+			"description": description,
 		},
 	}
 

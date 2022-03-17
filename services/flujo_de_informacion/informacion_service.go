@@ -35,6 +35,22 @@ func UpdateBanners_Consumer_Service(banner models.Mo_BusinessBanner_Mqtt) error 
 
 /*----------------------SERVICES TO UPDATE DATA OF BUSINESS----------------------*/
 
+//DESCRIPCION
+func UpdateDescription_Service(inputObjectIdBusiness int, input_b_description B_Description) (int, bool, string, string) {
+
+	error_updatename_mongo := business_repository.Mo_Update_Description(input_b_description.Description, inputObjectIdBusiness)
+	if error_updatename_mongo != nil {
+		return 500, true, "Error interno en el servidor al intentar actualizar el nombre, detalle: " + error_updatename_mongo.Error(), ""
+	}
+
+	return 200, false, "", "Description actualizada correctamente"
+}
+func FindDescriptiion_Service(inputObjectIdBusiness int) (int, bool, string, string) {
+
+	description, _ := business_repository.Mo_Find_Description(inputObjectIdBusiness)
+	return 200, false, "", description
+}
+
 //NOMBRE
 func UpdateName_Service(inputObjectIdBusiness int, input_b_name B_Name) (int, bool, string, string) {
 
@@ -209,9 +225,9 @@ func UpdateService_Service(inputObjectIdBusiness int, input_mo_business models.M
 }
 
 //DELIVERY RANGE
-func UpdateDeliveryRange_Service(inputObjectIdBusiness int, b_deliveryrange B_DeliveryRange) (int, bool, string, string) {
+func UpdateDeliveryRange_Service(inputObjectIdBusiness int, b_deliveryrange models.Mo_Delivery) (int, bool, string, string) {
 
-	error_update_deliveryrage := business_repository.Mo_Update_DeliveryRange(b_deliveryrange.DeliveryRange, inputObjectIdBusiness)
+	error_update_deliveryrage := business_repository.Mo_Update_DeliveryRange(b_deliveryrange, inputObjectIdBusiness)
 	if error_update_deliveryrage != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los rango de delivery, detalle: " + error_update_deliveryrage.Error(), ""
 	}
