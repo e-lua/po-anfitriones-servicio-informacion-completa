@@ -25,6 +25,11 @@ type B_Name struct {
 	Name string `json:"name"`
 }
 
+//LEGALIDENTITY
+type B_LegalIdentity struct {
+	LegalIdentity string `json:"legalidentity"`
+}
+
 //UNIQUENAME
 type B_Uniquename struct {
 	Uniquename string `json:"uniquename"`

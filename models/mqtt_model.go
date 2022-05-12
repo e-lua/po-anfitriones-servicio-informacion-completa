@@ -40,6 +40,11 @@ type Mqtt_Name struct {
 	Name       string `json:"name"`
 }
 
+type Mqtt_LegalIdentity struct {
+	IdBusiness    int    `json:"idbusiness"`
+	LegalIdentity string `json:"legalidentity"`
+}
+
 type Mqtt_Uniquename struct {
 	IdBusiness int    `json:"idbusiness"`
 	Uniquename string `json:"uniquename"`

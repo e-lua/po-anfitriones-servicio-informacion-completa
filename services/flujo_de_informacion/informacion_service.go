@@ -78,10 +78,24 @@ func UpdateName_Service(inputObjectIdBusiness int, input_b_name B_Name) (int, bo
 	}()
 	return 200, false, "", "Nombre actualizado correctamente"
 }
+
 func FindName_Service(inputObjectIdBusiness int) (int, bool, string, string) {
 
 	name, _ := business_repository.Mo_Find_Name(inputObjectIdBusiness)
 	return 200, false, "", name
+}
+
+//LEGAL IDENTITY
+func UpdateLegalIdentity_Service(inputserialize_legalidentity models.Mqtt_LegalIdentity) error {
+
+	//Insertamos los datos en PG
+
+	error_update := business_repository.Mo_Update_Legalidentity(inputserialize_legalidentity.LegalIdentity, inputserialize_legalidentity.IdBusiness)
+	if error_update != nil {
+		log.Fatal(error_update)
+	}
+
+	return nil
 }
 
 //UNIQUE-NOMBRE

@@ -148,6 +148,13 @@ func (ir *informacionRouter_mo) UpdateName(c echo.Context) error {
 
 }
 
+func (ir *informacionRouter_mo) UpdateLegalIdentity(inputserialize_legalidentity models.Mqtt_LegalIdentity) {
+	//Enviamos los datos al servicio
+	error_r := UpdateLegalIdentity_Service(inputserialize_legalidentity)
+	if error_r != nil {
+		log.Fatal(error_r)
+	}
+}
 func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
 
 	//Obtenemos los datos del auth

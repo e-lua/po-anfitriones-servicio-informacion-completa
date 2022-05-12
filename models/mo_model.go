@@ -38,6 +38,7 @@ type Mo_Business struct {
 	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
 	Comments       []interface{}     `bson:"comments" json:"comments"`
 	Uniquename     string            `bson:"uniquename" json:"uniquename"`
+	Legalidentity  string            `bson:"legalidentity" json:"legalidentity"`
 }
 
 type Mo_Delivery struct {
