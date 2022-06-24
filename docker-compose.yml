@@ -17,6 +17,8 @@ services:
       - backend
     ports:
       - "27017:27017"
+    volumes: 
+      - shared_database:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongodbbusiness_user
       MONGO_INITDB_ROOT_PASSWORD: mongodb1151
@@ -34,7 +36,7 @@ services:
       ME_CONFIG_BASICAUTH_PASSWORD: dasd23GGFa435fuj6c
       ME_CONFIG_OPTIONS_EDITORTHEME: "ambiance"
       ME_CONFIG_MONGODB_URL: mongodb://mongodbbusiness_user:mongodb1151@mongo:27017/
-  traefik: # apache.app.test - nginx.app.test
+  traefik:
     image: traefik:v2.3.6
     networks:
       - backend
@@ -45,8 +47,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.yml:/traefik.yml
       - ./acme.json:/acme.json
-      
 networks:
+  shared_database:
   backend:
     driver: bridge
     ipam: 
