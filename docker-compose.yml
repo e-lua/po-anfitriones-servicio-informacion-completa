@@ -48,12 +48,12 @@ services:
       - ./traefik.yml:/traefik.yml
       - ./acme.json:/acme.json
 networks:
-  shared_database:
   backend:
     driver: bridge
     ipam: 
       driver: default 
-
+volumes:
+  shared_database: 
 
 
 
