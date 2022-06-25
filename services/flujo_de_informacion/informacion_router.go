@@ -216,7 +216,7 @@ func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
 	}
 
 	//Validamos que no exista el uniquename ya creado
-	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/business/uniquenames?uniquename=" + uniquename_string.Uniquename)
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:80/v1/business/uniquenames?uniquename=" + uniquename_string.Uniquename)
 	var get_respuesta Response_Uniquenames
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
@@ -800,7 +800,7 @@ func (ir *informacionRouter_mo) FindTypeFood(c echo.Context) error {
 	}
 
 	//Obtenemos los datos
-	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/export/typefood?idbusiness=" + strconv.Itoa(data_idbusiness) + "&country=" + strconv.Itoa(data_idcountry))
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:80/v1/export/typefood?idbusiness=" + strconv.Itoa(data_idbusiness) + "&country=" + strconv.Itoa(data_idcountry))
 	var get_respuesta ResponseInterface_FromComensal
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
@@ -826,7 +826,7 @@ func (ir *informacionRouter_mo) FindService(c echo.Context) error {
 	}
 
 	//Obtenemos los datos
-	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/export/service?idbusiness=" + strconv.Itoa(data_idbusiness) + "&country=" + strconv.Itoa(data_idcountry))
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:80/v1/export/service?idbusiness=" + strconv.Itoa(data_idbusiness) + "&country=" + strconv.Itoa(data_idcountry))
 	var get_respuesta ResponseInterface_FromComensal
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
@@ -879,7 +879,7 @@ func (ir *informacionRouter_mo) FindPaymenthMeth(c echo.Context) error {
 	}
 
 	//Obtenemos los datos
-	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/export/payment?idbusiness=" + strconv.Itoa(data_idbusiness) + "&country=" + strconv.Itoa(data_idcountry))
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:80/v1/export/payment?idbusiness=" + strconv.Itoa(data_idbusiness) + "&country=" + strconv.Itoa(data_idcountry))
 	var get_respuesta ResponseInterface_FromComensal
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
@@ -913,7 +913,7 @@ func (ir *informacionRouter_mo) FindSchedule(c echo.Context) error {
 	}
 
 	//Obtenemos los datos
-	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/export/schedule?idbusiness=" + strconv.Itoa(data_idbusiness))
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:80/v1/export/schedule?idbusiness=" + strconv.Itoa(data_idbusiness))
 	var get_respuesta ResponseInterface_FromComensal
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
