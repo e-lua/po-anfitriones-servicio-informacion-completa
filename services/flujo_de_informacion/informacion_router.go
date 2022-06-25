@@ -999,7 +999,7 @@ func (ir *informacionRouter_mo) GetBasicData(c echo.Context) error {
 	}
 
 	//Obtenemos los datos
-	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:6850/v1/export/basicdata?idbusiness=" + strconv.Itoa(data_idbusiness))
+	respuesta, _ := http.Get("http://c-busqueda.restoner-api.fun:80/v1/export/basicdata?idbusiness=" + strconv.Itoa(data_idbusiness))
 	var get_respuesta ResponseInterface_FromComensal
 	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
 	if error_decode_respuesta != nil {
