@@ -24,21 +24,23 @@ type Mo_Business_Basic_Data struct {
 */
 
 type Mo_Business struct {
-	Description    string            `bson:"description" json:"description"`
-	Name           string            `bson:"name" json:"name"`
-	TimeZone       string            `bson:"timezone" json:"timezone"`
-	DeliveryRange  string            `bson:"deliveryrange" json:"deliveryrange"`
-	Delivery       Mo_Delivery       `bson:"delivery" json:"delivery"`
-	Contact        []Mo_Contact      `bson:"contact" json:"contact"`
-	DailySchedule  []Mo_Day          `bson:"schedule" json:"schedule"`
-	Address        Mo_Address        `bson:"address" json:"address"`
-	Banner         []Mo_Banner       `bson:"banners" json:"banners"`
-	TypeOfFood     []Mo_TypeFood     `bson:"typeoffood" json:"typeoffood"`
-	Services       []Mo_Service      `bson:"services" json:"services"`
-	PaymentMethods []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
-	Comments       []interface{}     `bson:"comments" json:"comments"`
-	Uniquename     string            `bson:"uniquename" json:"uniquename"`
-	Legalidentity  string            `bson:"legalidentity" json:"legalidentity"`
+	Description     string            `bson:"description" json:"description"`
+	Name            string            `bson:"name" json:"name"`
+	TimeZone        string            `bson:"timezone" json:"timezone"`
+	DeliveryRange   string            `bson:"deliveryrange" json:"deliveryrange"`
+	Delivery        Mo_Delivery       `bson:"delivery" json:"delivery"`
+	Contact         []Mo_Contact      `bson:"contact" json:"contact"`
+	DailySchedule   []Mo_Day          `bson:"schedule" json:"schedule"`
+	Address         Mo_Address        `bson:"address" json:"address"`
+	Banner          []Mo_Banner       `bson:"banners" json:"banners"`
+	TypeOfFood      []Mo_TypeFood     `bson:"typeoffood" json:"typeoffood"`
+	Services        []Mo_Service      `bson:"services" json:"services"`
+	PaymentMethods  []Mo_PaymenthMeth `bson:"paymentmethods" json:"paymentmethods"`
+	Comments        []interface{}     `bson:"comments" json:"comments"`
+	Uniquename      string            `bson:"uniquename" json:"uniquename"`
+	LegalIdentity   string            `bson:"legalidentity" json:"legalidentity"`
+	TypeSuscription int               `bson:"typesuscription" json:"typesuscription"`
+	IVA             float32           `bson:"iva" json:"iva"`
 }
 
 type Mo_Delivery struct {

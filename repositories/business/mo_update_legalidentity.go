@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func Mo_Update_Legalidentity(legalidentity string, idbusiness int) error {
+func Mo_Update_Legalidentity(inputserialize_legalidentity models.Mqtt_LegalIdentity) error {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -21,11 +21,13 @@ func Mo_Update_Legalidentity(legalidentity string, idbusiness int) error {
 
 	updtString := bson.M{
 		"$set": bson.M{
-			"legalidentity": legalidentity,
+			"legalidentity":   inputserialize_legalidentity.LegalIdentity,
+			"typesuscription": inputserialize_legalidentity.TypeSuscription,
+			"iva":             inputserialize_legalidentity.IVA,
 		},
 	}
 
-	filtro := bson.M{"idbusiness": idbusiness}
+	filtro := bson.M{"idbusiness": inputserialize_legalidentity.IdBusiness}
 
 	_, error_update := col.UpdateOne(ctx, filtro, updtString)
 

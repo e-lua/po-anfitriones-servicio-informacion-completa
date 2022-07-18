@@ -17,7 +17,6 @@ func Pg_UpdateName(name string, idbusiness int) error {
 	serialize_n.IdBusiness = idbusiness
 
 	//Comenzamos el envio al MQTT
-
 	go func() {
 		//Comienza el proceso de MQTT
 		ch, error_conection := models.MqttCN.Channel()

@@ -90,7 +90,7 @@ func UpdateLegalIdentity_Service(inputserialize_legalidentity models.Mqtt_LegalI
 
 	//Insertamos los datos en PG
 
-	error_update := business_repository.Mo_Update_Legalidentity(inputserialize_legalidentity.LegalIdentity, inputserialize_legalidentity.IdBusiness)
+	error_update := business_repository.Mo_Update_Legalidentity(inputserialize_legalidentity)
 	if error_update != nil {
 		log.Fatal(error_update)
 	}
