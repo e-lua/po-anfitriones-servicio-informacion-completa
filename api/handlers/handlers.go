@@ -230,7 +230,7 @@ func Consumer_LegalIdentity() {
 
 	go func() {
 		for d := range msgs {
-			var legalidentity models.Mqtt_LegalIdentity
+			var legalidentity []models.Mqtt_LegalIdentity
 			buf := bytes.NewBuffer(d.Body)
 			decoder := json.NewDecoder(buf)
 			err_consume := decoder.Decode(&legalidentity)

@@ -86,13 +86,13 @@ func FindName_Service(inputObjectIdBusiness int) (int, bool, string, string) {
 }
 
 //LEGAL IDENTITY
-func UpdateLegalIdentity_Service(inputserialize_legalidentity models.Mqtt_LegalIdentity) error {
+func UpdateLegalIdentity_Service(inputserialize_legalidentity_multiple []models.Mqtt_LegalIdentity) error {
 
-	//Insertamos los datos en PG
-
-	error_update := business_repository.Mo_Update_Legalidentity(inputserialize_legalidentity)
-	if error_update != nil {
-		log.Fatal(error_update)
+	for _, inputserialize_legalidentity := range inputserialize_legalidentity_multiple {
+		error_update := business_repository.Mo_Update_Legalidentity(inputserialize_legalidentity)
+		if error_update != nil {
+			log.Fatal(error_update)
+		}
 	}
 
 	return nil
