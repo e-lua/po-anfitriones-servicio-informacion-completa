@@ -46,7 +46,7 @@ func Web_Mo_Find_All_Data(uniquename string) (models.Mo_Business, error) {
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("business")
 
-	condicion := bson.M{"uniquename": uniquename}
+	condicion := bson.M{"uniquename": `@` + uniquename}
 
 	//Resultado de la query
 	var resultado models.Mo_Business
