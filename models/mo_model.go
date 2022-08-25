@@ -26,6 +26,7 @@ type Mo_Business_Basic_Data struct {
 type Mo_Business struct {
 	Description     string            `bson:"description" json:"description"`
 	Name            string            `bson:"name" json:"name"`
+	IdBusiness      int               `bson:"idbusiness" json:"idbusiness"`
 	TimeZone        string            `bson:"timezone" json:"timezone"`
 	DeliveryRange   string            `bson:"deliveryrange" json:"deliveryrange"`
 	Delivery        Mo_Delivery       `bson:"delivery" json:"delivery"`

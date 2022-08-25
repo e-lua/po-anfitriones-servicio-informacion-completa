@@ -14,6 +14,7 @@ import (
 
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
 	informacion "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/services/flujo_de_informacion"
+	informacion_web "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/services/flujo_de_informacion_web"
 	register "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/services/flujo_de_sesion/register_from_initialdata"
 	recover "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/services/recover_data"
 )
@@ -33,6 +34,19 @@ func Manejadores() {
 	go Consumer_LegalIdentity()
 
 	e.GET("/", index)
+
+	/*---------------------------------------------------------------------------------------------------------------------------------*/
+
+	//VERSION WEB
+	version_1_web := e.Group("/v1/web")
+
+	/*===========CARTA===========*/
+	//V1 FROM V1 TO ...TO ENTITY MENU
+	router_business_web := version_1_web.Group("/business")
+	router_business_web.GET("/comensal/bnss/:uniquename", informacion_web.Web_InformacionRouter_mo.Web_GetInformationData_a_Comensal)
+
+	/*---------------------------------------------------------------------------------------------------------------------------------*/
+
 	//VERSION
 	version_1 := e.Group("/v1")
 

@@ -16,7 +16,7 @@ services:
     networks:
       - backend
     ports:
-      - "27017:27017"
+      - "28001:27017"
     volumes: 
       - shared_database:/data/db
     environment:
