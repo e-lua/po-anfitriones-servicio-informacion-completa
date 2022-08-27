@@ -74,6 +74,38 @@ func (ir *informacionRouter_mo) UpdateBanners_Consumer(banner models.Mo_Business
 	}
 }
 
+func (ir *informacionRouter_mo) Manual_UpdateBanners_Consumer(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Instanciamos una variable del modelo B_Description
+	var banner models.Mo_BusinessBanner_Mqtt
+
+	//Agregamos los valores enviados a la variable creada
+	err := c.Bind(&banner)
+	if err != nil {
+		results := Response{Error: true, DataError: "Se debe enviar el nombre del negocio, revise la estructura o los valores", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Enviamos los datos al servicio
+	error_consumer_banner := UpdateBanners_Consumer_Service(banner)
+	if error_consumer_banner != nil {
+		log.Fatal(error_consumer_banner)
+	}
+
+	return nil
+}
+
 /*----------------------UPDATE DATA OF THE BUSINESS----------------------*/
 
 func (ir *informacionRouter_mo) UpdateDescription(c echo.Context) error {

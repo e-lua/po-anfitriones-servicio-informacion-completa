@@ -60,6 +60,9 @@ func Manejadores() {
 	router_business.GET("/basicdata", informacion.InformacionRouter_mo.GetBasicData)
 	router_business.GET("/comensal/bnss/:idbusiness", informacion.InformacionRouter_mo.GetInformationData_a_Comensal)
 
+	//V1 FROM BUSINESS TO ...BANNER
+	router_business.POST("/banner", informacion.InformacionRouter_mo.Manual_UpdateBanners_Consumer)
+
 	//V1 FROM BUSINESS TO ...DESCRIPTION
 	router_business.PUT("/description", informacion.InformacionRouter_mo.UpdateDescription)
 
