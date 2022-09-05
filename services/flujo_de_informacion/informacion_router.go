@@ -217,6 +217,12 @@ func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
 
 	res1, _ := regexp.MatchString(`restoner`, uniquename_string.Uniquename)
 
+	//Evitando modificar la cuenta demo
+	if data_idbusiness == 24 {
+		results := Response{Error: true, DataError: "Cuenta DEMO"}
+		return c.JSON(403, results)
+	}
+
 	//Validamos los valores enviados
 	if res1 {
 		results := Response{Error: true, DataError: "333" + "El valor ingresado no cumple con la regla de negocio, no debe contener el texto restoner"}
