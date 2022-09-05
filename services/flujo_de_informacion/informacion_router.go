@@ -69,23 +69,11 @@ func GetJWT_Comensal(jwt string) (int, bool, string, int) {
 func (ir *informacionRouter_mo) UpdateBanners_Consumer(banner models.Mo_BusinessBanner_Mqtt) {
 	//Enviamos los datos al servicio
 	error_consumer_banner := UpdateBanners_Consumer_Service(banner)
-	if error_consumer_banner != nil {
-		log.Fatal(error_consumer_banner)
-	}
+	log.Println(error_consumer_banner)
+
 }
 
 func (ir *informacionRouter_mo) Manual_UpdateBanners_Consumer(c echo.Context) error {
-
-	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idbusiness := GetJWT(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
-	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
-		return c.JSON(status, results)
-	}
-	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
-		return c.JSON(400, results)
-	}
 
 	//Instanciamos una variable del modelo B_Description
 	var banner models.Mo_BusinessBanner_Mqtt
@@ -99,9 +87,7 @@ func (ir *informacionRouter_mo) Manual_UpdateBanners_Consumer(c echo.Context) er
 
 	//Enviamos los datos al servicio
 	error_consumer_banner := UpdateBanners_Consumer_Service(banner)
-	if error_consumer_banner != nil {
-		log.Fatal(error_consumer_banner)
-	}
+	log.Println(error_consumer_banner)
 
 	return nil
 }
@@ -184,9 +170,8 @@ func (ir *informacionRouter_mo) UpdateLegalIdentity(inputserialize_legalidentity
 
 	//Enviamos los datos al servicio
 	error_r := UpdateLegalIdentity_Service(inputserialize_legalidentity)
-	if error_r != nil {
-		log.Fatal(error_r)
-	}
+	log.Println(error_r)
+
 }
 func (ir *informacionRouter_mo) UpdateUniqueName(c echo.Context) error {
 
@@ -1072,16 +1057,12 @@ func (ir *informacionRouter_mo) UpdateViewInformation_Consumer(mo_view_info mode
 
 	//Enviamos los datos al servicio
 	error_r := UpdateViewInformation_Consumer_Service(mo_view_info)
-	if error_r != "" {
-		log.Fatal(error_r)
-	}
+	log.Println(error_r)
 }
 
 func (ir *informacionRouter_mo) UpdateViewElement_Consumer(mo_view_element models.Mqtt_View_Element) {
 
 	//Enviamos los datos al servicio
 	error_r := UpdateViewElement_Consumer_Service(mo_view_element)
-	if error_r != "" {
-		log.Fatal(error_r)
-	}
+	log.Println(error_r)
 }

@@ -28,7 +28,7 @@ import (
 func UpdateBanners_Consumer_Service(banner models.Mo_BusinessBanner_Mqtt) error {
 	error_add_banner_mo := banner_x_busines_repository.Mo_Update(banner)
 	if error_add_banner_mo != nil {
-		log.Fatal(error_add_banner_mo)
+		log.Println(error_add_banner_mo)
 	}
 	return nil
 }
@@ -91,7 +91,7 @@ func UpdateLegalIdentity_Service(inputserialize_legalidentity_multiple []models.
 	for _, inputserialize_legalidentity := range inputserialize_legalidentity_multiple {
 		error_update := business_repository.Mo_Update_Legalidentity(inputserialize_legalidentity)
 		if error_update != nil {
-			log.Fatal(error_update)
+			log.Println(error_update)
 		}
 	}
 

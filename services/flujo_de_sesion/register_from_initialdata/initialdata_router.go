@@ -17,7 +17,5 @@ func (cr *registerFrom_SAInitialData) RegisterInitialData(anfitrion models.Mo_Bu
 
 	//Enviamos los datos al servicio
 	error_r := RegisterInitialData(anfitrion)
-	if error_r != nil {
-		log.Fatal(error_r)
-	}
+	log.Println(error_r)
 }
