@@ -28,7 +28,7 @@ func Manejadores() {
 
 	//Consumidor-MQTT
 	go Consumer_Data()
-	go Consumer_Banner_Mo()
+	//go Consumer_Banner_Mo()
 	go Consumer_ViewInformation()
 	go Consumer_ViewElement()
 	go Consumer_LegalIdentity()
