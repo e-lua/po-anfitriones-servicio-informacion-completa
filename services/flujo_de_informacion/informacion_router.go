@@ -595,7 +595,6 @@ func (ir *informacionRouter_mo) AddPost(c echo.Context) error {
 
 	mo_post.IdBusiness = data_idbusiness
 	mo_post.Dateregistered = time.Now()
-	mo_post.Url = ""
 
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := AddPost_Service(mo_post)
