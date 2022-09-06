@@ -167,11 +167,15 @@ type Response_Uniquenames struct {
 	Data      string `json:"data"`
 }
 
+//OBTENER NOTIFICACIONES
+
 type Post_Notification struct {
 	Message  string `bson:"message" json:"message,omitempty"`
 	IDUser   int    `bson:"iduser" json:"iduser,omitempty"`
 	TypeUser int    `bson:"typeuser" json:"typeuser,omitempty"`
 }
+
+//COMENTARIOS
 
 type Response_Comments struct {
 	Error     bool                 `json:"error"`
@@ -200,4 +204,12 @@ type Response_CommentFound struct {
 type CommentFound struct {
 	Hascomment bool                            `json:"hascomment"`
 	Comment    models.Mo_Comment_ComensalFound `json:"comment"`
+}
+
+//POSTS
+
+type Response_Posts struct {
+	Error     bool              `json:"error"`
+	DataError string            `json:"dataError"`
+	Data      []*models.Mo_Post `json:"data"`
 }

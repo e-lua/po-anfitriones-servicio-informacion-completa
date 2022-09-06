@@ -17,6 +17,7 @@ import (
 	contact_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/contact_x_business"
 	schedule_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/day_x_business"
 	payment_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/paymenth_x_business"
+	post_x_business "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/posts"
 	reports "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/reports"
 	service_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/service_x_business"
 	typefood_x_business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/typefood_x_business"
@@ -27,6 +28,14 @@ import (
 
 func UpdateBanners_Consumer_Service(banner models.Mo_BusinessBanner_Mqtt) error {
 	error_add_banner_mo := banner_x_busines_repository.Mo_Update(banner)
+	if error_add_banner_mo != nil {
+		log.Println(error_add_banner_mo)
+	}
+	return nil
+}
+
+func UpdatePosts_Consumer_Service(post models.Mo_BusinessPost_Mqtt) error {
+	error_add_banner_mo := post_x_business.Mo_UpdateImage(post.IdBusiness, post.IdPost, post.Url)
 	if error_add_banner_mo != nil {
 		log.Println(error_add_banner_mo)
 	}
@@ -59,9 +68,17 @@ func UpdateName_Service(inputObjectIdBusiness int, input_b_name B_Name) (int, bo
 		return 500, true, "Error interno en el servidor al intentar actualizar el nombre, detalle: " + error_updatename_mongo.Error(), ""
 	}
 
-	go func() {
+	/*go func() {
 		business_repository.Pg_UpdateName(input_b_name.Name, inputObjectIdBusiness)
-	}()
+	}()*/
+
+	/*Envio al servicio de Business-Microservicio*/
+	var serialize_n models.Mqtt_Name
+	serialize_n.Name = input_b_name.Name
+	serialize_n.IdBusiness = inputObjectIdBusiness
+	json_data, _ := json.Marshal(serialize_n)
+	http.Post("http://c-busqueda.restoner-api.fun/v1/business/name", "application/json", bytes.NewBuffer(json_data))
+	/**/
 
 	go func() {
 		/*--SENT NOTIFICATION--*/
@@ -76,6 +93,7 @@ func UpdateName_Service(inputObjectIdBusiness int, input_b_name B_Name) (int, bo
 		http.Post("http://c-a-notificacion-tip.restoner-api.fun:5800/v1/notification", "application/json", bytes.NewBuffer(json_data))
 		/*---------------------*/
 	}()
+
 	return 200, false, "", "Nombre actualizado correctamente"
 }
 
@@ -106,9 +124,17 @@ func UpdateUniqueName_Service(inputObjectIdBusiness int, uniquename string) (int
 		return 500, true, "Error interno en el servidor al intentar actualizar el nombre, detalle: " + error_updatename_mongo.Error(), ""
 	}
 
-	go func() {
+	/*go func() {
 		business_repository.Pg_UpdateUniquename(uniquename, inputObjectIdBusiness)
-	}()
+	}()*/
+
+	/*Envio al servicio de Business-Microservicio*/
+	var serialize_unique models.Mqtt_Uniquename
+	serialize_unique.Uniquename = uniquename
+	serialize_unique.IdBusiness = inputObjectIdBusiness
+	json_data, _ := json.Marshal(serialize_unique)
+	http.Post("http://c-busqueda.restoner-api.fun/v1/business/uniquename", "application/json", bytes.NewBuffer(json_data))
+	/**/
 
 	go func() {
 		/*--SENT NOTIFICATION--*/
@@ -135,10 +161,18 @@ func UpdateTimeZone_Service(inputObjectIdBusiness int, input_business models.Mo_
 		return 500, true, "Error interno en el servidor al intentar actualizar la zona horaria, detalle: " + error_updatename_mongo.Error(), ""
 	}
 
-	error_update_pg := business_repository.Pg_Update_TimeZone(input_business.TimeZone, inputObjectIdBusiness)
+	/*error_update_pg := business_repository.Pg_Update_TimeZone(input_business.TimeZone, inputObjectIdBusiness)
 	if error_update_pg != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar la zona horaria, detalle: " + error_update_pg.Error(), ""
-	}
+	}*/
+
+	/*Envio al servicio de Business-Microservicio*/
+	var serialize_timezone models.Mqtt_TimeZone
+	serialize_timezone.TimeZone = input_business.TimeZone
+	serialize_timezone.IdBusiness = inputObjectIdBusiness
+	json_data, _ := json.Marshal(serialize_timezone)
+	http.Post("http://c-busqueda.restoner-api.fun/v1/business/timezone", "application/json", bytes.NewBuffer(json_data))
+	/**/
 
 	return 200, false, "", "Zona horaria actualizado correctamente"
 }
@@ -151,9 +185,18 @@ func UpdateAddress_Service(inputObjectIdBusiness int, intpu_mo_business models.M
 		return 500, true, "Error interno en el servidor al intentar actualizar la direccion, detalle: " + error_update.Error(), ""
 	}
 
-	go func() {
+	/*go func() {
 		address_x_business_repository.Pg_UpdateAddress(intpu_mo_business, inputObjectIdBusiness)
-	}()
+	}()*/
+
+	/*Envio al servicio de Business-Microservicio*/
+	var serialize_add models.Mqtt_Address
+	serialize_add.Latitude = intpu_mo_business.Address.Latitude
+	serialize_add.IdBusiness = inputObjectIdBusiness
+	serialize_add.Longitude = intpu_mo_business.Address.Longitude
+	json_data, _ := json.Marshal(serialize_add)
+	http.Post("http://c-busqueda.restoner-api.fun/v1/business/address", "application/json", bytes.NewBuffer(json_data))
+	/**/
 
 	go func() {
 		/*--SENT NOTIFICATION--*/
@@ -186,10 +229,29 @@ func UpdateTypeFood_Service(inputObjectIdBusiness int, input_mo_business models.
 		return 500, true, "Error interno en el servidor al intentar actualizar los tipos de comida, detalle: " + error_updating_typefood.Error(), ""
 	}
 
-	error_update_pg := typefood_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	/*error_update_pg := typefood_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
 	if error_update_pg != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los tipos de comida, detalle: " + error_update_pg.Error(), ""
+	}*/
+
+	/*Envio al servicio de Business-Microservicio*/
+	idbusiness_pg, Idtypefood_pg, isavailable_pg := []int{}, []int{}, []bool{}
+	for _, v := range input_mo_business.TypeOfFood {
+		if v.IsAvaiable {
+			idbusiness_pg = append(idbusiness_pg, inputObjectIdBusiness)
+			Idtypefood_pg = append(Idtypefood_pg, v.IDTypeFood)
+			isavailable_pg = append(isavailable_pg, true)
+		}
 	}
+	//Serializamos el MQTT
+	var serialize_typefood models.Mqtt_TypeFood
+	serialize_typefood.Idbusiness_pg = idbusiness_pg
+	serialize_typefood.Idtypefood_pg = Idtypefood_pg
+	serialize_typefood.Isavailable_pg = isavailable_pg
+	serialize_typefood.IdBusiness = inputObjectIdBusiness
+	json_data, _ := json.Marshal(serialize_typefood)
+	http.Post("http://c-busqueda.restoner-api.fun/v1/business/typefood", "application/json", bytes.NewBuffer(json_data))
+	/**/
 
 	go func() {
 		/*--SENT NOTIFICATION--*/
@@ -216,10 +278,34 @@ func UpdateService_Service(inputObjectIdBusiness int, input_mo_business models.M
 		return 500, true, "Error interno en el servidor al intentar actualizar los servicios, detalle: " + error_update_service.Error(), ""
 	}
 
-	error_update_pg := service_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	/*error_update_pg := service_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
 	if error_update_pg != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los servicios, detalle: " + error_update_pg.Error(), ""
+	}*/
+
+	/*Envio al servicio de Business-Microservicio*/
+	idbusiness_pg, idservice_pg, pricing_pg, typemoney_pg, isavailable_pg := []int{}, []int{}, []float32{}, []int{}, []bool{}
+	for _, v := range input_mo_business.Services {
+		if v.IsAvaiable {
+			idbusiness_pg = append(idbusiness_pg, inputObjectIdBusiness)
+			idservice_pg = append(idservice_pg, v.IDService)
+			pricing_pg = append(pricing_pg, v.Price)
+			typemoney_pg = append(typemoney_pg, v.TypeMoney)
+			isavailable_pg = append(isavailable_pg, true)
+		}
 	}
+
+	//Serializamos el MQTT
+	var serialize_service models.Mqtt_Service
+	serialize_service.Idbusiness_pg = idbusiness_pg
+	serialize_service.Idservice_pg = idservice_pg
+	serialize_service.Pricing_pg = pricing_pg
+	serialize_service.TypeMoney_pg = typemoney_pg
+	serialize_service.Isavailable_pg = isavailable_pg
+	serialize_service.IdBusiness = inputObjectIdBusiness
+	json_data, _ := json.Marshal(serialize_service)
+	http.Post("http://c-busqueda.restoner-api.fun/v1/business/service", "application/json", bytes.NewBuffer(json_data))
+	/**/
 
 	go func() {
 		/*--SENT NOTIFICATION--*/
@@ -277,10 +363,32 @@ func UpdatePaymenthMeth_Service(inputObjectIdBusiness int, input_mo_business mod
 		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_updating_paymenth.Error(), ""
 	}
 
-	error_update_pg := payment_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	/*error_update_pg := payment_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
 	if error_update_pg != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar los metodos de pago, detalle: " + error_update_pg.Error(), ""
+	}*/
+
+	/*Envio al servicio de Business-Microservicio*/
+	idbusiness_pg, idpaymenth_pg, isavailable_pg, phonenumber_pg := []int{}, []int{}, []bool{}, []string{}
+	for _, v := range input_mo_business.PaymentMethods {
+		if v.IsAvaiable {
+			idbusiness_pg = append(idbusiness_pg, inputObjectIdBusiness)
+			idpaymenth_pg = append(idpaymenth_pg, v.IDPaymenth)
+			isavailable_pg = append(isavailable_pg, true)
+			phonenumber_pg = append(phonenumber_pg, v.PhoneNumber)
+		}
 	}
+
+	//Serializamos el MQTT
+	var serialize_paymenth models.Mqtt_PaymentMethod
+	serialize_paymenth.Idbusiness_pg = idbusiness_pg
+	serialize_paymenth.Idpaymenth_pg = idpaymenth_pg
+	serialize_paymenth.Isavailable_pg = isavailable_pg
+	serialize_paymenth.IdBusiness = inputObjectIdBusiness
+	serialize_paymenth.PhoneNumber = phonenumber_pg
+	json_data, _ := json.Marshal(serialize_paymenth)
+	http.Post("http://c-busqueda.restoner-api.fun/v1/business/payment", "application/json", bytes.NewBuffer(json_data))
+	/**/
 
 	go func() {
 		/*--SENT NOTIFICATION--*/
@@ -311,6 +419,29 @@ func UpdateSchedule_Service(inputObjectIdBusiness int, input_mo_business models.
 	if error_update_pg != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar el horario, detalle: " + error_update_pg.Error(), ""
 	}
+
+	/*Envio al servicio de Business-Microservicio*/
+	idday_pg, idbusiness_pg, starttime_pg, endtime_pg, available_pg := []int{}, []int{}, []string{}, []string{}, []bool{}
+
+	for _, day := range input_mo_business.DailySchedule {
+		idday_pg = append(idday_pg, day.IDDia)
+		idbusiness_pg = append(idbusiness_pg, inputObjectIdBusiness)
+		starttime_pg = append(starttime_pg, day.StarTime)
+		endtime_pg = append(endtime_pg, day.EndTime)
+		available_pg = append(available_pg, day.IsAvaiable)
+	}
+
+	//Serializamos el MQTT
+	var serialize_schedule models.Mqtt_Schedule
+	serialize_schedule.Idbusiness_pg = idbusiness_pg
+	serialize_schedule.Isavailable_pg = available_pg
+	serialize_schedule.IdBusiness = inputObjectIdBusiness
+	serialize_schedule.Idschedule_pg = idday_pg
+	serialize_schedule.Starttime_pg = starttime_pg
+	serialize_schedule.Endtime_pg = endtime_pg
+	json_data, _ := json.Marshal(serialize_schedule)
+	http.Post("http://c-busqueda.restoner-api.fun/v1/business/schedule", "application/json", bytes.NewBuffer(json_data))
+	/**/
 
 	go func() {
 		/*--SENT NOTIFICATION--*/
@@ -359,6 +490,34 @@ func FindContact_Service(inputObjectIdBusiness int) (int, bool, string, []models
 	contact_x_business, _ := contact_x_business_repository.Mo_Find(inputObjectIdBusiness)
 
 	return 200, false, "", contact_x_business
+}
+
+//POST
+func AddPost_Service(input_post models.Mo_Post) (int, bool, string, string) {
+	error_add := post_x_business.Mo_Add(input_post)
+	if error_add != nil {
+		return 500, true, "Error interno en el servidor al intentar agregar el post, detalle: " + error_add.Error(), ""
+	}
+
+	return 200, false, "", "Se registró el post correctamente"
+}
+
+func GetPost_Service(input_data_idbusiness int, page_int int64) (int, bool, string, []*models.Mo_Post) {
+	posts, error_add := post_x_business.Mo_Find(input_data_idbusiness, page_int)
+	if error_add != nil {
+		return 500, true, "Error interno en el servidor al intentar obtener los posts, detalle: " + error_add.Error(), posts
+	}
+
+	return 200, false, "", posts
+}
+
+func DeletePost_Service(input_data_idbusiness int, idpost string) (int, bool, string, string) {
+	error_delete := post_x_business.Mo_Delete(input_data_idbusiness, idpost)
+	if error_delete != nil {
+		return 500, true, "Error interno en el servidor al intentar eliminar un post, detalle: " + error_delete.Error(), ""
+	}
+
+	return 200, false, "", "Post eliminado correctamente"
 }
 
 //COMENTARIO

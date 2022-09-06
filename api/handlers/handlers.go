@@ -29,6 +29,7 @@ func Manejadores() {
 	//Consumidor-MQTT
 	go Consumer_Data()
 	//go Consumer_Banner_Mo()
+	//go Consumer_Post_Mo()
 	go Consumer_ViewInformation()
 	go Consumer_ViewElement()
 	go Consumer_LegalIdentity()
@@ -62,6 +63,9 @@ func Manejadores() {
 
 	//V1 FROM BUSINESS TO ...BANNER
 	router_business.POST("/banner", informacion.InformacionRouter_mo.Manual_UpdateBanners_Consumer)
+
+	//V1 FROM BUSINESS TO ...POST
+	router_business.POST("/post", informacion.InformacionRouter_mo.Manual_UpdatePost_Consumer)
 
 	//V1 FROM BUSINESS TO ...DESCRIPTION
 	router_business.PUT("/description", informacion.InformacionRouter_mo.UpdateDescription)
@@ -110,6 +114,12 @@ func Manejadores() {
 	router_comment.GET("/comensal", informacion.InformacionRouter_mo.GetCommentsComensal)
 	router_comment.GET("/onecomensal", informacion.InformacionRouter_mo.GetCommentsOne_Comensal)
 	router_comment.PUT("/business/:idcomment", informacion.InformacionRouter_mo.UpdateCommentBusiness)
+
+	/*---------------V1 TO POST---------------*/
+	router_post := version_1.Group("/post")
+	router_post.POST("", informacion.InformacionRouter_mo.AddPost)
+	router_post.GET("", informacion.InformacionRouter_mo.GetPost)
+	router_post.DELETE("/:idpost", informacion.InformacionRouter_mo.DeletePost)
 
 	/*---------------V1 TO REPORT---------------*/
 	router_report := version_1.Group("/report")
@@ -169,36 +179,37 @@ func Consumer_Data() {
 
 }
 
-func Consumer_Banner_Mo() {
+/*
+func Consumer_Post_Mo() {
 
 	ch, error_conection := models.MqttCN.Channel()
 	if error_conection != nil {
 		log.Fatal("Error connection canal " + error_conection.Error())
 	}
 
-	msgs, err_consume := ch.Consume("anfitrion/bannermo", "", true, false, false, false, nil)
+	msgs, err_consume := ch.Consume("anfitrion/post", "", true, false, false, false, nil)
 	if err_consume != nil {
 		log.Fatal("Error connection cola " + err_consume.Error())
 	}
 
-	noStop3 := make(chan bool)
+	noStopPost := make(chan bool)
 
 	go func() {
 		for d := range msgs {
-			var banner models.Mo_BusinessBanner_Mqtt
+			var post models.Mo_BusinessPost_Mqtt
 			buf := bytes.NewBuffer(d.Body)
 			decoder := json.NewDecoder(buf)
-			err_consume := decoder.Decode(&banner)
+			err_consume := decoder.Decode(&post)
 			if err_consume != nil {
 				log.Fatal("Error decoding")
 			}
-			informacion.InformacionRouter_mo.UpdateBanners_Consumer(banner)
+			informacion.InformacionRouter_mo.UpdatePost_Consumer(post)
 		}
 	}()
 
-	<-noStop3
+	<-noStopPost
 
-}
+}*/
 
 func Consumer_ViewInformation() {
 

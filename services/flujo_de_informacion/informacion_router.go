@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/labstack/echo/v4"
 
@@ -89,6 +90,24 @@ func (ir *informacionRouter_mo) Manual_UpdateBanners_Consumer(c echo.Context) er
 	error_consumer_banner := UpdateBanners_Consumer_Service(banner)
 	log.Println(error_consumer_banner)
 
+	return nil
+}
+
+func (ir *informacionRouter_mo) Manual_UpdatePost_Consumer(c echo.Context) error {
+
+	//Instanciamos una variable del modelo B_Description
+	var post models.Mo_BusinessPost_Mqtt
+
+	//Agregamos los valores enviados a la variable creada
+	err := c.Bind(&post)
+	if err != nil {
+		results := Response{Error: true, DataError: "Se debe enviar el nombre del negocio, revise la estructura o los valores", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Enviamos los datos al servicio
+	error_consumer_post := UpdatePosts_Consumer_Service(post)
+	log.Println(error_consumer_post)
 	return nil
 }
 
@@ -549,6 +568,91 @@ func (ir *informacionRouter_mo) UpdateContact(c echo.Context) error {
 
 }
 
+/*------------------------------------------------POST---------------------------------------------------------------*/
+
+func (ir *informacionRouter_mo) AddPost(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idcountry <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Instanciamos una variable del modelo de negocio
+	var mo_post models.Mo_Post
+
+	//Agregamos los valores enviados a la variable creada
+	err := c.Bind(&mo_post)
+	if err != nil {
+		results := Response{Error: true, DataError: "Se debe enviar el id del contacto,el nombre el dato, y si esta disponible o no, revise la estructura o los valores ", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	mo_post.IdBusiness = data_idbusiness
+	mo_post.Dateregistered = time.Now()
+	mo_post.Url = ""
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := AddPost_Service(mo_post)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
+func (ir *informacionRouter_mo) GetPost(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idcountry <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	page_string := c.Request().URL.Query().Get("page")
+	page_int, _ := strconv.ParseInt(page_string, 10, 64)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetPost_Service(data_idbusiness, page_int)
+	results := Response_Posts{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
+func (ir *informacionRouter_mo) DeletePost(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idcountry <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	idpost := c.Param("idpost")
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := DeletePost_Service(data_idbusiness, idpost)
+	results := Response{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
+/*-------------------------------------------------------------------------------------------------------------------*/
+
+/*---------------------------------------------COMENTS---------------------------------------------------------------*/
+
 func (ir *informacionRouter_mo) AddComment(c echo.Context) error {
 
 	//Obtenemos los datos del auth
@@ -724,6 +828,8 @@ func (ir *informacionRouter_mo) AddCommentReport(c echo.Context) error {
 	return c.JSON(status, results)
 
 }
+
+/*------------------------------------------------------------------------------------------------------------*/
 
 func (ir *informacionRouter_mo) AddBusinessReport(c echo.Context) error {
 

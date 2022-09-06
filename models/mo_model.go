@@ -152,10 +152,20 @@ type Location struct {
 	Coordinates []float64 `json:"coordinates" bson:"coordinates"`
 }
 
+/**/
+
 type Mo_BusinessBanner_Mqtt struct {
 	IDBusiness int       `bson:"idbusiness" json:"idbusiness"`
 	Banner     Mo_Banner `bson:"banners" json:"banners"`
 }
+
+type Mo_BusinessPost_Mqtt struct {
+	IdBusiness int    `json:"idBusiness"`
+	IdPost     string `json:"idPost"`
+	Url        string `json:"url"`
+}
+
+/**/
 
 type Mo_View_Information struct {
 	IDBusiness int       `bson:"idbusiness" json:"idbusiness"`
@@ -168,6 +178,8 @@ type Mo_View_Element struct {
 	IDComensal int       `bson:"idcomensal" json:"idcomensal"`
 	Date       time.Time `bson:"date" json:"date"`
 }
+
+/**/
 
 type Mo_Comment struct {
 	ID               primitive.ObjectID `bson:"_id,omitempty" json:"id"`
@@ -197,6 +209,16 @@ type Mo_Comment_ComensalFound struct {
 	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	Stars   int                `bson:"stars" json:"stars"`
 	Comment string             `json:"comment" bson:"comment"`
+}
+
+/**/
+
+type Mo_Post struct {
+	ID             primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Url            string             `bson:"url" json:"url"`
+	IdBusiness     int                `bson:"idbusiness" json:"idbusiness"`
+	Dateregistered time.Time          `bson:"dateregistered" json:"dateregistered"`
+	DeletedDate    time.Time          `bson:"deleteddate" json:"deleteddate"`
 }
 
 /*================REPORTES===================*/
