@@ -15,6 +15,13 @@ type ResponseBusiness struct {
 	Data      models.Mo_Business `json:"data"`
 }
 
+//BUSINESSDATA
+type ResponsePost struct {
+	Error     bool              `json:"error"`
+	DataError string            `json:"dataError"`
+	Data      []*models.Mo_Post `json:"data"`
+}
+
 //DESCRIPTION
 type B_Description struct {
 	Description string `json:"description"`

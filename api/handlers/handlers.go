@@ -45,6 +45,7 @@ func Manejadores() {
 	//V1 FROM V1 TO ...TO ENTITY MENU
 	router_business_web := version_1_web.Group("/business")
 	router_business_web.GET("/comensal/bnss/:uniquename", informacion_web.Web_InformacionRouter_mo.Web_GetInformationData_a_Comensal)
+	router_business_web.GET("/comensal/bnss/post/:idbusiness/:limit", informacion_web.Web_InformacionRouter_mo.Web_GetPost)
 
 	/*---------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -60,6 +61,7 @@ func Manejadores() {
 	router_business.GET("", informacion.InformacionRouter_mo.GetInformationData)
 	router_business.GET("/basicdata", informacion.InformacionRouter_mo.GetBasicData)
 	router_business.GET("/comensal/bnss/:idbusiness", informacion.InformacionRouter_mo.GetInformationData_a_Comensal)
+	router_business.GET("/comensal/bnss/post/:idbusiness/:limit", informacion.InformacionRouter_mo.GetPost)
 
 	//V1 FROM BUSINESS TO ...BANNER
 	router_business.POST("/banner", informacion.InformacionRouter_mo.Manual_UpdateBanners_Consumer)
@@ -118,7 +120,7 @@ func Manejadores() {
 	/*---------------V1 TO POST---------------*/
 	router_post := version_1.Group("/post")
 	router_post.POST("", informacion.InformacionRouter_mo.AddPost)
-	router_post.GET("", informacion.InformacionRouter_mo.GetPost)
+	router_post.GET("/:limit", informacion.InformacionRouter_mo.GetPost)
 	router_post.DELETE("/:idpost", informacion.InformacionRouter_mo.DeletePost)
 
 	/*---------------V1 TO REPORT---------------*/

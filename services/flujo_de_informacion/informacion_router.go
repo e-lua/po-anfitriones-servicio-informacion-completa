@@ -589,7 +589,7 @@ func (ir *informacionRouter_mo) AddPost(c echo.Context) error {
 	//Agregamos los valores enviados a la variable creada
 	err := c.Bind(&mo_post)
 	if err != nil {
-		results := Response{Error: true, DataError: "Se debe enviar el id del contacto,el nombre el dato, y si esta disponible o no, revise la estructura o los valores ", Data: ""}
+		results := Response{Error: true, DataError: "Se debe enviar la fecha de eliminación y la url de la imagen, revise la estructura o los valores ", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -605,22 +605,15 @@ func (ir *informacionRouter_mo) AddPost(c echo.Context) error {
 
 func (ir *informacionRouter_mo) GetPost(c echo.Context) error {
 
-	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
-	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
-		return c.JSON(status, results)
-	}
-	if data_idcountry <= 0 {
-		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
-		return c.JSON(400, results)
-	}
+	//Recibimos el id del Business Owner
+	idbusiness := c.Param("idbusiness")
+	idbusiness_int, _ := strconv.Atoi(idbusiness)
 
-	page_string := c.Request().URL.Query().Get("page")
-	page_int, _ := strconv.ParseInt(page_string, 10, 64)
+	limit_string := c.Param("limit")
+	limit_int, _ := strconv.ParseInt(limit_string, 10, 64)
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := GetPost_Service(data_idbusiness, page_int)
+	status, boolerror, dataerror, data := GetPost_Service(idbusiness_int, limit_int)
 	results := Response_Posts{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 

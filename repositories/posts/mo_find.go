@@ -10,7 +10,7 @@ import (
 )
 
 //Traeremos los tips de anfitriones
-func Mo_Find(idbusiness int, pagina int64) ([]*models.Mo_Post, error) {
+func Mo_Find(idbusiness int, limit int64) ([]*models.Mo_Post, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*8)
 	defer cancel()
 
@@ -27,7 +27,7 @@ func Mo_Find(idbusiness int, pagina int64) ([]*models.Mo_Post, error) {
 	opciones := options.Find()
 	/*Indicar como ira ordenado*/
 	opciones.SetSort(bson.D{{Key: "dateregistered", Value: -1}})
-	opciones.SetSkip((pagina - 1) * 20)
+	opciones.SetLimit(limit)
 
 	/*Cursor es como una tabla de base de datos donde se van a grabar los resultados
 	y podre ir recorriendo 1 a la vez*/
