@@ -27,7 +27,8 @@ func Mo_Find(idbusiness int, limit int64) ([]*models.Mo_Post, error) {
 	opciones := options.Find()
 	/*Indicar como ira ordenado*/
 	opciones.SetSort(bson.D{{Key: "dateregistered", Value: -1}})
-	opciones.SetSkip(limit)
+	opciones.SetSkip(0)
+	opciones.SetLimit(limit)
 
 	/*Cursor es como una tabla de base de datos donde se van a grabar los resultados
 	y podre ir recorriendo 1 a la vez*/
