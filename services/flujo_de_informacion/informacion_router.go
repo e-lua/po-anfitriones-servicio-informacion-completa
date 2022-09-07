@@ -605,15 +605,22 @@ func (ir *informacionRouter_mo) AddPost(c echo.Context) error {
 
 func (ir *informacionRouter_mo) GetPost(c echo.Context) error {
 
-	//Recibimos el id del Business Owner
-	idbusiness := c.Param("idbusiness")
-	idbusiness_int, _ := strconv.Atoi(idbusiness)
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idcountry, data_idbusiness := GetJWT_Country(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idcountry <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
 
 	limit_string := c.Param("limit")
 	limit_int, _ := strconv.ParseInt(limit_string, 10, 64)
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := GetPost_Service(idbusiness_int, limit_int)
+	status, boolerror, dataerror, data := GetPost_Service(data_idbusiness, limit_int)
 	results := Response_Posts{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
@@ -1147,6 +1154,22 @@ func (ir *informacionRouter_mo) GetInformationData_a_Comensal(c echo.Context) er
 	status, boolerror, dataerror, data := GetInformationData_a_Comensal_Service(idbusiness_int)
 	results := ResponseBusiness{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
+}
+
+func (ir *informacionRouter_mo) GetPostData_a_Comensal(c echo.Context) error {
+
+	//Recibimos el id del Business Owner
+	idbusiness := c.Param("idbusiness")
+	idbusiness_int, _ := strconv.Atoi(idbusiness)
+
+	limit_string := c.Param("limit")
+	limit_int, _ := strconv.ParseInt(limit_string, 10, 64)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetPost_Service(idbusiness_int, limit_int)
+	results := Response_Posts{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
 }
 
 /*----------------------INSERTAMOS LAS VISTAS----------------------*/

@@ -24,7 +24,7 @@ func (wir *webInformacionRouter_mo) Web_GetInformationData_a_Comensal(c echo.Con
 	return c.JSON(status, results)
 }
 
-func (wir *webInformacionRouter_mo) Web_GetPost(c echo.Context) error {
+func (wir *webInformacionRouter_mo) GetPostData_a_Comensal(c echo.Context) error {
 
 	//Recibimos el id del Business Owner
 	idbusiness := c.Param("idbusiness")
