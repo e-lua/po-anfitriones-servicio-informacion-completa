@@ -19,8 +19,7 @@ func Mo_Delete(idbusiness int, idpost string) error {
 	objID, _ := primitive.ObjectIDFromHex(idpost)
 
 	condicion := bson.M{
-		"_id":        objID,
-		"idbusiness": idbusiness,
+		"_id": objID,
 	}
 
 	_, err := col.DeleteOne(ctx, condicion)

@@ -256,7 +256,7 @@ func Consumer_LegalIdentity() {
 		log.Fatal("Error connection cola " + err_consume.Error())
 	}
 
-	noStopName := make(chan bool)
+	noStopLegal := make(chan bool)
 
 	go func() {
 		for d := range msgs {
@@ -273,7 +273,7 @@ func Consumer_LegalIdentity() {
 		}
 	}()
 
-	<-noStopName
+	<-noStopLegal
 }
 
 func Consumer_ViewElement() {
