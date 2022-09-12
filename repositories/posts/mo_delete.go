@@ -6,7 +6,6 @@ import (
 
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func Mo_Delete(idbusiness int, idpost string) error {
@@ -16,10 +15,10 @@ func Mo_Delete(idbusiness int, idpost string) error {
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("post")
 
-	objID, _ := primitive.ObjectIDFromHex(idpost)
+	//objID, _ := primitive.ObjectIDFromHex(idpost)
 
 	condicion := bson.M{
-		"_id": objID,
+		"_id": idpost,
 	}
 
 	_, err := col.DeleteOne(ctx, condicion)
