@@ -213,3 +213,7 @@ type Response_Posts struct {
 	DataError string            `json:"dataError"`
 	Data      []*models.Mo_Post `json:"data"`
 }
+
+type Request_Delete struct {
+	Id string `json:"id"`
+}

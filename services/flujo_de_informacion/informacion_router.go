@@ -640,12 +640,20 @@ func (ir *informacionRouter_mo) DeletePost(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	idpost := c.Param("idpost")
+	//Instanciamos una variable del modelo de negocio
+	var post Request_Delete
 
-	log.Println("PRINT 1", idpost)
+	//Agregamos los valores enviados a la variable creada
+	err := c.Bind(&post)
+	if err != nil {
+		results := Response{Error: true, DataError: "Se debe enviar la fecha de eliminación y la url de la imagen, revise la estructura o los valores ", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	log.Println("PRINT 1", post.Id)
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := DeletePost_Service(data_idbusiness, idpost)
+	status, boolerror, dataerror, data := DeletePost_Service(data_idbusiness, post.Id)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
