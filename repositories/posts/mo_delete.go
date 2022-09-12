@@ -16,13 +16,11 @@ func Mo_Delete(idbusiness int, idpost string) error {
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("post")
 
-	objID, _ := primitive.ObjectIDFromHex(idpost)
+	id, _ := primitive.ObjectIDFromHex(idpost)
 
-	condicion := bson.M{
-		"_id": objID,
-	}
+	filter := bson.D{{Key: "_id", Value: id}}
 
-	_, err := col.DeleteMany(ctx, condicion)
+	_, err := col.DeleteOne(ctx, filter)
 	if err != nil {
 		return err
 	}
