@@ -640,10 +640,10 @@ func (ir *informacionRouter_mo) DeletePost(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
-	uuidpost := c.Param("uuidpost")
+	idpost := c.Param("idpost")
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := DeletePost_Service(data_idbusiness, uuidpost)
+	status, boolerror, dataerror, data := DeletePost_Service(data_idbusiness, idpost)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 

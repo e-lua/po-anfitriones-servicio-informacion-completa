@@ -2,7 +2,6 @@ package posts
 
 import (
 	"context"
-	"log"
 	"time"
 
 	models "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/models"
@@ -10,19 +9,16 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func Mo_Delete(idbusiness int, uuidpost string) error {
+func Mo_Delete(idbusiness int, idpost string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*8)
 	defer cancel()
 
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("post")
 
-	id, _ := primitive.ObjectIDFromHex(uuidpost)
+	id, _ := primitive.ObjectIDFromHex(idpost)
 
-	log.Println("IMPRIMIENDO EL ID,", uuidpost)
-	log.Println("IMPRIMIENDO EL ID 2,", id)
-
-	filter := bson.M{"uuid": uuidpost}
+	filter := bson.M{"_id": id}
 
 	_, err := col.DeleteOne(ctx, filter)
 	if err != nil {
