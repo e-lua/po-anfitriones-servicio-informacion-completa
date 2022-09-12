@@ -216,7 +216,6 @@ type Mo_Comment_ComensalFound struct {
 type Mo_Post struct {
 	ID             primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	Url            string             `bson:"url" json:"url"`
-	Uuid           string             `bson:"uuid" json:"uuid"`
 	IdBusiness     int                `bson:"idbusiness" json:"idbusiness"`
 	Dateregistered time.Time          `bson:"dateregistered" json:"dateregistered"`
 	DeletedDate    time.Time          `bson:"deleteddate" json:"deleteddate"`
