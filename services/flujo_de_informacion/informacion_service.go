@@ -511,8 +511,9 @@ func GetPost_Service(input_data_idbusiness int, page_int int64) (int, bool, stri
 	return 200, false, "", posts
 }
 
-func DeletePost_Service(input_data_idbusiness int, idpost string) (int, bool, string, string) {
-	error_delete := post_x_business.Mo_Delete(input_data_idbusiness, idpost)
+func DeletePost_Service(input_data_idbusiness int, uuidpost string) (int, bool, string, string) {
+
+	error_delete := post_x_business.Mo_Delete(input_data_idbusiness, uuidpost)
 	if error_delete != nil {
 		return 500, true, "Error interno en el servidor al intentar eliminar un post, detalle: " + error_delete.Error(), ""
 	}

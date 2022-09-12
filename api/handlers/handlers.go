@@ -121,7 +121,7 @@ func Manejadores() {
 	router_post := version_1.Group("/post")
 	router_post.POST("", informacion.InformacionRouter_mo.AddPost)
 	router_post.GET("/:limit", informacion.InformacionRouter_mo.GetPost)
-	router_post.DELETE("/:idpost", informacion.InformacionRouter_mo.DeletePost)
+	router_post.DELETE("/:uuidpost", informacion.InformacionRouter_mo.DeletePost)
 
 	/*---------------V1 TO REPORT---------------*/
 	router_report := version_1.Group("/report")
