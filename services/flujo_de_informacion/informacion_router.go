@@ -642,6 +642,8 @@ func (ir *informacionRouter_mo) DeletePost(c echo.Context) error {
 
 	idpost := c.Param("idpost")
 
+	log.Println("PRINT 1", idpost)
+
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := DeletePost_Service(data_idbusiness, idpost)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
