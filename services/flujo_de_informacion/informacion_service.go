@@ -415,10 +415,10 @@ func UpdateSchedule_Service(inputObjectIdBusiness int, input_mo_business models.
 		return 500, true, "Error interno en el servidor al intentar actualizar el horario, detalle: " + error_update_schedule.Error(), ""
 	}
 
-	error_update_pg := schedule_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
+	/*error_update_pg := schedule_x_business_repository.Pg_Update(input_mo_business, inputObjectIdBusiness)
 	if error_update_pg != nil {
 		return 500, true, "Error interno en el servidor al intentar actualizar el horario, detalle: " + error_update_pg.Error(), ""
-	}
+	}*/
 
 	/*Envio al servicio de Business-Microservicio*/
 	idday_pg, idbusiness_pg, starttime_pg, endtime_pg, available_pg := []int{}, []int{}, []string{}, []string{}, []bool{}
