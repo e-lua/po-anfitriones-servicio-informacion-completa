@@ -756,11 +756,11 @@ func (ir *informacionRouter_mo) GetPostsComensal(c echo.Context) error {
 	idbusiness_string := c.Request().URL.Query().Get("idbusiness")
 	idbusiness_int, _ := strconv.Atoi(idbusiness_string)
 
-	page_string := c.Request().URL.Query().Get("page")
-	page_int, _ := strconv.ParseInt(page_string, 10, 64)
+	limit_string := c.Request().URL.Query().Get("limit")
+	limit_int, _ := strconv.ParseInt(limit_string, 10, 64)
 
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := GetPostsComensal_Service(idbusiness_int, page_int)
+	status, boolerror, dataerror, data := GetPostsComensal_Service(idbusiness_int, limit_int)
 	results := Response_Posts_Comensal{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 
