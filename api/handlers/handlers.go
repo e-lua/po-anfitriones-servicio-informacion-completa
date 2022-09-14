@@ -120,6 +120,7 @@ func Manejadores() {
 	/*---------------V1 TO POST---------------*/
 	router_post := version_1.Group("/post")
 	router_post.POST("", informacion.InformacionRouter_mo.AddPost)
+	router_post.GET("/comensal", informacion.InformacionRouter_mo.GetPostsComensal)
 	router_post.GET("/:limit", informacion.InformacionRouter_mo.GetPost)
 	router_post.PUT("/delete", informacion.InformacionRouter_mo.DeletePost)
 

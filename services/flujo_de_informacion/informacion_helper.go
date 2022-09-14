@@ -195,6 +195,12 @@ type Response_Comments_Comensal struct {
 	Data      []*models.Mo_Comment_Comensal `json:"data"`
 }
 
+type Response_Posts_Comensal struct {
+	Error     bool              `json:"error"`
+	DataError string            `json:"dataError"`
+	Data      []*models.Mo_Post `json:"data"`
+}
+
 type Response_CommentFound struct {
 	Error     bool         `json:"error"`
 	DataError string       `json:"dataError"`

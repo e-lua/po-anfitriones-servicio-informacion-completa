@@ -605,6 +605,16 @@ func GetCommentsComensal_Service(input_data_idbusiness int, page_int int64) (int
 	return 200, false, "", comments_visible
 }
 
+func GetPostsComensal_Service(input_data_idbusiness int, page_int int64) (int, bool, string, []*models.Mo_Post) {
+
+	posts, error_add := post_x_business.Mo_Find(input_data_idbusiness, page_int)
+	if error_add != nil {
+		return 500, true, "Error interno en el servidor al intentar obtener los posts, detalle: " + error_add.Error(), posts
+	}
+
+	return 200, false, "", posts
+}
+
 func GetCommentsOne_Comensal_Service(input_data_idbusiness int, input_data_idcomensal int) (int, bool, string, CommentFound) {
 
 	var comment_found CommentFound

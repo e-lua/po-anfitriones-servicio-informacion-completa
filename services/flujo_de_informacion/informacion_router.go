@@ -751,6 +751,21 @@ func (ir *informacionRouter_mo) GetCommentsComensal(c echo.Context) error {
 
 }
 
+func (ir *informacionRouter_mo) GetPostsComensal(c echo.Context) error {
+
+	idbusiness_string := c.Request().URL.Query().Get("idbusiness")
+	idbusiness_int, _ := strconv.Atoi(idbusiness_string)
+
+	page_string := c.Request().URL.Query().Get("page")
+	page_int, _ := strconv.ParseInt(page_string, 10, 64)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := GetPostsComensal_Service(idbusiness_int, page_int)
+	results := Response_Posts_Comensal{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+
+}
+
 func (ir *informacionRouter_mo) GetCommentsOne_Comensal(c echo.Context) error {
 
 	idcomensal_string := c.Request().URL.Query().Get("idcomensal")
