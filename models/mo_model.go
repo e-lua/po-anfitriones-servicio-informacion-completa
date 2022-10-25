@@ -42,6 +42,19 @@ type Mo_Business struct {
 	LegalIdentity   string            `bson:"legalidentity" json:"legalidentity"`
 	TypeSuscription int               `bson:"typesuscription" json:"typesuscription"`
 	IVA             float32           `bson:"iva" json:"iva"`
+	CreatedDate     time.Time         `bson:"createddate" json:"createddate"`
+	Available       bool              `bson:"available" json:"available"`
+	OrdersRejected  int               `bson:"ordersrejected" json:"ordersrejected"`
+	IsSubsidiary    bool              `bson:"issubsidiary" json:"issubsidiary"`
+	SubsidiaryOf    int               `bson:"subsidiaryof" json:"subsidiaryof"`
+	IsBanned        bool              `bson:"isbanned" json:"isbanned"`
+}
+
+type Mo_Subsidiary struct {
+	IdBusiness   int    `bson:"idbusiness" json:"idbusiness"`
+	IsSubsidiary bool   `bson:"issubsidiary" json:"issubsidiary"`
+	Name         string `bson:"name" json:"name"`
+	IsBanned     bool   `bson:"isbanned" json:"isbanned"`
 }
 
 type Mo_Delivery struct {
@@ -105,16 +118,18 @@ type Mo_Contact struct {
 }
 
 type Mo_BusinessWorker_Mqtt struct {
-	IdBusiness  int       `json:"idbusiness"`
-	IdWorker    int       `json:"idworker"`
-	IdCountry   int       `json:"country"`
-	CodeRedis   int       `json:"code"`
-	Name        string    `json:"name"`
-	IdRol       int       `json:"rol"`
-	LastName    string    `json:"lastname"`
-	Phone       int       `json:"phone"`
-	Password    string    `json:"password"`
-	UpdatedDate time.Time `json:"updatedate"`
+	IdBusiness   int       `json:"idbusiness"`
+	IdWorker     int       `json:"idworker"`
+	IdCountry    int       `json:"country"`
+	CodeRedis    int       `json:"code"`
+	Name         string    `json:"name"`
+	IdRol        int       `json:"rol"`
+	LastName     string    `json:"lastname"`
+	Phone        int       `json:"phone"`
+	Password     string    `json:"password"`
+	UpdatedDate  time.Time `json:"updatedate"`
+	IsSubsidiary bool      `json:"issubsidiary"`
+	SubsidiaryOf int       `json:"subsidiaryof"`
 }
 
 type Mo_ToBanner_Mqtt struct {

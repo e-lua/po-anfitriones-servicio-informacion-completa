@@ -53,11 +53,13 @@ func RegisterInitialData(input_anfitrion models.Mo_BusinessWorker_Mqtt) error {
 
 	//Dejamos de lado el MQTT y nos enfocaremos en crear el negocio
 
-	notification := map[string]interface{}{
-		"idbusiness": input_anfitrion.IdBusiness,
-		"country":    input_anfitrion.IdCountry,
+	business_data := map[string]interface{}{
+		"idbusiness":   input_anfitrion.IdBusiness,
+		"country":      input_anfitrion.IdCountry,
+		"issubsidiary": input_anfitrion.IsSubsidiary,
+		"subsidiaryof": input_anfitrion.SubsidiaryOf,
 	}
-	json_data, _ := json.Marshal(notification)
+	json_data, _ := json.Marshal(business_data)
 	http.Post("http://c-busqueda.restoner-api.fun/v1/business/create", "application/json", bytes.NewBuffer(json_data))
 
 	return nil

@@ -17,6 +17,7 @@ import (
 	informacion_web "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/services/flujo_de_informacion_web"
 	register "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/services/flujo_de_sesion/register_from_initialdata"
 	recover "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/services/recover_data"
+	subsidiary "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/services/subsidiary"
 )
 
 func Manejadores() {
@@ -107,6 +108,10 @@ func Manejadores() {
 
 	//V1 FROM BUSINESS TO ...PHONECONTACT
 	router_business.PUT("/contact", informacion.InformacionRouter_mo.UpdateContact)
+
+	/*---------------V1 TO SUBSIDIARY---------------*/
+	router_subsidiary := version_1.Group("/subsidiary")
+	router_subsidiary.GET("", subsidiary.SubsidiaryRouter.GetSubsidiaries)
 
 	/*---------------V1 TO COMMENT---------------*/
 	router_comment := version_1.Group("/comment")

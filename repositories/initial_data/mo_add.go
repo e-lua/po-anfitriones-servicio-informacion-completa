@@ -18,14 +18,19 @@ func Mo_Add(anfitrion_mo models.Mo_BusinessWorker_Mqtt) error {
 	db := models.MongoCN.Database("restoner_anfitriones")
 	col := db.Collection("business")
 
-	var registro models.Mo_Registro_FromMqtt
+	var business models.Mo_Business
+	var banner models.Mo_Banner
+	banner.IdBanner = 1
+	banner.UrlImage = "https://restoner-public-space.sfo3.cdn.digitaloceanspaces.com/restoner-general/default-image/Portada_defect.png"
+	business.IdBusiness = anfitrion_mo.IdBusiness
+	business.CreatedDate = anfitrion_mo.UpdatedDate
+	business.Available = true
+	business.OrdersRejected = 0
+	business.IsSubsidiary = anfitrion_mo.IsSubsidiary
+	business.SubsidiaryOf = anfitrion_mo.SubsidiaryOf
+	business.Banner = append(business.Banner, banner)
 
-	registro.IdBusiness = anfitrion_mo.IdBusiness
-	registro.CreatedDate = anfitrion_mo.UpdatedDate
-	registro.Available = true
-	registro.OrdersRejected = 0
-
-	_, error_add := col.InsertOne(ctx, registro)
+	_, error_add := col.InsertOne(ctx, business)
 
 	if error_add != nil {
 		return error_add
