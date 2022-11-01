@@ -23,7 +23,7 @@ func Mo_Find_Subsidiaries(idbusiness int) ([]*models.Mo_Subsidiary, error) {
 	/*Aca pude haber hecho un make, es decir, resultado:=make([]...)*/
 	var resultado []*models.Mo_Subsidiary
 
-	condicion := bson.M{"idbusiness": idbusiness}
+	condicion := bson.M{"subsidiaryof": idbusiness}
 
 	opciones := options.Find()
 	/*Indicar como ira ordenado*/
