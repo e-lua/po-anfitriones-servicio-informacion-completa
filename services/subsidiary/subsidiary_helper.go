@@ -22,7 +22,7 @@ type JWT struct {
 }
 
 type Response_Subsidiary struct {
-	Error     bool                 `json:"error"`
-	DataError string               `json:"dataError"`
-	Data      models.Mo_Subsidiary `json:"data"`
+	Error     bool                    `json:"error"`
+	DataError string                  `json:"dataError"`
+	Data      []*models.Mo_Subsidiary `json:"data"`
 }

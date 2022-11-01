@@ -5,7 +5,7 @@ import (
 	business_repository "github.com/Aphofisis/po-anfitriones-servicio-informacion-completa/repositories/business"
 )
 
-func GetSubsidiaries_Service(idbusiness int) (int, bool, string, models.Mo_Subsidiary) {
+func GetSubsidiaries_Service(idbusiness int) (int, bool, string, []*models.Mo_Subsidiary) {
 
 	subsidiary, error_updating_comment := business_repository.Mo_Find_Subsidiaries(idbusiness)
 	if error_updating_comment != nil {
